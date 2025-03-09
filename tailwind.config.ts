@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,10 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Couleurs personnalisées pour Auto Adi
+				autoBlue: '#0A4BB3',
+				autoOrange: '#FF9753',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
