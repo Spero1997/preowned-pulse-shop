@@ -16,9 +16,9 @@ interface FiltersProps {
 
 export function CarFilters({ filters, onChange }: FiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [localFilters, setLocalFilters] = useState<CarFilters>(filters);
+  const [localFilters, setLocalFilters] = useState<CarFiltersType>(filters);
   
-  const handleCheckboxChange = (field: keyof CarFilters, value: string) => {
+  const handleCheckboxChange = (field: keyof CarFiltersType, value: string) => {
     const currentValues = localFilters[field] as string[] || [];
     
     if (currentValues.includes(value)) {
