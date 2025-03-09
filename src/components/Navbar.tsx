@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Car, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Car, ShoppingCart, User, Menu, X, Phone } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,7 @@ export function Navbar() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/public/lovable-uploads/94fe4706-dd57-4f0e-b309-58c1b4d981d9.png" 
+                src="/lovable-uploads/94fe4706-dd57-4f0e-b309-58c1b4d981d9.png" 
                 alt="Service Auto Adi" 
                 className="h-10"
               />
@@ -40,6 +40,14 @@ export function Navbar() {
               Contact
             </Link>
           </nav>
+
+          {/* Numéro de téléphone - visible sur desktop */}
+          <div className="hidden md:flex items-center mr-4">
+            <a href="tel:+393761753341" className="flex items-center text-autoBlue hover:text-autoBlue/80">
+              <Phone className="h-4 w-4 mr-2" />
+              <span className="font-medium">+39 376 175 3341</span>
+            </a>
+          </div>
 
           {/* Icônes d'action - visibles sur desktop */}
           <div className="hidden md:flex items-center space-x-4">
@@ -97,6 +105,12 @@ export function Navbar() {
           >
             Contact
           </Link>
+          <div className="flex items-center space-x-4 px-4 py-2">
+            <a href="tel:+393761753341" className="flex items-center text-autoBlue">
+              <Phone className="h-4 w-4 mr-2" />
+              <span className="font-medium">+39 376 175 3341</span>
+            </a>
+          </div>
           <div className="flex items-center space-x-4 px-4 py-2">
             <Button variant="ghost" size="icon" className="text-gray-700">
               <User className="h-5 w-5" />

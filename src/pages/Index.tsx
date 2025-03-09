@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
 import { FeaturedCars } from "@/components/FeaturedCars";
 import { ServiceSection } from "@/components/ServiceSection";
+import { Testimonials } from "@/components/Testimonials";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -16,6 +17,7 @@ const Index = () => {
         <Hero />
         <FeaturedCars />
         <ServiceSection />
+        <Testimonials />
         
         {/* Section Pourquoi nous choisir */}
         <section className="py-16 bg-gray-50">
@@ -83,11 +85,11 @@ const Index = () => {
                   <div className="space-y-2 text-gray-600">
                     <p className="flex items-center">
                       <MapPin className="h-4 w-4 mr-2 text-autoOrange" />
-                      Via Roma 123, Milan, Italie
+                      Borgo Ognissanti, 142r 50123 Firenze FI Italie
                     </p>
                     <p className="flex items-center">
                       <Phone className="h-4 w-4 mr-2 text-autoOrange" />
-                      +39 123 456 7890
+                      +39 376 175 3341
                     </p>
                     <p className="flex items-center">
                       <Mail className="h-4 w-4 mr-2 text-autoOrange" />

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -25,13 +25,17 @@ import {
 import { Car } from "@/types/car";
 import { cars } from "@/data/cars";
 import { formatEuro } from "@/lib/utils";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+
+// État global simplifié pour le panier (dans une application réelle, utilisez un gestionnaire d'état comme Redux ou Context)
+let cartItems: Car[] = [];
 
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simuler un chargement de données
@@ -48,20 +52,30 @@ const CarDetail = () => {
 
   const handleReservation = () => {
     if (car) {
-      toast({
-        title: "Voiture réservée !",
-        description: `Vous avez réservé ${car.brand} ${car.model} (${car.year})`,
-        duration: 5000,
+      // Ajouter la voiture au panier
+      cartItems.push(car);
+      
+      // Afficher une notification
+      toast.success(`Voiture ajoutée au panier !`, {
+        description: `${car.brand} ${car.model} (${car.year}) a été ajouté à votre panier`,
+        action: {
+          label: "Voir le panier",
+          onClick: () => navigate("/cart")
+        },
       });
+      
+      // Mettre à jour le compteur du panier dans le header (dans une vraie application)
+      const cartCounter = document.querySelector('.cart-counter');
+      if (cartCounter) {
+        cartCounter.textContent = cartItems.length.toString();
+      }
     }
   };
 
   const handleAddToFavorite = () => {
     if (car) {
-      toast({
-        title: "Ajouté aux favoris",
+      toast.success(`Ajouté aux favoris`, {
         description: `${car.brand} ${car.model} a été ajouté à vos favoris`,
-        duration: 3000,
       });
     }
   };
@@ -250,14 +264,32 @@ const CarDetail = () => {
                   onClick={handleReservation}
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
-                  Réserver ce véhicule
+                  Ajouter au panier
                 </Button>
                 <div className="flex space-x-2">
                   <Button variant="outline" className="flex-1" onClick={handleAddToFavorite}>
                     <Heart className="h-4 w-4 mr-2" />
                     Favoris
                   </Button>
-                  <Button variant="outline" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1" 
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: `${car.brand} ${car.model} - Service Auto Adi`,
+                          text: `Découvrez cette ${car.brand} ${car.model} (${car.year}) chez Service Auto Adi !`,
+                          url: window.location.href,
+                        })
+                      } else {
+                        // Fallback - copy to clipboard
+                        navigator.clipboard.writeText(window.location.href);
+                        toast.success("Lien copié !", {
+                          description: "L'URL a été copiée dans le presse-papier"
+                        });
+                      }
+                    }}
+                  >
                     <Share className="h-4 w-4 mr-2" />
                     Partager
                   </Button>
@@ -301,7 +333,7 @@ const CarDetail = () => {
                   <Phone className="h-5 w-5 text-autoBlue mr-3" />
                   <div>
                     <p className="text-gray-500 text-sm">Téléphone</p>
-                    <p className="font-medium">+39 123 456 7890</p>
+                    <p className="font-medium">+39 376 175 3341</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -315,7 +347,7 @@ const CarDetail = () => {
                   <MapPin className="h-5 w-5 text-autoBlue mr-3" />
                   <div>
                     <p className="text-gray-500 text-sm">Adresse</p>
-                    <p className="font-medium">Via Roma 123, Milan, Italie</p>
+                    <p className="font-medium">Borgo Ognissanti, 142r 50123 Firenze FI Italie</p>
                   </div>
                 </div>
               </div>

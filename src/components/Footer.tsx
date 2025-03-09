@@ -13,7 +13,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/public/lovable-uploads/94fe4706-dd57-4f0e-b309-58c1b4d981d9.png" 
+                src="/lovable-uploads/94fe4706-dd57-4f0e-b309-58c1b4d981d9.png" 
                 alt="Service Auto Adi" 
                 className="h-12 bg-white p-1 rounded"
               />
@@ -64,12 +64,12 @@ export function Footer() {
             <ul className="space-y-2">
               <li className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-autoOrange" />
-                <span className="text-blue-100">Via Roma 123, Milan, Italie</span>
+                <span className="text-blue-100">Borgo Ognissanti, 142r 50123 Firenze FI Italie</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="h-5 w-5 text-autoOrange" />
-                <a href="tel:+391234567890" className="text-blue-100 hover:text-white transition-colors">
-                  +39 123 456 7890
+                <a href="tel:+393761753341" className="text-blue-100 hover:text-white transition-colors">
+                  +39 376 175 3341
                 </a>
               </li>
               <li className="flex items-center space-x-2">
@@ -99,7 +99,7 @@ export function Footer() {
               </li>
             </ul>
             <div className="mt-4 flex space-x-4">
-              <a href="#" className="text-white hover:text-autoOrange transition-colors">
+              <a href="https://www.facebook.com/profile.php?id=61567575174651" target="_blank" rel="noopener noreferrer" className="text-white hover:text-autoOrange transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
               <a href="#" className="text-white hover:text-autoOrange transition-colors">
