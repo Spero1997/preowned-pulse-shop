@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
@@ -26,9 +25,7 @@ import { Car } from "@/types/car";
 import { cars } from "@/data/cars";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
-
-// État global simplifié pour le panier (dans une application réelle, utilisez un gestionnaire d'état comme Redux ou Context)
-let cartItems: Car[] = [];
+import { cartService } from "@/lib/cartService";
 
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,10 +49,10 @@ const CarDetail = () => {
 
   const handleReservation = () => {
     if (car) {
-      // Ajouter la voiture au panier
-      cartItems.push(car);
+      // Ajouter la voiture au panier en utilisant notre service
+      cartService.addItem(car);
       
-      // Afficher une notification
+      // Afficher un bouton pour voir le panier
       toast.success(`Voiture ajoutée au panier !`, {
         description: `${car.brand} ${car.model} (${car.year}) a été ajouté à votre panier`,
         action: {
@@ -63,12 +60,6 @@ const CarDetail = () => {
           onClick: () => navigate("/cart")
         },
       });
-      
-      // Mettre à jour le compteur du panier dans le header (dans une vraie application)
-      const cartCounter = document.querySelector('.cart-counter');
-      if (cartCounter) {
-        cartCounter.textContent = cartItems.length.toString();
-      }
     }
   };
 
@@ -132,7 +123,7 @@ const CarDetail = () => {
             </Link>
             <span className="mx-2 text-gray-400">/</span>
             <span className="text-gray-700 font-medium">
-              {car.brand} {car.model}
+              {car?.brand} {car?.model}
             </span>
           </div>
 

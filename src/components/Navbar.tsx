@@ -1,12 +1,31 @@
 
 import { Link } from "react-router-dom";
-import { Car, ShoppingCart, User, Menu, X, Phone } from "lucide-react";
-import { useState } from "react";
+import { Car, ShoppingCart, User, Menu, X, Phone, Facebook } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { cartService } from "@/lib/cartService";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    // Charger le nombre initial d'éléments dans le panier
+    setCartCount(cartService.getCount());
+
+    // Écouter les mises à jour du panier
+    const handleCartUpdate = (event: CustomEvent) => {
+      setCartCount(event.detail.count);
+    };
+
+    window.addEventListener('cart-updated', handleCartUpdate as EventListener);
+
+    // Nettoyer l'écouteur d'événements
+    return () => {
+      window.removeEventListener('cart-updated', handleCartUpdate as EventListener);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
@@ -51,14 +70,26 @@ export function Navbar() {
 
           {/* Icônes d'action - visibles sur desktop */}
           <div className="hidden md:flex items-center space-x-4">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61567575174651" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-autoBlue"
+            >
+              <Facebook className="h-5 w-5" />
+            </a>
             <Button variant="ghost" size="icon" className="text-gray-700 hover:text-autoBlue">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-gray-700 hover:text-autoBlue relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                0
-              </span>
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:text-autoBlue relative" asChild>
+              <Link to="/cart">
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
             </Button>
           </div>
 
@@ -112,14 +143,26 @@ export function Navbar() {
             </a>
           </div>
           <div className="flex items-center space-x-4 px-4 py-2">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61567575174651" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-autoBlue"
+            >
+              <Facebook className="h-5 w-5" />
+            </a>
             <Button variant="ghost" size="icon" className="text-gray-700">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-gray-700 relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                0
-              </span>
+            <Button variant="ghost" size="icon" className="text-gray-700 relative" asChild>
+              <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
             </Button>
           </div>
         </div>

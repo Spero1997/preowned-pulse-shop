@@ -8,42 +8,49 @@ import { ArrowLeft, Trash2, ShoppingCart } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
-
-// Récupération des éléments du panier depuis l'état global (dans une vraie application, utilisez un gestionnaire d'état)
-// Cette variable devrait être définie au même endroit que dans CarDetail.tsx
-declare const cartItems: Car[];
+import { cartService } from "@/lib/cartService";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Charger les éléments du panier
+  const loadCartItems = () => {
+    setItems(cartService.getItems());
+  };
+
   useEffect(() => {
     // Charger les éléments du panier
     setLoading(true);
+    
     // Simuler un délai de chargement
     setTimeout(() => {
-      setItems(cartItems || []);
+      loadCartItems();
       setLoading(false);
     }, 500);
+
+    // Écouter les mises à jour du panier
+    const handleCartUpdate = () => {
+      loadCartItems();
+    };
+
+    window.addEventListener('cart-updated', handleCartUpdate);
+
+    // Nettoyer l'écouteur d'événements
+    return () => {
+      window.removeEventListener('cart-updated', handleCartUpdate);
+    };
   }, []);
 
   const removeItem = (id: string) => {
-    const newItems = items.filter(item => item.id !== id);
-    setItems(newItems);
-    // Mise à jour de l'état global (dans une vraie application, faire via un gestionnaire d'état)
-    const index = cartItems.findIndex(item => item.id === id);
-    if (index !== -1) {
-      cartItems.splice(index, 1);
-    }
-    toast.success("Article supprimé du panier");
+    cartService.removeItem(id);
+    loadCartItems();
   };
 
   const clearCart = () => {
-    setItems([]);
-    // Mise à jour de l'état global
-    cartItems.length = 0;
-    toast.success("Panier vidé");
+    cartService.clearCart();
+    loadCartItems();
   };
 
   const handleCheckout = () => {
