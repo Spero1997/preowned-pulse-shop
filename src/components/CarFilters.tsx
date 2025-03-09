@@ -5,13 +5,13 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Filter, X } from "lucide-react";
-import { CarFilters } from "@/types/car";
+import { CarFilters as CarFiltersType } from "@/types/car";
 import { brands, carTypes, fuelTypes, transmissionTypes, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { cn } from "@/lib/utils";
 
 interface FiltersProps {
-  filters: CarFilters;
-  onChange: (filters: CarFilters) => void;
+  filters: CarFiltersType;
+  onChange: (filters: CarFiltersType) => void;
 }
 
 export function CarFilters({ filters, onChange }: FiltersProps) {
