@@ -19,11 +19,13 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [apiDetail, setApiDetail] = useState<string | null>(null);
 
   const handleImport = async () => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
+    setApiDetail(null);
     setProgress(10);
 
     try {
@@ -39,19 +41,20 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
       }, 500);
 
       // Récupérer les données
+      setApiDetail("Connexion à l'API Take.app...");
       const cars = await fetchCarsFromTakeApp();
       
       setProgress(100);
       clearInterval(progressInterval);
       
       if (cars.length === 0) {
-        setError("Aucune voiture n'a été trouvée. Vérifiez l'URL ou la structure des données.");
+        setError("Aucune voiture n'a été trouvée. Vérifiez l'URL ou la structure des données de votre site Take.app.");
         toast.error("Échec de l'importation", {
           description: "Aucune voiture n'a été trouvée"
         });
       } else {
         setImportedCars(cars);
-        setSuccess(`Importation réussie ! ${cars.length} voitures ont été importées et seront disponibles sur le site après avoir téléchargé et remplacé le fichier cars.ts.`);
+        setSuccess(`Importation réussie ! ${cars.length} voitures ont été importées depuis votre site Take.app et seront disponibles sur le site après avoir téléchargé et remplacé le fichier cars.ts.`);
         toast.success("Importation réussie", {
           description: `${cars.length} voitures ont été importées`
         });
@@ -112,13 +115,15 @@ export const maxYear = Math.max(...cars.map(car => car.year));
       <CardHeader>
         <CardTitle>Importation de voitures</CardTitle>
         <CardDescription>
-          Importez les voitures depuis votre ancien site Take.app ou utilisez les données de démonstration
+          Importez les voitures depuis votre site Take.app
         </CardDescription>
       </CardHeader>
       <CardContent>
         {isLoading && (
           <div className="mb-6">
-            <p className="text-sm text-gray-500 mb-2">Importation en cours...</p>
+            <p className="text-sm text-gray-500 mb-2">
+              {apiDetail || "Importation en cours..."}
+            </p>
             <Progress value={progress} className="w-full" />
           </div>
         )}
@@ -156,7 +161,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
             className="bg-autoBlue hover:bg-autoBlue/90"
           >
             <Import className="mr-2 h-4 w-4" />
-            Importer des données de démonstration
+            Importer depuis Take.app
           </Button>
 
           <Button

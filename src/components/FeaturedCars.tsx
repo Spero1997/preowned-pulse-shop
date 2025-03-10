@@ -30,7 +30,9 @@ export function FeaturedCars() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Nos voitures vedettes</h2>
-            <p className="text-gray-600">Découvrez notre sélection de véhicules d'exception parmi notre collection de {cars.length} voitures</p>
+            <p className="text-gray-600">
+              Découvrez notre sélection de véhicules d'exception parmi notre collection de {cars.length} voitures
+            </p>
           </div>
           <Button 
             variant="link" 
@@ -44,11 +46,19 @@ export function FeaturedCars() {
           </Button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredCars.map(car => (
-            <CarCard key={car.id} car={car} />
-          ))}
-        </div>
+        {featuredCars.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredCars.map(car => (
+              <CarCard key={car.id} car={car} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-600">
+              Aucune voiture vedette n'est disponible pour le moment. Consultez notre boutique pour voir toutes nos voitures.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
