@@ -114,4 +114,3 @@ const mapCarType = (type: string): CarType => {
   if (type.includes('utilitaire') || type.includes('utility')) return 'Utilitaire';
   return 'Berline';
 };
-
