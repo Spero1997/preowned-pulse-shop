@@ -17,6 +17,8 @@ const Shop = () => {
   const [filteredCars, setFilteredCars] = useState<Car[]>(cars);
   const [sortOption, setSortOption] = useState("default");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [currentPage, setCurrentPage] = useState(1);
+  const carsPerPage = 12;
   const [filters, setFilters] = useState<CarFiltersType>({
     brand: [],
     type: [],
@@ -69,7 +71,17 @@ const Shop = () => {
     }
     
     setFilteredCars(results);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [searchTerm, filters, sortOption]);
+
+  // Calculate pagination
+  const indexOfLastCar = currentPage * carsPerPage;
+  const indexOfFirstCar = indexOfLastCar - carsPerPage;
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
+  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -139,12 +151,12 @@ const Shop = () => {
           </div>
           
           {/* Affichage des voitures */}
-          {filteredCars.length > 0 ? (
+          {currentCars.length > 0 ? (
             <div className={viewMode === "grid" 
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               : "space-y-6"
             }>
-              {filteredCars.map(car => (
+              {currentCars.map(car => (
                 <CarCard key={car.id} car={car} />
               ))}
             </div>
@@ -152,6 +164,79 @@ const Shop = () => {
             <div className="text-center py-12">
               <h3 className="text-xl font-medium mb-2">Aucune voiture trouvée</h3>
               <p className="text-gray-600">Veuillez modifier vos critères de recherche ou vos filtres.</p>
+            </div>
+          )}
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-8">
+              <nav>
+                <ul className="flex space-x-1">
+                  <li>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => paginate(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                    >
+                      Précédent
+                    </Button>
+                  </li>
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
+                    // Show pages around current page
+                    let pageToShow = currentPage;
+                    if (currentPage <= 2) {
+                      pageToShow = index + 1;
+                    } else if (currentPage >= totalPages - 1) {
+                      pageToShow = totalPages - 4 + index;
+                    } else {
+                      pageToShow = currentPage - 2 + index;
+                    }
+                    
+                    // Ensure page numbers are valid
+                    if (pageToShow <= 0 || pageToShow > totalPages) {
+                      return null;
+                    }
+                    
+                    return (
+                      <li key={pageToShow}>
+                        <Button 
+                          variant={currentPage === pageToShow ? "default" : "outline"}
+                          size="sm"
+                          className={currentPage === pageToShow ? "bg-autoBlue hover:bg-autoBlue/90" : ""}
+                          onClick={() => paginate(pageToShow)}
+                        >
+                          {pageToShow}
+                        </Button>
+                      </li>
+                    );
+                  })}
+                  {totalPages > 5 && currentPage < totalPages - 2 && (
+                    <>
+                      <li className="flex items-center px-2">...</li>
+                      <li>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => paginate(totalPages)}
+                        >
+                          {totalPages}
+                        </Button>
+                      </li>
+                    </>
+                  )}
+                  <li>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Suivant
+                    </Button>
+                  </li>
+                </ul>
+              </nav>
             </div>
           )}
         </div>

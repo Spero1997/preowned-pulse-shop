@@ -51,7 +51,7 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
         });
       } else {
         setImportedCars(cars);
-        setSuccess(`${cars.length} voitures importées avec succès!`);
+        setSuccess(`${cars.length} voitures importées avec succès! Toutes seront disponibles sur le site après avoir téléchargé et remplacé le fichier cars.ts.`);
         toast.success("Importation réussie", {
           description: `${cars.length} voitures ont été importées`
         });
@@ -103,7 +103,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
     URL.revokeObjectURL(url);
 
     toast.success("Fichier de données généré", {
-      description: "Le fichier cars.ts a été téléchargé. Remplacez le fichier existant dans src/data/."
+      description: `Le fichier cars.ts avec toutes les ${importedCars.length} voitures a été téléchargé. Remplacez le fichier existant dans src/data/.`
     });
   };
 

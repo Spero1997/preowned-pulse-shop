@@ -11,12 +11,16 @@ export function FeaturedCars() {
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
   
   useEffect(() => {
-    // Sélection des voitures mises en avant ou premières voitures si aucune n'est marquée
+    // Prioritize featured cars first
     const featured = cars.filter(car => car.featured);
+    
+    // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {
-      setFeaturedCars(featured);
+      // Display up to 6 featured cars
+      setFeaturedCars(featured.slice(0, 6));
     } else {
-      setFeaturedCars(cars.slice(0, 3));
+      // If no featured cars, take the first 6 from the entire collection
+      setFeaturedCars(cars.slice(0, 6));
     }
   }, []);
 
