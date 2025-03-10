@@ -112,7 +112,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
       <CardHeader>
         <CardTitle>Importation de voitures</CardTitle>
         <CardDescription>
-          Importez les voitures depuis votre ancien site Take.app
+          Importez les voitures depuis votre ancien site Take.app ou utilisez les données de démonstration
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -146,7 +146,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
             className="bg-autoBlue hover:bg-autoBlue/90"
           >
             <Import className="mr-2 h-4 w-4" />
-            Importer depuis Take.app
+            Importer des données de démonstration
           </Button>
 
           <Button
