@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import { Car, CarType, FuelType, TransmissionType } from "@/types/car";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Plus, Save, X, Car as CarIcon } from "lucide-react";
+import { Plus, Save, X, Car as CarIcon, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 interface AdminCarFormProps {
@@ -32,7 +33,7 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     power: 0,
     description: '',
     features: [],
-    images: ['https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1536&auto=format&fit=crop'],
+    images: [],
     color: '',
     doors: 5,
     isAvailable: true,
@@ -40,7 +41,7 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
   });
   
   const [newFeature, setNewFeature] = useState("");
-  const [newImage, setNewImage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
         power: 0,
         description: '',
         features: [],
-        images: ['https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1536&auto=format&fit=crop'],
+        images: [],
         color: '',
         doors: 5,
         isAvailable: true,
@@ -111,20 +112,35 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     }
   };
 
-  const addImage = () => {
-    if (newImage.trim() && formData.images) {
-      setFormData({
-        ...formData,
-        images: [...formData.images, newImage.trim()]
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    
+    if (!file.type.startsWith('image/')) {
+      toast.error("Type de fichier non valide", {
+        description: "Veuillez sélectionner une image (JPG, PNG, etc.)"
       });
-      setNewImage("");
-      toast.success("Image ajoutée", {
-        description: "L'image a été ajoutée avec succès"
-      });
-    } else {
-      toast.error("URL d'image invalide", {
-        description: "Veuillez entrer une URL d'image valide"
-      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result && formData.images) {
+        setFormData({
+          ...formData,
+          images: [...formData.images, reader.result.toString()]
+        });
+        toast.success("Image ajoutée", {
+          description: "L'image a été ajoutée avec succès"
+        });
+      }
+    };
+    reader.readAsDataURL(file);
+    
+    // Reset the file input so the same file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -136,7 +152,7 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
         ...formData,
         images: updatedImages
       });
-    } else {
+    } else if (formData.images && formData.images.length <= 1) {
       toast.error("Erreur", {
         description: "Vous devez conserver au moins une image"
       });
@@ -415,18 +431,19 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
             <Label>Images</Label>
             <div className="flex gap-2">
               <Input
-                value={newImage}
-                onChange={(e) => setNewImage(e.target.value)}
-                placeholder="URL de l'image..."
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
                 className="flex-1"
               />
               <Button 
                 type="button" 
-                onClick={addImage}
+                onClick={() => fileInputRef.current?.click()}
                 variant="outline"
               >
-                <Plus className="h-4 w-4 mr-2" />
-                Ajouter
+                <Upload className="h-4 w-4 mr-2" />
+                Parcourir
               </Button>
             </div>
             
@@ -469,3 +486,4 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     </Card>
   );
 };
+
