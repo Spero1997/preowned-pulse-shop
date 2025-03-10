@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Car, ShoppingCart, User, Menu, X, Phone, Facebook } from "lucide-react";
+import { Car, ShoppingCart, User, Menu, X, Phone, Facebook, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -57,6 +57,10 @@ export function Navbar() {
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-autoBlue font-medium">
               Contact
+            </Link>
+            <Link to="/admin" className="text-gray-700 hover:text-autoBlue font-medium flex items-center">
+              <Settings className="h-4 w-4 mr-1" />
+              Admin
             </Link>
           </nav>
 
@@ -135,6 +139,14 @@ export function Navbar() {
             onClick={() => setIsMenuOpen(false)}
           >
             Contact
+          </Link>
+          <Link 
+            to="/admin" 
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md flex items-center"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Administration
           </Link>
           <div className="flex items-center space-x-4 px-4 py-2">
             <a href="tel:+393761753341" className="flex items-center text-autoBlue">
