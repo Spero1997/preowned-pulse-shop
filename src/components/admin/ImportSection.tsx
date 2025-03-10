@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { Import, Save, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Import, Save, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { fetchCarsFromTakeApp } from "@/utils/importCars";
 import { Car } from "@/types/car";
 import { toast } from "sonner";
@@ -51,7 +51,7 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
         });
       } else {
         setImportedCars(cars);
-        setSuccess(`${cars.length} voitures importées avec succès! Toutes seront disponibles sur le site après avoir téléchargé et remplacé le fichier cars.ts.`);
+        setSuccess(`Importation réussie ! ${cars.length} voitures ont été importées et seront disponibles sur le site après avoir téléchargé et remplacé le fichier cars.ts.`);
         toast.success("Importation réussie", {
           description: `${cars.length} voitures ont été importées`
         });
@@ -103,7 +103,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
     URL.revokeObjectURL(url);
 
     toast.success("Fichier de données généré", {
-      description: `Le fichier cars.ts avec toutes les ${importedCars.length} voitures a été téléchargé. Remplacez le fichier existant dans src/data/.`
+      description: `Le fichier cars.ts contenant toutes les ${importedCars.length} voitures a été téléchargé. Remplacez le fichier existant dans src/data/.`
     });
   };
 
@@ -139,6 +139,16 @@ export const maxYear = Math.max(...cars.map(car => car.year));
           </Alert>
         )}
 
+        {importedCars.length > 0 && !success && !error && (
+          <Alert className="mb-4 bg-blue-50 border-blue-200">
+            <Info className="h-4 w-4 text-blue-500" />
+            <AlertTitle className="text-blue-700">Information</AlertTitle>
+            <AlertDescription className="text-blue-600">
+              {importedCars.length} voitures sont prêtes à être téléchargées. Utilisez le bouton ci-dessous pour générer le fichier cars.ts.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <div className="flex flex-wrap gap-4">
           <Button 
             onClick={handleImport} 
@@ -155,7 +165,7 @@ export const maxYear = Math.max(...cars.map(car => car.year));
             disabled={importedCars.length === 0 || isLoading}
           >
             <Save className="mr-2 h-4 w-4" />
-            Télécharger le fichier cars.ts
+            Télécharger le fichier cars.ts ({importedCars.length} voitures)
           </Button>
         </div>
       </CardContent>
