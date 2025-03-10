@@ -8,6 +8,7 @@ import { AdminCarForm } from "@/components/admin/AdminCarForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
+import { toast } from "sonner";
 
 const Admin = () => {
   const [importedCars, setImportedCars] = useState<Car[]>([]);
@@ -44,6 +45,53 @@ const Admin = () => {
     setSelectedCar(car);
   };
 
+  // Fonction pour importer les voitures depuis l'API
+  const handleImportCars = (importedCarsData: Car[]) => {
+    setImportedCars(importedCarsData);
+    toast.success("Importation réussie", {
+      description: `${importedCarsData.length} voitures ont été importées avec succès`
+    });
+  };
+
+  // Fonction pour ajouter une voiture importée au catalogue
+  const handleAddImportedCar = (car: Car) => {
+    const newCar = {
+      ...car,
+      id: `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      isAvailable: true
+    };
+    
+    setCars(prevCars => [...prevCars, newCar]);
+    setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
+    
+    toast.success("Voiture ajoutée", {
+      description: `${car.brand} ${car.model} a été ajoutée au catalogue`
+    });
+  };
+
+  // Fonction pour ajouter toutes les voitures importées au catalogue
+  const handleAddAllImportedCars = () => {
+    if (importedCars.length === 0) {
+      toast.error("Aucune voiture à importer", {
+        description: "Veuillez d'abord importer des voitures"
+      });
+      return;
+    }
+    
+    const newCars = importedCars.map(car => ({
+      ...car,
+      id: `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      isAvailable: true
+    }));
+    
+    setCars(prevCars => [...prevCars, ...newCars]);
+    setImportedCars([]);
+    
+    toast.success("Importation terminée", {
+      description: `${newCars.length} voitures ont été ajoutées au catalogue`
+    });
+  };
+
   return (
     <AdminLayout 
       title="Panneau d'administration"
@@ -71,9 +119,13 @@ const Admin = () => {
         <TabsContent value="import" className="space-y-8">
           <ImportSection 
             importedCars={importedCars}
-            setImportedCars={setImportedCars}
+            setImportedCars={handleImportCars}
           />
-          <ImportedCarsTable importedCars={importedCars} />
+          <ImportedCarsTable 
+            importedCars={importedCars}
+            onAddCar={handleAddImportedCar}
+            onAddAll={handleAddAllImportedCars}
+          />
         </TabsContent>
       </Tabs>
     </AdminLayout>
