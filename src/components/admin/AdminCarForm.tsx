@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Car, CarType, FuelType, TransmissionType } from "@/types/car";
 import { Button } from "@/components/ui/button";
@@ -74,7 +73,6 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     
     let parsedValue: string | number = value;
     
-    // Convertir les valeurs numériques
     if (['year', 'mileage', 'price', 'power', 'doors'].includes(name)) {
       parsedValue = value === '' ? 0 : Number(value);
     }
@@ -113,13 +111,19 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     }
   };
 
-  const addImage = () => {
+  const addImage = (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (newImage.trim() && formData.images) {
       setFormData({
         ...formData,
         images: [...formData.images, newImage.trim()]
       });
       setNewImage("");
+    } else {
+      toast.error("URL d'image invalide", {
+        description: "Veuillez entrer une URL d'image valide"
+      });
     }
   };
 
