@@ -12,15 +12,16 @@ export function FeaturedCars() {
   
   useEffect(() => {
     // Prioritize featured cars first
-    const featured = cars.filter(car => car.featured);
+    const featured = cars.filter(car => car.featured && car.isAvailable);
     
     // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {
       // Display up to 6 featured cars
       setFeaturedCars(featured.slice(0, 6));
     } else {
-      // If no featured cars, take the first 6 from the entire collection
-      setFeaturedCars(cars.slice(0, 6));
+      // If no featured cars, take the first 6 available from the entire collection
+      const available = cars.filter(car => car.isAvailable);
+      setFeaturedCars(available.slice(0, 6));
     }
   }, []);
 

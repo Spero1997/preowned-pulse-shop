@@ -37,52 +37,132 @@ export const fetchCarsFromTakeApp = async (): Promise<Car[]> => {
     
     // Transformer les données en notre format de voiture
     const importedCars: Car[] = data.map((carData: TakeAppCar, index: number) => {
-      // Extraction de la marque et du modèle à partir du titre
-      const titleParts = carData.title.split(' ');
-      const brand = titleParts[0] || "Inconnu";
-      const model = titleParts.slice(1).join(' ') || "Inconnu";
-      
-      // Extraction des détails
-      const details = carData.details || {};
-      const year = parseInt(details.year || details.année || "2020");
-      const mileage = parseFloat(details.mileage?.replace(/\D/g, '') || 
-                               details.kilométrage?.replace(/\D/g, '') || "0");
-      const fuelType = mapFuelType(details.fuel || details.carburant || "Essence");
-      const transmission = mapTransmissionType(details.transmission || details.boîte || "Manuelle");
-      const type = mapCarType(details.type || details.catégorie || "Berline");
-      const doors = parseInt(details.doors || details.portes || "4");
-      const color = details.color || details.couleur || "Non spécifié";
-      const power = parseInt(details.power?.replace(/\D/g, '') || 
-                           details.puissance?.replace(/\D/g, '') || "100");
-      
-      // Extraction des caractéristiques
-      const featuresString = details.features || details.équipements || "";
-      const features = featuresString.split(',')
-        .map(f => f.trim())
-        .filter(f => f.length > 0);
-      
-      // Extraction du prix
-      const price = parseFloat(carData.price.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
-      
-      return {
-        id: carData.id || `imported-${index}`,
-        brand,
-        model,
-        type,
-        year,
-        mileage,
-        price,
-        fuel: fuelType,
-        transmission,
-        power,
-        description: carData.description || "Aucune description disponible",
-        features: features.length > 0 ? features : ["Non spécifié"],
-        images: carData.images || [],
-        color,
-        doors,
-        isAvailable: true,
-        featured: index < 20 // Les 20 premières voitures seront mises en avant
-      };
+      try {
+        // Extraction de la marque et du modèle à partir du titre
+        const titleParts = carData.title.split(' ');
+        const brand = titleParts[0] || "Inconnu";
+        const model = titleParts.slice(1).join(' ') || "Inconnu";
+        
+        // Extraction des détails
+        const details = carData.details || {};
+        
+        // Extraction de l'année - rechercher différentes clés possibles
+        let year = 2020;
+        if (details.year) year = parseInt(details.year);
+        else if (details.année) year = parseInt(details.année);
+        else if (details["Année"]) year = parseInt(details["Année"]);
+        
+        // Extraction du kilométrage - rechercher différentes clés possibles
+        let mileage = 0;
+        if (details.mileage) mileage = parseFloat(details.mileage.replace(/\D/g, ''));
+        else if (details.kilométrage) mileage = parseFloat(details.kilométrage.replace(/\D/g, ''));
+        else if (details["Kilométrage"]) mileage = parseFloat(details["Kilométrage"].replace(/\D/g, ''));
+        
+        // Extraction du type de carburant - rechercher différentes clés possibles
+        let fuelTypeStr = "Essence";
+        if (details.fuel) fuelTypeStr = details.fuel;
+        else if (details.carburant) fuelTypeStr = details.carburant;
+        else if (details["Carburant"]) fuelTypeStr = details["Carburant"];
+        const fuelType = mapFuelType(fuelTypeStr);
+        
+        // Extraction du type de transmission - rechercher différentes clés possibles
+        let transmissionStr = "Manuelle";
+        if (details.transmission) transmissionStr = details.transmission;
+        else if (details.boîte) transmissionStr = details.boîte;
+        else if (details["Boîte"]) transmissionStr = details["Boîte"];
+        const transmission = mapTransmissionType(transmissionStr);
+        
+        // Extraction du type de voiture - rechercher différentes clés possibles
+        let typeStr = "Berline";
+        if (details.type) typeStr = details.type;
+        else if (details.catégorie) typeStr = details.catégorie;
+        else if (details["Type"]) typeStr = details["Type"];
+        else if (details["Catégorie"]) typeStr = details["Catégorie"];
+        const type = mapCarType(typeStr);
+        
+        // Extraction du nombre de portes - rechercher différentes clés possibles
+        let doors = 4;
+        if (details.doors) doors = parseInt(details.doors);
+        else if (details.portes) doors = parseInt(details.portes);
+        else if (details["Portes"]) doors = parseInt(details["Portes"]);
+        
+        // Extraction de la couleur - rechercher différentes clés possibles
+        let color = "Non spécifié";
+        if (details.color) color = details.color;
+        else if (details.couleur) color = details.couleur;
+        else if (details["Couleur"]) color = details["Couleur"];
+        
+        // Extraction de la puissance - rechercher différentes clés possibles
+        let power = 100;
+        if (details.power) power = parseInt(details.power.replace(/\D/g, ''));
+        else if (details.puissance) power = parseInt(details.puissance.replace(/\D/g, ''));
+        else if (details["Puissance"]) power = parseInt(details["Puissance"].replace(/\D/g, ''));
+        
+        // Extraction des caractéristiques - rechercher différentes clés possibles
+        let featuresString = "";
+        if (details.features) featuresString = details.features;
+        else if (details.équipements) featuresString = details.équipements;
+        else if (details["Équipements"]) featuresString = details["Équipements"];
+        
+        // Séparation des caractéristiques (peuvent être séparées par virgules ou points-virgules)
+        const features = featuresString.split(/[,;]/)
+          .map(f => f.trim())
+          .filter(f => f.length > 0);
+        
+        // Extraction du prix
+        const priceText = carData.price || "0";
+        const price = parseFloat(priceText.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+        
+        // Génération d'un ID si non présent
+        const id = carData.id || `imported-${index}`;
+        
+        return {
+          id,
+          brand,
+          model,
+          type,
+          year,
+          mileage,
+          price,
+          fuel: fuelType,
+          transmission,
+          power,
+          description: carData.description || "Aucune description disponible",
+          features: features.length > 0 ? features : ["Non spécifié"],
+          images: carData.images && carData.images.length > 0 ? carData.images : [
+            "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1536&auto=format&fit=crop"
+          ],
+          color,
+          doors,
+          isAvailable: true,
+          featured: index < 10 // Les 10 premières voitures seront mises en avant
+        };
+      } catch (err) {
+        console.error(`Erreur lors du traitement de la voiture ${carData.id || index}:`, err);
+        
+        // Retourner une voiture avec des valeurs par défaut en cas d'erreur
+        return {
+          id: carData.id || `error-${index}`,
+          brand: carData.title?.split(' ')[0] || "Inconnu",
+          model: carData.title?.split(' ').slice(1).join(' ') || "Inconnu",
+          type: "Berline",
+          year: 2020,
+          mileage: 0,
+          price: 0,
+          fuel: "Essence",
+          transmission: "Manuelle",
+          power: 100,
+          description: carData.description || "Erreur lors de l'importation",
+          features: ["Non spécifié"],
+          images: carData.images && carData.images.length > 0 ? carData.images : [
+            "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1536&auto=format&fit=crop"
+          ],
+          color: "Non spécifié",
+          doors: 4,
+          isAvailable: true,
+          featured: false
+        };
+      }
     });
     
     console.log(`Voitures importées: ${importedCars.length}`);

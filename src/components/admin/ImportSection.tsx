@@ -41,7 +41,7 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
       }, 500);
 
       // Récupérer les données
-      setApiDetail("Connexion à l'API Take.app...");
+      setApiDetail("Connexion à l'API Take.app en cours...");
       const cars = await fetchCarsFromTakeApp();
       
       setProgress(100);
@@ -58,9 +58,11 @@ export const ImportSection = ({ importedCars, setImportedCars }: ImportSectionPr
         toast.success("Importation réussie", {
           description: `${cars.length} voitures ont été importées`
         });
+        setApiDetail(null);
       }
     } catch (err) {
-      setError(`Erreur lors de l'importation: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
+      const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
+      setError(`Erreur lors de l'importation: ${errorMsg}`);
       toast.error("Échec de l'importation", {
         description: "Une erreur s'est produite lors de l'importation"
       });
