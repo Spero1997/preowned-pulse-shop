@@ -111,15 +111,16 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     }
   };
 
-  const addImage = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const addImage = () => {
     if (newImage.trim() && formData.images) {
       setFormData({
         ...formData,
         images: [...formData.images, newImage.trim()]
       });
       setNewImage("");
+      toast.success("Image ajoutée", {
+        description: "L'image a été ajoutée avec succès"
+      });
     } else {
       toast.error("URL d'image invalide", {
         description: "Veuillez entrer une URL d'image valide"
