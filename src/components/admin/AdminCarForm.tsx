@@ -91,13 +91,21 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     });
   };
 
-  const addFeature = () => {
+  const addFeature = (e: React.FormEvent) => {
+    e.preventDefault();
     if (newFeature.trim() && formData.features) {
       setFormData({
         ...formData,
         features: [...formData.features, newFeature.trim()]
       });
       setNewFeature("");
+      toast.success("Caractéristique ajoutée", {
+        description: `"${newFeature.trim()}" a été ajouté aux caractéristiques`
+      });
+    } else {
+      toast.error("Caractéristique invalide", {
+        description: "Veuillez entrer une caractéristique valide"
+      });
     }
   };
 
@@ -108,6 +116,9 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
       setFormData({
         ...formData,
         features: updatedFeatures
+      });
+      toast.success("Caractéristique supprimée", {
+        description: "La caractéristique a été supprimée"
       });
     }
   };
@@ -486,4 +497,3 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     </Card>
   );
 };
-
