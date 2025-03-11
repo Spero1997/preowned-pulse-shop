@@ -4,7 +4,7 @@ import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
-import { ArrowRight, AlertCircle, Car as CarIcon } from "lucide-react";
+import { ArrowRight, AlertCircle, Car as CarIcon, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -22,6 +22,10 @@ export function FeaturedCars() {
         const parsedCars = JSON.parse(localCarsString);
         console.log("FeaturedCars - Voitures récupérées:", parsedCars.length);
         if (Array.isArray(parsedCars) && parsedCars.length > 0) {
+          // Vérifie si le nombre de voitures a changé
+          if (allCars.length !== parsedCars.length) {
+            console.log("FeaturedCars - Nombre de voitures a changé de", allCars.length, "à", parsedCars.length);
+          }
           return parsedCars;
         } else {
           console.warn("FeaturedCars - Données récupérées invalides ou vides, utilisation des données par défaut");
@@ -45,6 +49,14 @@ export function FeaturedCars() {
   const forceRefresh = () => {
     console.log("FeaturedCars - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
+    
+    // Lire directement depuis localStorage et mettre à jour l'état
+    const updatedCars = getLocalCars();
+    setAllCars(updatedCars);
+    
+    toast.info("Actualisation en cours", {
+      description: `Chargement de ${updatedCars.length} voitures...`
+    });
   };
   
   // Effet initial pour charger les données
@@ -80,7 +92,7 @@ export function FeaturedCars() {
     // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
+      if (updatedCars.length !== allCars.length) {
         console.log("FeaturedCars - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
         setAllCars(updatedCars);
       }
@@ -89,10 +101,8 @@ export function FeaturedCars() {
     // Force rafraîchissement direct au montage
     const initialCheck = setTimeout(() => {
       const freshCars = getLocalCars();
-      if (freshCars.length > 0) {
-        console.log("FeaturedCars - Vérification initiale:", freshCars.length, "voitures");
-        setAllCars(freshCars);
-      }
+      console.log("FeaturedCars - Vérification initiale:", freshCars.length, "voitures");
+      setAllCars(freshCars);
     }, 500);
     
     return () => {
@@ -154,16 +164,29 @@ export function FeaturedCars() {
               Découvrez notre sélection de véhicules d'exception parmi notre collection de {allCars.length} voitures
             </p>
           </div>
-          <Button 
-            variant="link" 
-            className="text-autoBlue mt-4 md:mt-0"
-            asChild
-          >
-            <Link to="/shop" className="flex items-center">
-              Voir toutes les voitures
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+          
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={forceRefresh}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Rafraîchir
+            </Button>
+            
+            <Button 
+              variant="link" 
+              className="text-autoBlue"
+              asChild
+            >
+              <Link to="/shop" className="flex items-center">
+                Voir toutes les voitures
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
         
         {featuredCars.length > 0 ? (

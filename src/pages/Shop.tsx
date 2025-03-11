@@ -7,7 +7,7 @@ import { CarFilters } from "@/components/CarFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Grid3X3, List, AlertCircle, Loader, Car as CarIcon } from "lucide-react";
+import { Search, Grid3X3, List, AlertCircle, Loader, Car as CarIcon, RefreshCw } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
 import { cars as initialCars, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
@@ -43,9 +43,16 @@ const Shop = () => {
         const parsedCars = JSON.parse(localCarsString);
         console.log("Shop - Voitures récupérées:", parsedCars.length);
         if (Array.isArray(parsedCars) && parsedCars.length > 0) {
+          // Vérifie si le nombre de voitures a changé
+          if (cars.length !== parsedCars.length) {
+            console.log("Shop - Nombre de voitures a changé de", cars.length, "à", parsedCars.length);
+            toast.success(`Inventaire mis à jour`, {
+              description: `${parsedCars.length} voitures disponibles dans le catalogue.`
+            });
+          }
           return parsedCars;
         } else {
-          console.warn("Shop - Données récupérées invalides ou vides");
+          console.warn("Shop - Données récupérées invalides ou vides, utilisation des données par défaut");
           toast.error("Données invalides", {
             description: "Format de données incorrect dans le stockage local"
           });
@@ -68,6 +75,14 @@ const Shop = () => {
   const forceRefresh = () => {
     console.log("Shop - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
+    
+    // Lire directement depuis localStorage et mettre à jour l'état
+    const updatedCars = getLocalCars();
+    setCars(updatedCars);
+    
+    toast.info("Actualisation en cours", {
+      description: `Chargement de ${updatedCars.length} voitures...`
+    });
     
     // Émettre un événement personnalisé pour informer les autres composants
     const event = new CustomEvent('carsUpdated', { detail: { source: 'Shop' } });
@@ -111,7 +126,7 @@ const Shop = () => {
     // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      if (updatedCars.length > 0 && JSON.stringify(updatedCars) !== JSON.stringify(cars)) {
+      if (updatedCars.length !== cars.length) {
         console.log("Shop - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", cars.length, ")");
         setCars(updatedCars);
         setInitialLoadComplete(true);
@@ -232,8 +247,8 @@ const Shop = () => {
             onClick={forceRefresh}
             className="mb-4 flex items-center gap-2"
           >
-            <CarIcon className="h-4 w-4" />
-            Rafraîchir
+            <RefreshCw className="h-4 w-4" />
+            Rafraîchir ({cars.length} voitures)
           </Button>
           
           {/* Barre de recherche */}
