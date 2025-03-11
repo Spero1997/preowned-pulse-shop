@@ -7,28 +7,37 @@ import { AdminCarList } from "@/components/admin/AdminCarList";
 import { AdminCarForm } from "@/components/admin/AdminCarForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car } from "@/types/car";
-import { cars as initialCars } from "@/data/cars";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { getCarsFromLocalStorage, updateCarsInLocalStorage } from "@/utils/dataSync";
 
 const Admin = () => {
   const [importedCars, setImportedCars] = useState<Car[]>([]);
-  const [cars, setCars] = useState<Car[]>(initialCars);
+  const [cars, setCars] = useState<Car[]>([]);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const navigate = useNavigate();
 
   // Charger les voitures depuis le localStorage au démarrage
   useEffect(() => {
-    const storedCars = localStorage.getItem('cars');
-    if (storedCars) {
-      setCars(JSON.parse(storedCars));
-    }
+    const loadCars = () => {
+      const storedCars = getCarsFromLocalStorage();
+      setCars(storedCars);
+    };
+    
+    loadCars();
+    
+    // Écouter les événements de mise à jour des voitures
+    const handleCarsUpdated = () => {
+      loadCars();
+    };
+    
+    window.addEventListener('carsUpdated', handleCarsUpdated);
+    
+    // Nettoyage de l'écouteur d'événements
+    return () => {
+      window.removeEventListener('carsUpdated', handleCarsUpdated);
+    };
   }, []);
-
-  // Sauvegarder les voitures dans le localStorage à chaque modification
-  useEffect(() => {
-    localStorage.setItem('cars', JSON.stringify(cars));
-  }, [cars]);
 
   const handleAddCar = (car: Car) => {
     // Générer un ID unique pour la nouvelle voiture et la marquer comme featured
@@ -43,8 +52,8 @@ const Admin = () => {
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
     
-    // Forcer la mise à jour explicite du localStorage
-    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    // Mettre à jour explicitement le localStorage et déclencher l'événement
+    updateCarsInLocalStorage(updatedCars);
     
     setSelectedCar(null);
     
@@ -61,7 +70,10 @@ const Admin = () => {
   const handleUpdateCar = (updatedCar: Car) => {
     const updatedCars = cars.map(car => car.id === updatedCar.id ? updatedCar : car);
     setCars(updatedCars);
-    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    
+    // Mettre à jour explicitement le localStorage et déclencher l'événement
+    updateCarsInLocalStorage(updatedCars);
+    
     setSelectedCar(null);
     
     toast.success("Voiture mise à jour", {
@@ -72,7 +84,9 @@ const Admin = () => {
   const handleDeleteCar = (carId: string) => {
     const filteredCars = cars.filter(car => car.id !== carId);
     setCars(filteredCars);
-    localStorage.setItem('cars', JSON.stringify(filteredCars));
+    
+    // Mettre à jour explicitement le localStorage et déclencher l'événement
+    updateCarsInLocalStorage(filteredCars);
     
     if (selectedCar?.id === carId) {
       setSelectedCar(null);
@@ -108,8 +122,8 @@ const Admin = () => {
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
     
-    // Forcer la mise à jour explicite du localStorage
-    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    // Mettre à jour explicitement le localStorage et déclencher l'événement
+    updateCarsInLocalStorage(updatedCars);
     
     setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
     
@@ -143,8 +157,8 @@ const Admin = () => {
     const updatedCars = [...cars, ...newCars];
     setCars(updatedCars);
     
-    // Forcer la mise à jour explicite du localStorage
-    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    // Mettre à jour explicitement le localStorage et déclencher l'événement
+    updateCarsInLocalStorage(updatedCars);
     
     setImportedCars([]);
     
