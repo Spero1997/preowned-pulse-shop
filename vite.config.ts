@@ -13,6 +13,7 @@ export default defineConfig({
   },
   server: {
     port: 8080,
+    historyApiFallback: true
   },
   build: {
     outDir: 'dist',
