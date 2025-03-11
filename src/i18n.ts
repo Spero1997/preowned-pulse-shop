@@ -389,12 +389,14 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "it", // Changer de "fr" à "it" comme langue par défaut
+    fallbackLng: "it", // Italian as default language
     supportedLngs: ["fr", "en", "it", "es", "pt"],
-    debug: false,
+    debug: true, // Enable debug to see what's happening with language detection
     detection: {
-      order: ["localStorage", "navigator"],
-      caches: ["localStorage"]
+      order: ["htmlTag", "localStorage", "navigator"], // Try to detect from html first, then localStorage, then browser
+      lookupLocalStorage: "i18nextLng",
+      caches: ["localStorage"],
+      htmlTag: document.documentElement // Use the html tag for detection
     },
     interpolation: {
       escapeValue: false
@@ -403,5 +405,11 @@ i18n
       useSuspense: false
     }
   });
+
+// Force Italian language on first load if no language is set
+if (!localStorage.getItem('i18nextLng')) {
+  i18n.changeLanguage('it');
+  localStorage.setItem('i18nextLng', 'it');
+}
 
 export default i18n;
