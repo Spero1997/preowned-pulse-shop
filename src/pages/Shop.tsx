@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -17,7 +16,7 @@ import { useTranslation } from "react-i18next";
 const Shop = () => {
   const { t, ready } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [cars, setCars] = useState<Car[]>(initialCars); // Initialisé avec les voitures par défaut
+  const [cars, setCars] = useState<Car[]>(initialCars);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [sortOption, setSortOption] = useState("default");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -37,7 +36,6 @@ const Shop = () => {
     maxYear: maxYear,
   });
 
-  // Fonction pour obtenir les voitures stockées localement dans le localStorage
   const getLocalCars = (): Car[] => {
     try {
       const localCarsString = localStorage.getItem('cars');
@@ -45,7 +43,6 @@ const Shop = () => {
         const parsedCars = JSON.parse(localCarsString);
         console.log("Shop - Voitures récupérées:", parsedCars.length);
         if (Array.isArray(parsedCars) && parsedCars.length > 0) {
-          // Vérifie si le nombre de voitures a changé
           if (cars.length !== parsedCars.length) {
             console.log("Shop - Nombre de voitures a changé de", cars.length, "à", parsedCars.length);
           }
@@ -60,7 +57,6 @@ const Shop = () => {
       console.error("Erreur lors de la récupération des voitures locales:", error);
     }
     
-    // Important: Toujours retourner les voitures par défaut si rien n'est trouvé dans localStorage
     console.log("Shop - Utilisation des données initiales par défaut:", initialCars.length, "voitures");
     return initialCars;
   };
@@ -69,7 +65,6 @@ const Shop = () => {
     console.log("Shop - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
     
-    // Lire directement depuis localStorage et mettre à jour l'état
     const updatedCars = getLocalCars();
     setCars(updatedCars);
     
@@ -79,24 +74,20 @@ const Shop = () => {
         : `Chargement de ${updatedCars.length} voitures...`
     });
     
-    // Émettre un événement personnalisé pour informer les autres composants
     const event = new CustomEvent('carsUpdated', { detail: { source: 'Shop' } });
     window.dispatchEvent(event);
   };
 
-  // Effet principal pour charger les données
   useEffect(() => {
     console.log("Shop - Initialisation du composant");
     setIsLoading(true);
     
-    // Récupérer les voitures du localStorage au chargement initial
     const currentCars = getLocalCars();
     console.log("Shop - Chargement initial:", currentCars.length, "voitures");
     setCars(currentCars);
     setInitialLoadComplete(true);
     setIsLoading(false);
     
-    // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'cars') {
         console.log("Shop - Changement de localStorage détecté");
@@ -105,20 +96,17 @@ const Shop = () => {
       }
     };
     
-    // Crée un événement personnalisé pour communiquer entre les composants
     const handleCustomEvent = (e: CustomEvent) => {
-      if (e.detail?.source !== 'Shop') { // Évite les boucles infinies
+      if (e.detail?.source !== 'Shop') {
         console.log("Shop - Événement personnalisé de mise à jour détecté");
         const updatedCars = getLocalCars();
         setCars(updatedCars);
       }
     };
     
-    // Ajouter les écouteurs d'événements
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('carsUpdated', handleCustomEvent as EventListener);
     
-    // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
       if (updatedCars.length !== cars.length) {
@@ -126,23 +114,21 @@ const Shop = () => {
         setCars(updatedCars);
         setInitialLoadComplete(true);
       }
-    }, 5000); // Passage à 5 secondes pour réduire les vérifications
+    }, 5000);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
     };
-  }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
+  }, [refreshTrigger]);
 
-  // Effet pour filtrer les voitures lorsque les filtres ou la liste de voitures change
   useEffect(() => {
     if (isLoading) return;
     
     console.log("Shop - Application des filtres sur", cars.length, "voitures");
     let results = [...cars];
     
-    // Filtrer par recherche
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       results = results.filter(car => 
@@ -151,7 +137,6 @@ const Shop = () => {
       );
     }
     
-    // Appliquer les filtres
     results = applyFilters(results, filters, {
       brand: (car, brands) => brands.length === 0 || brands.includes(car.brand),
       type: (car, types) => types.length === 0 || types.includes(car.type),
@@ -163,7 +148,6 @@ const Shop = () => {
       maxYear: (car, maxYear) => car.year <= maxYear,
     });
     
-    // Appliquer le tri
     switch (sortOption) {
       case "price-asc":
         results.sort((a, b) => a.price - b.price);
@@ -181,19 +165,16 @@ const Shop = () => {
     
     console.log("Shop - Filtrage appliqué:", results.length, "voitures après filtrage");
     setFilteredCars(results);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [searchTerm, filters, sortOption, cars, isLoading]);
 
-  // Calculate pagination
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
   const totalPages = Math.ceil(filteredCars.length / carsPerPage);
 
-  // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -218,7 +199,6 @@ const Shop = () => {
             {ready ? t("shop.title") : "Nos voitures"}
           </h1>
           
-          {/* Bouton de rafraîchissement manuel */}
           <Button 
             variant="outline" 
             size="sm" 
@@ -229,7 +209,6 @@ const Shop = () => {
             {ready ? t("shop.refresh") : "Rafraîchir"}
           </Button>
           
-          {/* Barre de recherche */}
           <div className="relative mb-6">
             <Input
               placeholder={ready ? t("shop.searchPlaceholder") : "Rechercher par marque, modèle..."}
@@ -240,13 +219,11 @@ const Shop = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
           </div>
           
-          {/* Filtres */}
           <CarFilters 
             filters={filters} 
             onChange={setFilters} 
           />
           
-          {/* Tri et options d'affichage */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <p className="text-gray-600 mb-4 md:mb-0">
               {ready 
@@ -301,7 +278,6 @@ const Shop = () => {
             </div>
           </div>
           
-          {/* Affichage des voitures */}
           {currentCars.length > 0 ? (
             <div className={viewMode === "grid" 
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -328,7 +304,6 @@ const Shop = () => {
             </div>
           )}
           
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center mt-8">
               <nav>
@@ -344,7 +319,6 @@ const Shop = () => {
                     </Button>
                   </li>
                   {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
-                    // Show pages around current page
                     let pageToShow = currentPage;
                     if (currentPage <= 2) {
                       pageToShow = index + 1;
@@ -354,7 +328,6 @@ const Shop = () => {
                       pageToShow = currentPage - 2 + index;
                     }
                     
-                    // Ensure page numbers are valid
                     if (pageToShow <= 0 || pageToShow > totalPages) {
                       return null;
                     }

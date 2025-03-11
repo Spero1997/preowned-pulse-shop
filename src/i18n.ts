@@ -70,7 +70,9 @@ const resources = {
         "previous": "Précédent",
         "next": "Suivant",
         "loading": "Chargement des voitures...",
-        "refresh": "Rafraîchir ({{count}} voitures)"
+        "refresh": "Rafraîchir",
+        "refreshing": "Actualisation...",
+        "loadingCars": "Chargement de {{count}} voitures..."
       },
       "admin": {
         "carCatalog": "Catalogue de voitures ({{count}})",
@@ -145,7 +147,9 @@ const resources = {
         "previous": "Previous",
         "next": "Next",
         "loading": "Loading cars...",
-        "refresh": "Refresh ({{count}} cars)"
+        "refresh": "Refresh",
+        "refreshing": "Refreshing...",
+        "loadingCars": "Loading {{count}} cars..."
       },
       "admin": {
         "carCatalog": "Car catalog ({{count}})",
@@ -220,7 +224,9 @@ const resources = {
         "previous": "Precedente",
         "next": "Successivo",
         "loading": "Caricamento auto...",
-        "refresh": "Aggiorna ({{count}} auto)"
+        "refresh": "Aggiorna",
+        "refreshing": "Aggiornamento...",
+        "loadingCars": "Caricamento di {{count}} auto..."
       },
       "admin": {
         "carCatalog": "Catalogo auto ({{count}})",
