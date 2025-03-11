@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -6,7 +7,7 @@ import { CarFilters } from "@/components/CarFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Grid3X3, List, AlertCircle, Loader, RefreshCw } from "lucide-react";
+import { Search, Grid3X3, List, AlertCircle, Loader, RefreshCw, Info } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
 import { cars as initialCars, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
@@ -195,6 +196,40 @@ const Shop = () => {
       <Navbar />
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
+          <div className="mb-8 p-5 border rounded-lg bg-white">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-autoBlue flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-base mb-2">Concessionnaire automobile, nous vendons des voitures d'occasion en Europe. Nous livrons partout.</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                  <div>
+                    <h4 className="font-semibold mb-1">Modalités de paiement</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Acompte : 20% à la commande</li>
+                      <li>Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)</li>
+                      <li>Offre spéciale : -10% pour paiement comptant à la commande</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-1">Nos services inclus :</h4>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Délai de rétractation : 14 jours (Satisfait ou remboursé)</li>
+                      <li>Facilité de paiement : Payable comptant ou en mensualités sans intérêt</li>
+                      <li>Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-1">Garantie :</h4>
+                    <p>12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
             {ready ? t("shop.title") : "Nos voitures"}
           </h1>

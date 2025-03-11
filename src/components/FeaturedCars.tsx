@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
-import { ArrowRight, AlertCircle, RefreshCw } from "lucide-react";
+import { ArrowRight, AlertCircle, RefreshCw, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -16,7 +15,6 @@ export function FeaturedCars() {
   const [loading, setLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   
-  // Fonction pour obtenir les voitures stockées localement dans le localStorage
   const getLocalCars = (): Car[] => {
     try {
       const localCarsString = localStorage.getItem('cars');
@@ -24,7 +22,6 @@ export function FeaturedCars() {
         const parsedCars = JSON.parse(localCarsString);
         console.log("FeaturedCars - Voitures récupérées:", parsedCars.length);
         if (Array.isArray(parsedCars) && parsedCars.length > 0) {
-          // Vérifie si le nombre de voitures a changé
           if (allCars.length !== parsedCars.length) {
             console.log("FeaturedCars - Nombre de voitures a changé de", allCars.length, "à", parsedCars.length);
           }
@@ -39,8 +36,6 @@ export function FeaturedCars() {
       console.error("Erreur lors de la récupération des voitures locales:", error);
     }
     
-    // Important: Initialiser avec les voitures par défaut si rien n'est trouvé
-    // Cela garantit que des voitures sont toujours affichées
     console.log("FeaturedCars - Utilisation des données initiales par défaut:", initialCars.length, "voitures");
     return initialCars;
   };
@@ -49,7 +44,6 @@ export function FeaturedCars() {
     console.log("FeaturedCars - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
     
-    // Lire directement depuis localStorage et mettre à jour l'état
     const updatedCars = getLocalCars();
     setAllCars(updatedCars);
     
@@ -60,17 +54,14 @@ export function FeaturedCars() {
     });
   };
   
-  // Effet initial pour charger les données
   useEffect(() => {
     console.log("FeaturedCars - Initialisation du composant");
     
-    // Récupérer les voitures du localStorage au chargement initial et définir l'état
     const currentCars = getLocalCars();
     console.log("FeaturedCars - Chargement initial:", currentCars.length, "voitures");
     setAllCars(currentCars);
     setLoading(false);
     
-    // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'cars') {
         console.log("FeaturedCars - Changement de localStorage détecté");
@@ -79,55 +70,47 @@ export function FeaturedCars() {
       }
     };
     
-    // Crée un événement personnalisé pour communiquer entre les composants
     const handleCustomEvent = (e: CustomEvent) => {
       console.log("FeaturedCars - Événement personnalisé de mise à jour détecté");
       const updatedCars = getLocalCars();
       setAllCars(updatedCars);
     };
     
-    // Ajouter les écouteurs d'événements
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('carsUpdated', handleCustomEvent as EventListener);
     
-    // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
       if (updatedCars.length !== allCars.length) {
         console.log("FeaturedCars - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
         setAllCars(updatedCars);
       }
-    }, 5000); // Passage à 5 secondes pour réduire les vérifications
+    }, 5000);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
     };
-  }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
+  }, [refreshTrigger]);
   
-  // Filtrer les voitures vedettes quand la liste de voitures change
   useEffect(() => {
     if (allCars.length === 0) {
       console.log("FeaturedCars - Aucune voiture disponible");
       return;
     }
     
-    // Prioritize featured cars first
     const featured = allCars.filter(car => car.featured && car.isAvailable);
     console.log(`FeaturedCars - Nombre de voitures vedettes: ${featured.length}`);
     
-    // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {
-      // Display up to 6 featured cars
       setFeaturedCars(featured.slice(0, 6));
     } else {
-      // If no featured cars, take the first 6 available from the entire collection
       const available = allCars.filter(car => car.isAvailable);
       setFeaturedCars(available.slice(0, 6));
     }
   }, [allCars]);
-
+  
   if (loading) {
     return (
       <section className="py-16 bg-gray-50">
@@ -141,6 +124,40 @@ export function FeaturedCars() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
+        <div className="mb-10 p-5 border rounded-lg bg-white">
+          <div className="flex items-start gap-3">
+            <Info className="h-5 w-5 text-autoBlue flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-bold text-base mb-2">Concessionnaire automobile, nous vendons des voitures d'occasion en Europe. Nous livrons partout.</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                <div>
+                  <h4 className="font-semibold mb-1">Modalités de paiement</h4>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Acompte : 20% à la commande</li>
+                    <li>Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)</li>
+                    <li>Offre spéciale : -10% pour paiement comptant à la commande</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold mb-1">Nos services inclus :</h4>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Délai de rétractation : 14 jours (Satisfait ou remboursé)</li>
+                    <li>Facilité de paiement : Payable comptant ou en mensualités sans intérêt</li>
+                    <li>Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold mb-1">Garantie :</h4>
+                  <p>12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
