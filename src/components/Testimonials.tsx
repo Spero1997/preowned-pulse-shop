@@ -60,14 +60,26 @@ const Testimonial = ({ name, location, text, rating, language }: TestimonialProp
 
 export function Testimonials() {
   const { t } = useTranslation();
-  const [autoplay, setAutoplay] = useState(true);
+  const [shouldAutoPlay, setShouldAutoPlay] = useState(true);
+  const [api, setApi] = useState<any>(null);
   
   // Pause autoplay when the user interacts with the carousel
   const handleInteraction = () => {
-    setAutoplay(false);
+    setShouldAutoPlay(false);
     // Restart autoplay after 5 seconds of inactivity
-    setTimeout(() => setAutoplay(true), 5000);
+    setTimeout(() => setShouldAutoPlay(true), 5000);
   };
+  
+  // Handle autoplay functionality
+  useEffect(() => {
+    if (!api || !shouldAutoPlay) return;
+    
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [api, shouldAutoPlay]);
   
   const testimonials = [
     {
@@ -168,9 +180,8 @@ export function Testimonials() {
               loop: true,
               dragFree: true,
               containScroll: "trimSnaps",
-              autoplay: autoplay,
-              delay: 3000, // 3 seconds between slides
             }}
+            setApi={setApi}
             className="w-full"
             onMouseDown={handleInteraction}
             onTouchStart={handleInteraction}

@@ -1,3 +1,4 @@
+
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -192,7 +193,7 @@ const resources = {
       "options.headUpDisplay": "Affichage tête haute",
       "options.panoramicSunroof": "Toit ouvrant panoramique",
       "options.sportSeats": "Sièges sport",
-      "options.sportSuspension": "Suspension sport",
+      "options.sportSuspension1": "Suspension sport",
       "options.sportSteeringWheel": "Volant sport",
       "options.sportExhaust": "Échappement sport",
       "options.sportBrakes": "Freins sport",
@@ -244,7 +245,7 @@ const resources = {
       "options.trailerHitch": "Attelage de remorque",
       "options.roofRails": "Barres de toit",
       "options.sideSteps": "Marchepieds",
-      "options.runningBoards": "Marchepieds",
+      "options.runningBoards": "Marchepieds latéraux",
       "options.mudFlaps": "Bavettes",
       "options.towBar": "Barre de remorquage",
       "options.skiRack": "Porte-skis",
@@ -278,7 +279,7 @@ const resources = {
       "options.adaptiveSuspension": "Suspension adaptative",
       "options.airSuspension": "Suspension pneumatique",
       "options.adjustableSuspension": "Suspension réglable",
-      "options.sportSuspension": "Suspension sport",
+      "options.sportSuspension2": "Suspension sportive",
       "options.offRoadSuspension": "Suspension tout-terrain",
       "options.loweredSuspension": "Suspension abaissée",
       "options.liftKit": "Kit de levage",
@@ -642,7 +643,7 @@ const resources = {
       "options.headUpDisplay": "Head Up Display",
       "options.panoramicSunroof": "Panoramic Sunroof",
       "options.sportSeats": "Sport Seats",
-      "options.sportSuspension": "Sport Suspension",
+      "options.sportSuspension1": "Sport Suspension",
       "options.sportSteeringWheel": "Sport Steering Wheel",
       "options.sportExhaust": "Sport Exhaust",
       "options.sportBrakes": "Sport Brakes",
@@ -728,7 +729,7 @@ const resources = {
       "options.adaptiveSuspension": "Adaptive Suspension",
       "options.airSuspension": "Air Suspension",
       "options.adjustableSuspension": "Adjustable Suspension",
-      "options.sportSuspension": "Sport Suspension",
+      "options.sportSuspension2": "Sport Suspension - Advanced",
       "options.offRoadSuspension": "Off-Road Suspension",
       "options.loweredSuspension": "Lowered Suspension",
       "options.liftKit": "Lift Kit",
