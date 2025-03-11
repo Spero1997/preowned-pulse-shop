@@ -96,6 +96,43 @@ export function Testimonials() {
       text: "Concessionaria eccellente! Ho comprato una Fiat 500 per mia figlia e tutto è andato perfettamente. Anche il servizio post-vendita è molto reattivo.",
       rating: 5,
       language: "Italiano"
+    },
+    // Nouveaux témoignages en portugais
+    {
+      name: "João Silva",
+      location: "Lisboa, Portugal",
+      text: "Comprei o meu Volkswagen na Service Auto Adi e fiquei extremamente satisfeito. A equipe foi muito atenciosa e o processo de compra foi muito transparente. Excelente serviço!",
+      rating: 5,
+      language: "Português"
+    },
+    {
+      name: "Mariana Costa",
+      location: "Porto, Portugal",
+      text: "Viajei de Portugal para comprar meu Audi na Service Auto Adi. A qualidade dos carros e o profissionalismo da equipe superam em muito o incômodo da viagem. Valeu muito a pena!",
+      rating: 4,
+      language: "Português"
+    },
+    // Nouveaux témoignages en espagnol
+    {
+      name: "Carlos Rodríguez",
+      location: "Madrid, España",
+      text: "Mi experiencia con Service Auto Adi fue excepcional. Encontré un BMW Serie 3 en perfecto estado y a un precio muy competitivo. El equipo fue muy profesional durante todo el proceso.",
+      rating: 5,
+      language: "Español"
+    },
+    {
+      name: "Elena Martínez",
+      location: "Valencia, España",
+      text: "Compré mi Mercedes desde España y todo el proceso fue muy sencillo. La documentación fue gestionada perfectamente y el coche llegó en el estado prometido. Muy recomendable.",
+      rating: 5,
+      language: "Español"
+    },
+    {
+      name: "Javier López",
+      location: "Sevilla, España",
+      text: "Después de buscar durante meses, encontré el coche perfecto en Service Auto Adi. A pesar de la distancia, el proceso fue muy fácil y la comunicación excelente. El coche está en perfectas condiciones.",
+      rating: 4,
+      language: "Español"
     }
   ];
 
