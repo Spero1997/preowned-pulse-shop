@@ -6,7 +6,6 @@ import { ArrowRight } from "lucide-react";
 export function Hero() {
   return (
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-autoBlue/90 to-autoBlue/70 z-10" />
       <div 
         className="relative h-[500px] bg-cover bg-center"
         style={{ 
