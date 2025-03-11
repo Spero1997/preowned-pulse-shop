@@ -61,6 +61,24 @@ export function Testimonials() {
       location: t("testimonials.testimonial3.location", "Rome, Italie"),
       text: t("testimonials.testimonial3.text", "Déjà mon deuxième achat chez Service Auto Adi. Des voitures de qualité, bien entretenues et à des prix justes. Je recommande sans hésitation!"),
       rating: 4
+    },
+    {
+      name: t("testimonials.testimonial4.name", "Hans Müller"),
+      location: t("testimonials.testimonial4.location", "Munich, Allemagne"),
+      text: t("testimonials.testimonial4.text", "Service impeccable! J'ai trouvé exactement ce que je cherchais, une Audi A4 en parfait état. Le rapport qualité-prix est imbattable. Je reviendrai!"),
+      rating: 5
+    },
+    {
+      name: t("testimonials.testimonial5.name", "Maria Garcia"),
+      location: t("testimonials.testimonial5.location", "Barcelone, Espagne"),
+      text: t("testimonials.testimonial5.text", "Merci à Service Auto Adi pour leur professionnalisme. Ils m'ont aidée à trouver une voiture adaptée à mon budget et ont géré toutes les formalités administratives avec efficacité."),
+      rating: 4
+    },
+    {
+      name: t("testimonials.testimonial6.name", "Luca Rossi"),
+      location: t("testimonials.testimonial6.location", "Milan, Italie"),
+      text: t("testimonials.testimonial6.text", "Excellente concession! J'ai acheté une Fiat 500 pour ma fille et tout s'est déroulé parfaitement. Le service après-vente est également très réactif."),
+      rating: 5
     }
   ];
 
