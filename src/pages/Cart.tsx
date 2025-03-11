@@ -404,6 +404,13 @@ const Cart = () => {
                         <p className="mt-2">Les informations pour le paiement par carte bancaire vous seront communiquées après la validation de votre commande.</p>
                       </div>
                     )}
+                    
+                    {paymentMethod === "coupon" && (
+                      <div>
+                        <h3 className="font-semibold">Coupon (PCS/Transcash/Neosurf/Amazon)</h3>
+                        <p className="mt-2">Utilisez la section "Coupon" ci-dessous pour appliquer votre coupon prépayé.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -602,6 +609,7 @@ const Cart = () => {
                 <CardContent className="py-3 flex items-center">
                   {paymentMethod === "credit-card" && <CreditCard className="h-5 w-5 mr-2 text-blue-600" />}
                   {paymentMethod === "bank-transfer" && <Euro className="h-5 w-5 mr-2 text-amber-600" />}
+                  {paymentMethod === "coupon" && <Gift className="h-5 w-5 mr-2 text-purple-600" />}
                   <span>{getPaymentMethodLabel(paymentMethod)}</span>
                 </CardContent>
               </Card>
@@ -620,7 +628,7 @@ const Cart = () => {
                 <div className="mt-2 bg-green-50 p-3 rounded-md text-xs">
                   <p className="font-medium mb-1 flex items-center">
                     <Check className="h-3 w-3 mr-1 text-green-500" />
-                    Code coupon appliqué :
+                    Coupon appliqué :
                   </p>
                   <p className="font-mono">{appliedCouponCode}</p>
                   <p className="text-xs text-gray-500">Type: Coupon PCS/Transcash/Neosurf/Amazon</p>
