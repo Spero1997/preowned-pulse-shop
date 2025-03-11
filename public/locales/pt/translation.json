@@ -72,5 +72,20 @@
     "it": "Italiano",
     "es": "Espanhol",
     "pt": "Português"
+  },
+  "whyChooseUs": {
+    "title": "Por que escolher Service Auto Adi?",
+    "description": "Com mais de 15 anos de experiência, somos especializados na venda de carros usados de qualidade. Nossa expertise e compromisso com a satisfação do cliente nos tornam um parceiro confiável para sua próxima compra de automóvel.",
+    "points": {
+      "inspection": "Veículos rigorosamente selecionados e inspecionados",
+      "service": "Serviço pós-venda personalizado",
+      "prices": "Preços transparentes e competitivos",
+      "team": "Equipe profissional e apaixonada"
+    },
+    "learnMore": "Saiba mais sobre nós",
+    "visitDealer": "Visite nossa concessionária",
+    "address": "Borgo Ognissanti, 142r 50123 Firenze FI Itália",
+    "phone": "+39 376 175 3341",
+    "email": "info@serviceautoadi.it"
   }
 }
