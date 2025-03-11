@@ -15,20 +15,50 @@ const Contact = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
-    // Simuler l'envoi du formulaire
-    toast.success("Message envoyé avec succès !", {
-      description: "Nous vous répondrons dans les plus brefs délais."
-    });
-    
-    // Réinitialiser le formulaire
-    setName("");
-    setEmail("");
-    setMessage("");
-    setSubject("");
+    try {
+      // Prepare form data for email
+      const formData = {
+        name,
+        email,
+        subject,
+        message,
+        to: "infos@autoadi.com"
+      };
+      
+      // Using mailto link as a simple solution
+      const mailtoLink = `mailto:infos@autoadi.com?subject=${encodeURIComponent(
+        `Contact form: ${subject}`
+      )}&body=${encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+      )}`;
+      
+      // Open the email client
+      window.open(mailtoLink, "_blank");
+      
+      // Show success message
+      toast.success(t("contact.messageSent") || "Message envoyé avec succès !", {
+        description: t("contact.messageResponse") || "Nous vous répondrons dans les plus brefs délais."
+      });
+      
+      // Reset the form
+      setName("");
+      setEmail("");
+      setMessage("");
+      setSubject("");
+    } catch (error) {
+      console.error("Error sending form:", error);
+      toast.error(t("contact.errorSending") || "Erreur lors de l'envoi du message", {
+        description: t("contact.tryAgain") || "Veuillez réessayer plus tard."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -155,9 +185,10 @@ const Contact = () => {
                 <Button 
                   type="submit"
                   className="w-full bg-autoBlue hover:bg-autoBlue/90"
+                  disabled={isSubmitting}
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  Envoyer le message
+                  {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
                 </Button>
               </form>
             </div>
