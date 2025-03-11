@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu, 
@@ -8,44 +8,29 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Check, Globe } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 export function LanguageSelector() {
-  const { i18n, t } = useTranslation();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
+  const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
   const languages = [
-    { code: "fr", label: t("language.fr") },
-    { code: "en", label: t("language.en") },
-    { code: "it", label: t("language.it") },
-    { code: "es", label: t("language.es") },
-    { code: "pt", label: t("language.pt") }
+    { code: "fr", label: "Français" },
+    { code: "en", label: "English" },
+    { code: "it", label: "Italiano" },
+    { code: "es", label: "Español" },
+    { code: "pt", label: "Português" }
   ];
 
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng);
-    localStorage.setItem("i18nextLng", lng);
-  };
-
-  const getLanguageLabel = () => {
-    const lang = languages.find(l => l.code === currentLanguage);
-    return lang ? lang.label : languages[0].label;
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="ghost" 
+          variant="outline" 
           size="icon" 
           className="text-gray-700 hover:text-autoBlue"
         >

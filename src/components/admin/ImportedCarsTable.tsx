@@ -42,18 +42,18 @@ export const ImportedCarsTable = ({ importedCars, onAddCar, onAddAll }: Imported
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle>{t("admin.importedCars", { count: importedCars.length }) || `Voitures importées (${importedCars.length})`}</CardTitle>
+          <CardTitle>{t("admin.importedCars", { count: importedCars.length })}</CardTitle>
           <CardDescription>
-            {t("admin.importedCarsPreview") || "Aperçu des voitures qui ont été importées"}
+            {t("admin.importedCarsPreview")}
           </CardDescription>
         </div>
         <Button onClick={onAddAll} disabled={importedCars.length === 0}>
-          {t("admin.addAllToCatalog") || "Tout ajouter au catalogue"}
+          {t("admin.addAllToCatalog")}
         </Button>
       </CardHeader>
       <CardContent>
         <div className="mb-6">
-          <h3 className="text-sm font-medium mb-2">{t("admin.topBrands") || "Top 10 des marques importées:"}</h3>
+          <h3 className="text-sm font-medium mb-2">{t("admin.topBrands")}</h3>
           <div className="flex flex-wrap gap-2">
             {sortedBrands.map(([brand, count]) => (
               <Badge key={brand} variant="secondary">
@@ -105,11 +105,11 @@ export const ImportedCarsTable = ({ importedCars, onAddCar, onAddAll }: Imported
           </Table>
         </div>
         <p className="mt-4 text-sm text-gray-500">
-          {t("admin.showing", { count: 20, total: importedCars.length }) || `Affichage des 20 premières voitures sur ${importedCars.length} importées.`}
+          {t("admin.showing", { count: 20, total: importedCars.length })}
         </p>
       </CardContent>
       <CardFooter className="text-sm text-gray-500">
-        {t("admin.downloadToReplace", { count: importedCars.length }) || `Pour utiliser toutes ces ${importedCars.length} voitures, téléchargez le fichier et remplacez src/data/cars.ts`}
+        {t("admin.downloadToReplace", { count: importedCars.length })}
       </CardFooter>
     </Card>
   );

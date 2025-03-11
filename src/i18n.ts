@@ -28,13 +28,13 @@ const resources = {
       },
       "featuredCars": {
         "title": "Nos voitures en vedette",
-        "subtitle": "Découvrez notre sélection de véhicules exceptionnels parmi notre collection de {count} voitures",
+        "subtitle": "Découvrez notre sélection de véhicules exceptionnels parmi notre collection de {{count}} voitures",
         "refresh": "Actualiser",
         "viewAllCars": "Voir toutes les voitures",
         "noFeaturedCars": "Aucune voiture en vedette n'est disponible pour le moment. Visitez notre boutique pour voir toutes nos voitures.",
         "loading": "Chargement des voitures...",
         "refreshing": "Actualisation...",
-        "loadingCars": "Chargement de {count} voitures..."
+        "loadingCars": "Chargement de {{count}} voitures..."
       },
       "whyChooseUs": {
         "title": "Pourquoi choisir Service Auto Adi ?",
@@ -72,13 +72,13 @@ const resources = {
       },
       "featuredCars": {
         "title": "Our featured cars",
-        "subtitle": "Discover our selection of exceptional vehicles among our collection of {count} cars",
+        "subtitle": "Discover our selection of exceptional vehicles among our collection of {{count}} cars",
         "refresh": "Refresh",
         "viewAllCars": "View all cars",
         "noFeaturedCars": "No featured cars are currently available. Visit our shop to see all our cars.",
         "loading": "Loading cars...",
         "refreshing": "Refreshing...",
-        "loadingCars": "Loading {count} cars..."
+        "loadingCars": "Loading {{count}} cars..."
       },
       "whyChooseUs": {
         "title": "Why Choose Service Auto Adi?",
@@ -116,13 +116,13 @@ const resources = {
       },
       "featuredCars": {
         "title": "Le nostre auto in evidenza",
-        "subtitle": "Scopri la nostra selezione di veicoli eccezionali tra la nostra collezione di {count} auto",
+        "subtitle": "Scopri la nostra selezione di veicoli eccezionali tra la nostra collezione di {{count}} auto",
         "refresh": "Aggiorna",
         "viewAllCars": "Vedi tutte le auto",
         "noFeaturedCars": "Nessuna auto in evidenza è attualmente disponibile. Visita il nostro negozio per vedere tutte le nostre auto.",
         "loading": "Caricamento auto...",
         "refreshing": "Aggiornamento...",
-        "loadingCars": "Caricamento di {count} auto..."
+        "loadingCars": "Caricamento di {{count}} auto..."
       },
       "whyChooseUs": {
         "title": "Perché scegliere Service Auto Adi?",
@@ -157,7 +157,7 @@ i18n
     resources,
     fallbackLng: "fr",
     supportedLngs: ["fr", "en", "it", "es", "pt"],
-    debug: true,
+    debug: false,
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"]
@@ -171,4 +171,3 @@ i18n
   });
 
 export default i18n;
-
