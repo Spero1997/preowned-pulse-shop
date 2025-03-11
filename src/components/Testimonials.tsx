@@ -1,17 +1,23 @@
 
 import { User } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 type TestimonialProps = {
   name: string;
   location: string;
   text: string;
   rating: number;
-  language?: string; // Nouvelle propriété pour indiquer la langue du témoignage
+  language?: string;
 }
 
 const Testimonial = ({ name, location, text, rating, language }: TestimonialProps) => {
-  // Choisir une classe conditionnelle pour indiquer la langue
   const languageIndicator = language ? (
     <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 bg-autoBlue/10 text-autoBlue`}>
       {language}
@@ -19,7 +25,7 @@ const Testimonial = ({ name, location, text, rating, language }: TestimonialProp
   ) : null;
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md h-full">
       <div className="flex items-center mb-4">
         <div className="bg-autoBlue/10 p-3 rounded-full mr-4">
           <User className="h-6 w-6 text-autoBlue" />
@@ -146,17 +152,32 @@ export function Testimonials() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <Testimonial 
-              key={index}
-              name={testimonial.name}
-              location={testimonial.location}
-              text={testimonial.text}
-              rating={testimonial.rating}
-              language={testimonial.language}
-            />
-          ))}
+        <div className="mx-auto max-w-5xl px-4">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 h-full">
+                  <Testimonial 
+                    name={testimonial.name}
+                    location={testimonial.location}
+                    text={testimonial.text}
+                    rating={testimonial.rating}
+                    language={testimonial.language}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center mt-8">
+              <CarouselPrevious className="static mx-2 translate-y-0" />
+              <CarouselNext className="static mx-2 translate-y-0" />
+            </div>
+          </Carousel>
         </div>
       </div>
     </section>
