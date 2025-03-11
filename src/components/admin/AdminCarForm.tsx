@@ -1,14 +1,16 @@
 
 import { useState, useEffect } from "react";
 import { Car, CarType, FuelType, TransmissionType } from "@/types/car";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Save, Car as CarIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Car as CarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { CarBasicFields } from "./CarBasicFields";
 import { DescriptionField } from "./DescriptionField";
 import { FeaturesSection } from "./FeaturesSection";
 import { ImagesSection } from "./ImagesSection";
+import { CarStatusFields } from "./CarStatusFields";
+import { CarFormActions } from "./CarFormActions";
+import { validateCarForm } from "@/utils/carFormValidation";
 
 interface AdminCarFormProps {
   car: Car | null;
@@ -89,6 +91,13 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
     });
   };
 
+  const handleStatusChange = (name: string, value: boolean) => {
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
   const handleFeaturesChange = (features: string[]) => {
     setFormData({
       ...formData,
@@ -104,23 +113,7 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    
-    if (!formData.brand?.trim()) newErrors.brand = "La marque est requise";
-    if (!formData.model?.trim()) newErrors.model = "Le modèle est requis";
-    if (!formData.color?.trim()) newErrors.color = "La couleur est requise";
-    if (!formData.description?.trim()) newErrors.description = "La description est requise";
-    if (formData.year && (formData.year < 1900 || formData.year > new Date().getFullYear() + 1)) {
-      newErrors.year = "L'année n'est pas valide";
-    }
-    if (formData.price && formData.price <= 0) newErrors.price = "Le prix doit être supérieur à 0";
-    if (formData.mileage && formData.mileage < 0) newErrors.mileage = "Le kilométrage doit être positif";
-    if (formData.power && formData.power <= 0) newErrors.power = "La puissance doit être supérieure à 0";
-    if (formData.doors && (formData.doors < 2 || formData.doors > 7)) {
-      newErrors.doors = "Le nombre de portes doit être entre 2 et 7";
-    }
-    if (!formData.images?.length) newErrors.images = "Au moins une image est requise";
-    
+    const newErrors = validateCarForm(formData);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -182,21 +175,18 @@ export const AdminCarForm = ({ car, onSubmit, onCancel }: AdminCarFormProps) => 
             onImagesChange={handleImagesChange}
             error={errors.images}
           />
+          
+          <CarStatusFields
+            isAvailable={formData.isAvailable || true}
+            featured={formData.featured || false}
+            onStatusChange={handleStatusChange}
+          />
         </CardContent>
         
-        <CardFooter className="flex justify-between">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={onCancel}
-          >
-            Annuler
-          </Button>
-          <Button type="submit">
-            <Save className="h-4 w-4 mr-2" />
-            {car ? "Mettre à jour" : "Ajouter la voiture"}
-          </Button>
-        </CardFooter>
+        <CarFormActions
+          isEditing={!!car}
+          onCancel={onCancel}
+        />
       </form>
     </Card>
   );
