@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro, Gift, AlertCircle } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro, Gift, AlertCircle, Tag } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
@@ -22,6 +21,14 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
@@ -312,13 +319,19 @@ const Cart = () => {
                 </div>
                 
                 <div className="mb-6">
-                  <h3 className="font-medium mb-3">Code coupon</h3>
+                  <h3 className="font-medium mb-3 flex items-center">
+                    <Tag className="h-5 w-5 mr-2 text-autoBlue" />
+                    Code coupon
+                  </h3>
                   {couponApplied ? (
                     <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <Check className="h-5 w-5 text-green-500 mr-2" />
-                          <span>Code <span className="font-mono">{couponCode}</span> appliqué</span>
+                          <div>
+                            <span>Code <span className="font-mono">{couponCode}</span> appliqué</span>
+                            <p className="text-xs text-gray-500">Type: {couponType.toUpperCase()}</p>
+                          </div>
                         </div>
                         <Button variant="ghost" size="sm" onClick={resetCoupon}>
                           Retirer
@@ -326,21 +339,26 @@ const Cart = () => {
                       </div>
                     </div>
                   ) : (
-                    <>
-                      <div className="space-y-3 mb-3">
+                    <div className="border border-gray-200 rounded-md p-4 bg-white">
+                      <div className="space-y-3">
                         <div>
                           <Label htmlFor="coupon-type">Type de coupon</Label>
-                          <select 
-                            id="coupon-type"
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                            value={couponType}
-                            onChange={(e) => setCouponType(e.target.value)}
+                          <Select 
+                            value={couponType} 
+                            onValueChange={setCouponType}
                           >
-                            <option value="pcs">PCS</option>
-                            <option value="transcash">Transcash</option>
-                            <option value="neosurf">Neosurf</option>
-                            <option value="amazon">Amazon</option>
-                          </select>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Sélectionnez le type de coupon" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value="pcs">PCS</SelectItem>
+                                <SelectItem value="transcash">Transcash</SelectItem>
+                                <SelectItem value="neosurf">Neosurf</SelectItem>
+                                <SelectItem value="amazon">Amazon</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
                         </div>
                         <div>
                           <Label htmlFor="coupon-code">Code coupon</Label>
@@ -362,15 +380,14 @@ const Cart = () => {
                       </div>
                       <Button 
                         onClick={handleApplyCoupon} 
-                        className="w-full"
+                        className="w-full mt-3"
                       >
                         Appliquer le code
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
                 
-                {/* Payment Information - Now directly visible instead of in accordion */}
                 <div className="mb-6">
                   <div className="flex items-center mb-2 text-sm font-medium">
                     <Info className="h-4 w-4 mr-2" />
@@ -513,6 +530,7 @@ const Cart = () => {
                     Code coupon appliqué :
                   </p>
                   <p className="font-mono">{couponCode}</p>
+                  <p className="text-xs text-gray-500">Type: {couponType.toUpperCase()}</p>
                 </div>
               )}
             </div>
