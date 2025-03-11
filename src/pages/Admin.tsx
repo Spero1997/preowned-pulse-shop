@@ -9,11 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [importedCars, setImportedCars] = useState<Car[]>([]);
   const [cars, setCars] = useState<Car[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const navigate = useNavigate();
 
   // Charger les voitures depuis le localStorage au démarrage
   useEffect(() => {
@@ -37,23 +39,39 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     };
     
-    setCars(prevCars => [...prevCars, newCar]);
+    // Mettre à jour l'état local et le localStorage
+    const updatedCars = [...cars, newCar];
+    setCars(updatedCars);
+    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    
     setSelectedCar(null);
     
     toast.success("Voiture ajoutée", {
       description: `${car.brand} ${car.model} a été ajoutée au catalogue et apparaîtra sur la page d'accueil`
     });
+    
+    // Rediriger vers la page d'accueil après l'ajout
+    setTimeout(() => {
+      navigate('/');
+    }, 1500); // Attendre 1.5 secondes pour que le toast soit visible
   };
 
   const handleUpdateCar = (updatedCar: Car) => {
-    setCars(prevCars => 
-      prevCars.map(car => car.id === updatedCar.id ? updatedCar : car)
-    );
+    const updatedCars = cars.map(car => car.id === updatedCar.id ? updatedCar : car);
+    setCars(updatedCars);
+    localStorage.setItem('cars', JSON.stringify(updatedCars));
     setSelectedCar(null);
+    
+    toast.success("Voiture mise à jour", {
+      description: `${updatedCar.brand} ${updatedCar.model} a été mise à jour avec succès`
+    });
   };
 
   const handleDeleteCar = (carId: string) => {
-    setCars(prevCars => prevCars.filter(car => car.id !== carId));
+    const filteredCars = cars.filter(car => car.id !== carId);
+    setCars(filteredCars);
+    localStorage.setItem('cars', JSON.stringify(filteredCars));
+    
     if (selectedCar?.id === carId) {
       setSelectedCar(null);
     }
@@ -80,7 +98,10 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     };
     
-    setCars(prevCars => [...prevCars, newCar]);
+    const updatedCars = [...cars, newCar];
+    setCars(updatedCars);
+    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    
     setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
     
     toast.success("Voiture ajoutée", {
@@ -104,12 +125,20 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     }));
     
-    setCars(prevCars => [...prevCars, ...newCars]);
+    const updatedCars = [...cars, ...newCars];
+    setCars(updatedCars);
+    localStorage.setItem('cars', JSON.stringify(updatedCars));
+    
     setImportedCars([]);
     
     toast.success("Importation terminée", {
       description: `${newCars.length} voitures ont été ajoutées au catalogue et apparaîtront sur la page d'accueil`
     });
+    
+    // Rediriger vers la page d'accueil après l'ajout de toutes les voitures
+    setTimeout(() => {
+      navigate('/');
+    }, 1500); // Attendre 1.5 secondes pour que le toast soit visible
   };
 
   return (

@@ -35,10 +35,10 @@ export function FeaturedCars() {
       if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
         setAllCars(updatedCars);
       }
-    }, 2000); // Vérifier toutes les 2 secondes
+    }, 1000); // Vérifier toutes les secondes pour une réactivité accrue
     
     return () => clearInterval(interval);
-  }, []);
+  }, [allCars]); // Ajout de la dépendance allCars pour réagir aux changements
   
   useEffect(() => {
     // Prioritize featured cars first
