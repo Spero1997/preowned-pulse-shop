@@ -1,4 +1,3 @@
-
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -35,6 +34,45 @@ const resources = {
         "loading": "Chargement des voitures...",
         "refreshing": "Actualisation...",
         "loadingCars": "Chargement de {{count}} voitures..."
+      },
+      "services": {
+        "title": "Nos services",
+        "subtitle": "Service Auto Adi est votre partenaire de confiance pour l'achat de voitures d'occasion. Découvrez nos services personnalisés pour une expérience d'achat sans souci.",
+        "selection": {
+          "title": "Large sélection",
+          "description": "Plus de 100 véhicules d'occasion soigneusement sélectionnés pour répondre à tous les besoins et budgets."
+        },
+        "warranty": {
+          "title": "Garantie incluse",
+          "description": "Tous nos véhicules sont livrés avec une garantie mécanique pour vous assurer tranquillité d'esprit."
+        },
+        "technical": {
+          "title": "Service technique",
+          "description": "Notre équipe de techniciens qualifiés assure l'entretien et les réparations de votre véhicule."
+        },
+        "financing": {
+          "title": "Financement facile",
+          "description": "Solutions de financement personnalisées pour faciliter l'achat de votre voiture d'occasion."
+        }
+      },
+      "testimonials": {
+        "title": "Ce que disent nos clients",
+        "subtitle": "Découvrez les témoignages de nos clients satisfaits qui ont trouvé leur voiture idéale chez Service Auto Adi.",
+        "testimonial1": {
+          "name": "Marco Bianchi",
+          "location": "Florence, Italie",
+          "text": "J'ai acheté ma BMW chez Service Auto Adi et je suis extrêmement satisfait. Le processus était simple, transparent et l'équipe était très professionnelle. La voiture est exactement comme décrite!"
+        },
+        "testimonial2": {
+          "name": "Sophie Dupont",
+          "location": "Lyon, France",
+          "text": "Une expérience exceptionnelle! J'ai fait le voyage depuis la France pour acheter ma Mercedes et je ne regrette rien. Merci à toute l'équipe pour leur accompagnement."
+        },
+        "testimonial3": {
+          "name": "Alessandro Romano",
+          "location": "Rome, Italie",
+          "text": "Déjà mon deuxième achat chez Service Auto Adi. Des voitures de qualité, bien entretenues et à des prix justes. Je recommande sans hésitation!"
+        }
       },
       "whyChooseUs": {
         "title": "Pourquoi choisir Service Auto Adi ?",
@@ -83,6 +121,12 @@ const resources = {
         "topBrands": "Top 10 marques importées :",
         "showing": "Affichage des {{count}} premières sur {{total}} voitures importées.",
         "downloadToReplace": "Pour utiliser ces {{count}} voitures, téléchargez le fichier et remplacez src/data/cars.ts"
+      },
+      "notFound": {
+        "title": "Oops! Page non trouvée",
+        "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+        "home": "Accueil",
+        "shop": "Nos Voitures"
       }
     }
   },
@@ -112,6 +156,45 @@ const resources = {
         "loading": "Loading cars...",
         "refreshing": "Refreshing...",
         "loadingCars": "Loading {{count}} cars..."
+      },
+      "services": {
+        "title": "Our Services",
+        "subtitle": "Service Auto Adi is your trusted partner for purchasing used cars. Discover our personalized services for a worry-free buying experience.",
+        "selection": {
+          "title": "Wide Selection",
+          "description": "Over 100 carefully selected used vehicles to meet all needs and budgets."
+        },
+        "warranty": {
+          "title": "Warranty Included",
+          "description": "All our vehicles come with a mechanical warranty to ensure your peace of mind."
+        },
+        "technical": {
+          "title": "Technical Service",
+          "description": "Our team of qualified technicians ensures the maintenance and repairs of your vehicle."
+        },
+        "financing": {
+          "title": "Easy Financing",
+          "description": "Personalized financing solutions to facilitate the purchase of your used car."
+        }
+      },
+      "testimonials": {
+        "title": "What Our Customers Say",
+        "subtitle": "Discover testimonials from our satisfied customers who found their ideal car at Service Auto Adi.",
+        "testimonial1": {
+          "name": "Marco Bianchi",
+          "location": "Florence, Italy",
+          "text": "I bought my BMW from Service Auto Adi and I am extremely satisfied. The process was simple, transparent and the team was very professional. The car is exactly as described!"
+        },
+        "testimonial2": {
+          "name": "Sophie Dupont",
+          "location": "Lyon, France",
+          "text": "An exceptional experience! I made the trip from France to buy my Mercedes and I don't regret it. Thanks to the whole team for their support."
+        },
+        "testimonial3": {
+          "name": "Alessandro Romano",
+          "location": "Rome, Italy",
+          "text": "Already my second purchase from Service Auto Adi. Quality cars, well maintained and at fair prices. I recommend without hesitation!"
+        }
       },
       "whyChooseUs": {
         "title": "Why Choose Service Auto Adi?",
@@ -160,6 +243,12 @@ const resources = {
         "topBrands": "Top 10 imported brands:",
         "showing": "Showing first {{count}} of {{total}} imported cars.",
         "downloadToReplace": "To use all these {{count}} cars, download the file and replace src/data/cars.ts"
+      },
+      "notFound": {
+        "title": "Oops! Page not found",
+        "description": "The page you are looking for doesn't exist or has been moved.",
+        "home": "Home",
+        "shop": "Our Cars"
       }
     }
   },
@@ -189,6 +278,45 @@ const resources = {
         "loading": "Caricamento auto...",
         "refreshing": "Aggiornamento...",
         "loadingCars": "Caricamento di {{count}} auto..."
+      },
+      "services": {
+        "title": "I nostri servizi",
+        "subtitle": "Service Auto Adi è il tuo partner di fiducia per l'acquisto di auto usate. Scopri i nostri servizi personalizzati per un'esperienza di acquisto senza preoccupazioni.",
+        "selection": {
+          "title": "Ampia selezione",
+          "description": "Oltre 100 veicoli usati accuratamente selezionati per soddisfare tutte le esigenze e i budget."
+        },
+        "warranty": {
+          "title": "Garanzia inclusa",
+          "description": "Tutti i nostri veicoli sono forniti con una garanzia meccanica per garantire la tua tranquillità."
+        },
+        "technical": {
+          "title": "Servizio tecnico",
+          "description": "Il nostro team di tecnici qualificati garantisce la manutenzione e le riparazioni del tuo veicolo."
+        },
+        "financing": {
+          "title": "Finanziamento facile",
+          "description": "Soluzioni di finanziamento personalizzate per facilitare l'acquisto della tua auto usata."
+        }
+      },
+      "testimonials": {
+        "title": "Cosa dicono i nostri clienti",
+        "subtitle": "Scopri le testimonianze dei nostri clienti soddisfatti che hanno trovato la loro auto ideale presso Service Auto Adi.",
+        "testimonial1": {
+          "name": "Marco Bianchi",
+          "location": "Firenze, Italia",
+          "text": "Ho acquistato la mia BMW da Service Auto Adi e sono estremamente soddisfatto. Il processo è stato semplice, trasparente e il team era molto professionale. L'auto è esattamente come descritta!"
+        },
+        "testimonial2": {
+          "name": "Sophie Dupont",
+          "location": "Lione, Francia",
+          "text": "Un'esperienza eccezionale! Ho fatto il viaggio dalla Francia per acquistare la mia Mercedes e non me ne pento. Grazie a tutto il team per il loro supporto."
+        },
+        "testimonial3": {
+          "name": "Alessandro Romano",
+          "location": "Roma, Italia",
+          "text": "Già il mio secondo acquisto da Service Auto Adi. Auto di qualità, ben mantenute e a prezzi equi. Consiglio senza esitazione!"
+        }
       },
       "whyChooseUs": {
         "title": "Perché scegliere Service Auto Adi?",
@@ -237,6 +365,12 @@ const resources = {
         "topBrands": "Top 10 marche importate:",
         "showing": "Visualizzazione delle prime {{count}} di {{total}} auto importate.",
         "downloadToReplace": "Per utilizzare tutte queste {{count}} auto, scarica il file e sostituisci src/data/cars.ts"
+      },
+      "notFound": {
+        "title": "Oops! Pagina non trovata",
+        "description": "La pagina che stai cercando non esiste o è stata spostata.",
+        "home": "Home",
+        "shop": "Le nostre auto"
       }
     }
   },

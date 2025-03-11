@@ -45,21 +45,21 @@ export function Testimonials() {
   
   const testimonials = [
     {
-      name: "Marco Bianchi",
-      location: "Florence, Italie",
-      text: "J'ai acheté ma BMW chez Service Auto Adi et je suis extrêmement satisfait. Le processus était simple, transparent et l'équipe était très professionnelle. La voiture est exactement comme décrite!",
+      name: t("testimonials.testimonial1.name", "Marco Bianchi"),
+      location: t("testimonials.testimonial1.location", "Florence, Italie"),
+      text: t("testimonials.testimonial1.text", "J'ai acheté ma BMW chez Service Auto Adi et je suis extrêmement satisfait. Le processus était simple, transparent et l'équipe était très professionnelle. La voiture est exactement comme décrite!"),
       rating: 5
     },
     {
-      name: "Sophie Dupont",
-      location: "Lyon, France",
-      text: "Une expérience exceptionnelle! J'ai fait le voyage depuis la France pour acheter ma Mercedes et je ne regrette rien. Merci à toute l'équipe pour leur accompagnement.",
+      name: t("testimonials.testimonial2.name", "Sophie Dupont"),
+      location: t("testimonials.testimonial2.location", "Lyon, France"),
+      text: t("testimonials.testimonial2.text", "Une expérience exceptionnelle! J'ai fait le voyage depuis la France pour acheter ma Mercedes et je ne regrette rien. Merci à toute l'équipe pour leur accompagnement."),
       rating: 5
     },
     {
-      name: "Alessandro Romano",
-      location: "Rome, Italie",
-      text: "Déjà mon deuxième achat chez Service Auto Adi. Des voitures de qualité, bien entretenues et à des prix justes. Je recommande sans hésitation!",
+      name: t("testimonials.testimonial3.name", "Alessandro Romano"),
+      location: t("testimonials.testimonial3.location", "Rome, Italie"),
+      text: t("testimonials.testimonial3.text", "Déjà mon deuxième achat chez Service Auto Adi. Des voitures de qualité, bien entretenues et à des prix justes. Je recommande sans hésitation!"),
       rating: 4
     }
   ];

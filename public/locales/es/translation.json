@@ -47,7 +47,22 @@
   },
   "testimonials": {
     "title": "Lo que dicen nuestros clientes",
-    "subtitle": "Descubre los testimonios de nuestros clientes satisfechos que han encontrado su coche ideal en Service Auto Adi."
+    "subtitle": "Descubre los testimonios de nuestros clientes satisfechos que han encontrado su coche ideal en Service Auto Adi.",
+    "testimonial1": {
+      "name": "Marco Bianchi",
+      "location": "Florencia, Italia",
+      "text": "Compré mi BMW en Service Auto Adi y estoy extremadamente satisfecho. El proceso fue sencillo, transparente y el equipo fue muy profesional. ¡El coche es exactamente como se describió!"
+    },
+    "testimonial2": {
+      "name": "Sophie Dupont",
+      "location": "Lyon, Francia",
+      "text": "¡Una experiencia excepcional! Hice el viaje desde Francia para comprar mi Mercedes y no me arrepiento. Gracias a todo el equipo por su apoyo."
+    },
+    "testimonial3": {
+      "name": "Alessandro Romano",
+      "location": "Roma, Italia",
+      "text": "Ya es mi segunda compra en Service Auto Adi. Coches de calidad, bien mantenidos y a precios justos. ¡Lo recomiendo sin dudarlo!"
+    }
   },
   "footer": {
     "description": "Tu concesionario de confianza para la compra de coches de ocasión de calidad en Italia. Ofrecemos una amplia selección de vehículos cuidadosamente seleccionados.",
@@ -120,5 +135,11 @@
     "topBrands": "Top 10 marcas importadas:",
     "showing": "Mostrando los primeros {{count}} de {{total}} coches importados.",
     "downloadToReplace": "Para usar todos estos {{count}} coches, descarga el archivo y reemplaza src/data/cars.ts"
+  },
+  "notFound": {
+    "title": "¡Ups! Página no encontrada",
+    "description": "La página que estás buscando no existe o ha sido movida.",
+    "home": "Inicio",
+    "shop": "Nuestros coches"
   }
 }
