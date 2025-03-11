@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -14,6 +15,26 @@ export function Hero() {
     "/lovable-uploads/ff916e5c-3206-4689-a1ef-2c70c8061ae2.png",
     "/lovable-uploads/bf188267-97cc-474c-9f86-7aa855a881a9.png",
     "/lovable-uploads/140fdb6b-c339-4707-924a-c5ca1b93b7ec.png"
+  ];
+
+  // Textes pour chaque diapositive
+  const slideTexts = [
+    {
+      title: t("hero.slide1.title", "Voitures d'occasion de qualité"),
+      description: t("hero.slide1.description", "Trouvez le véhicule parfait pour vos besoins parmi notre sélection rigoureusement contrôlée")
+    },
+    {
+      title: t("hero.slide2.title", "Service personnalisé"),
+      description: t("hero.slide2.description", "Notre équipe d'experts est à votre disposition pour vous guider dans votre choix")
+    },
+    {
+      title: t("hero.slide3.title", "Prix compétitifs"),
+      description: t("hero.slide3.description", "Des véhicules de qualité à des prix qui respectent votre budget")
+    },
+    {
+      title: t("hero.slide4.title", "Garantie incluse"),
+      description: t("hero.slide4.description", "Tous nos véhicules sont vendus avec garantie pour votre tranquillité d'esprit")
+    }
   ];
 
   // Fonction pour passer à la diapositive suivante
@@ -43,7 +64,7 @@ export function Hero() {
           {carImages.map((image, index) => (
             <div 
               key={index}
-              className="min-w-full h-full bg-cover bg-center transition-opacity duration-500"
+              className="min-w-full h-full bg-cover bg-center transition-opacity duration-500 relative"
               style={{ 
                 backgroundImage: `url('${image}')`,
                 opacity: currentSlide === index ? 1 : 0.8
@@ -52,6 +73,16 @@ export function Hero() {
               {/* Overlays pour améliorer la visibilité du texte */}
               <div className="absolute inset-0 bg-black/30" />
               <div className="absolute inset-0 bg-autoBlue/20" />
+              
+              {/* Encadré de texte avec fond bleu */}
+              <div className="absolute bottom-20 left-8 md:left-16 max-w-lg p-6 rounded-lg bg-autoBlue/80 text-white animate-fade-in">
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">
+                  {slideTexts[index].title}
+                </h2>
+                <p className="text-base md:text-lg">
+                  {slideTexts[index].description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
