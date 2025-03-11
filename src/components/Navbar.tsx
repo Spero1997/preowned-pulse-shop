@@ -89,11 +89,11 @@ export function Navbar() {
             <Button variant="ghost" size="icon" className="text-gray-700 hover:text-autoBlue">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-gray-700 hover:text-autoBlue relative" asChild>
-              <Link to="/cart">
-                <ShoppingCart className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="relative" asChild>
+              <Link to="/cart" className="flex items-center justify-center text-autoBlue hover:text-autoBlue/80">
+                <ShoppingCart className="h-6 w-6" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}
@@ -102,7 +102,17 @@ export function Navbar() {
           </div>
 
           {/* Bouton menu mobile */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <Button variant="ghost" size="icon" className="relative" asChild>
+              <Link to="/cart" className="flex items-center justify-center text-autoBlue">
+                <ShoppingCart className="h-6 w-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -170,16 +180,6 @@ export function Navbar() {
             </a>
             <Button variant="ghost" size="icon" className="text-gray-700">
               <User className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-gray-700 relative" asChild>
-              <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
-                <ShoppingCart className="h-5 w-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-autoOrange text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
             </Button>
           </div>
         </div>
