@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -36,15 +38,15 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center mb-6 text-sm">
             <a href="/" className="text-gray-500 hover:text-autoBlue">
-              Accueil
+              {t("navbar.home")}
             </a>
             <span className="mx-2 text-gray-400">/</span>
             <span className="text-gray-700 font-medium">
-              Contact
+              {t("navbar.contact")}
             </span>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Contactez-nous</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">{t("navbar.contact")}</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
@@ -57,7 +59,7 @@ const Contact = () => {
                   <MapPin className="h-6 w-6 text-autoBlue mr-4 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900">Adresse</h3>
-                    <p className="text-gray-600">Borgo Ognissanti, 142r 50123 Firenze FI Italie</p>
+                    <p className="text-gray-600">{t("whyChooseUs.address")}</p>
                   </div>
                 </div>
                 
@@ -65,7 +67,7 @@ const Contact = () => {
                   <Phone className="h-6 w-6 text-autoBlue mr-4 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900">Téléphone</h3>
-                    <a href="tel:+393761753341" className="text-gray-600 hover:text-autoBlue">+39 376 175 3341</a>
+                    <a href="tel:+393761753341" className="text-gray-600 hover:text-autoBlue">{t("whyChooseUs.phone")}</a>
                   </div>
                 </div>
                 
