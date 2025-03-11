@@ -55,9 +55,8 @@
     "home": "Início",
     "cars": "Carros",
     "about": "Sobre nós",
-    "contact": "Contato",
+    "contactUs": "Contato",
     "terms": "Termos e condições",
-    "contact": "Contato",
     "openingHours": "Horário de funcionamento",
     "monday": "Segunda-feira",
     "friday": "Sexta-feira",
@@ -107,7 +106,9 @@
     "previous": "Anterior",
     "next": "Próximo",
     "loading": "Carregando carros...",
-    "refresh": "Atualizar ({{count}} carros)"
+    "refresh": "Atualizar",
+    "refreshing": "Atualizando...",
+    "loadingCars": "Carregando {{count}} carros..."
   },
   "admin": {
     "carCatalog": "Catálogo de carros ({{count}})",
@@ -118,5 +119,11 @@
     "topBrands": "Top 10 marcas importadas:",
     "showing": "Mostrando as primeiras {{count}} de {{total}} carros importados.",
     "downloadToReplace": "Para usar todos esses {{count}} carros, faça o download do arquivo e substitua src/data/cars.ts"
+  },
+  "notFound": {
+    "title": "Oops! Página não encontrada",
+    "description": "A página que você está procurando não existe ou foi movida.",
+    "home": "Início",
+    "shop": "Nossos carros"
   }
 }
