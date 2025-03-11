@@ -97,9 +97,32 @@ const Cart = () => {
 
   const confirmCheckout = () => {
     setCheckoutDialogOpen(false);
+    
+    const orderDetails = items.map(car => 
+      `${car.brand} ${car.model} (${car.year}) - ${formatEuro(car.price)}`
+    ).join('\n');
+    
+    const totalAmount = formatEuro(calculateTotal());
+    const downPayment = formatEuro(calculateDownPayment());
+    
+    const orderMailtoLink = `mailto:infos@autoadi.com?subject=${encodeURIComponent(
+      "Nouvelle commande sur Auto ADI"
+    )}&body=${encodeURIComponent(
+      `Détails de la commande:\n\n` +
+      `Méthode de paiement: ${getPaymentMethodLabel(paymentMethod)}\n` +
+      `${couponApplied ? `Coupon appliqué: ${appliedCouponCode}\n` : ''}` +
+      `\nVoitures commandées:\n${orderDetails}\n\n` +
+      `Total: ${totalAmount}\n` +
+      `Acompte (20%): ${downPayment}\n\n` +
+      `Note: La preuve de paiement a été téléchargée par le client.`
+    )}`;
+    
+    window.open(orderMailtoLink, "_blank");
+    
     toast.success("Commande effectuée avec succès !", {
       description: `Nous vous contacterons prochainement pour finaliser votre achat. Méthode de paiement: ${getPaymentMethodLabel(paymentMethod)}`
     });
+    
     clearCart();
     cartService.removeCoupon();
     setPaymentProof(null);
@@ -131,7 +154,6 @@ const Cart = () => {
       return;
     }
     
-    // Simulate coupon validation - in a real app would check against API
     if (couponCode.length < 8) {
       setCouponError("Code coupon invalide. Veuillez vérifier et réessayer.");
       return;
@@ -159,13 +181,11 @@ const Cart = () => {
       return;
     }
 
-    // Check file type
     if (!file.type.match('image.*')) {
       setUploadError("Veuillez sélectionner une image (JPG, PNG, etc.)");
       return;
     }
 
-    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setUploadError("La taille du fichier ne doit pas dépasser 5 Mo");
       return;
@@ -671,3 +691,4 @@ const Cart = () => {
 };
 
 export default Cart;
+
