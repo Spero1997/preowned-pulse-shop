@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
@@ -7,9 +7,11 @@ import "./index.css";
 // Import i18n configuration before rendering the application
 import "./i18n.ts";
 
-// Wait for i18n to initialize before rendering the app
+// Render the app with a loading fallback while i18n initializes
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback="Loading...">
+      <App />
+    </Suspense>
   </React.StrictMode>
 );

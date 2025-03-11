@@ -12,7 +12,7 @@ i18n
   .init({
     fallbackLng: "fr",
     supportedLngs: ["fr", "en", "it", "es", "pt"],
-    debug: true, // Set to true temporarily to help diagnose issues
+    debug: false, // Désactiver le mode debug en production
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"]
@@ -24,7 +24,7 @@ i18n
       useSuspense: false
     },
     backend: {
-      loadPath: '/locales/{{lng}}/translation.json'
+      loadPath: './locales/{{lng}}/translation.json' // Corriger le chemin vers les fichiers de traduction
     }
   });
 
