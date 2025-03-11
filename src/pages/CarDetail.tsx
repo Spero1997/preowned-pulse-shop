@@ -36,7 +36,6 @@ const CarDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simuler un chargement de données
     setLoading(true);
     setTimeout(() => {
       const foundCar = cars.find(c => c.id === id);
@@ -44,14 +43,12 @@ const CarDetail = () => {
         setCar(foundCar);
         setActiveImage(foundCar.images[0]);
         
-        // Vérifier si la voiture est déjà dans le panier
         const cartItems = cartService.getItems();
         setIsInCart(cartItems.some(item => item.id === foundCar.id));
       }
       setLoading(false);
     }, 500);
     
-    // Écouter les mises à jour du panier
     const handleCartUpdate = () => {
       if (car) {
         const cartItems = cartService.getItems();
@@ -68,18 +65,20 @@ const CarDetail = () => {
 
   const handleReservation = () => {
     if (car) {
-      // Ajouter la voiture au panier en utilisant notre service
-      cartService.addItem(car);
-      setIsInCart(true);
-      
-      // Afficher un bouton pour voir le panier
-      toast.success(`Voiture ajoutée au panier !`, {
-        description: `${car.brand} ${car.model} (${car.year}) a été ajouté à votre panier`,
-        action: {
-          label: "Voir le panier",
-          onClick: () => navigate("/cart")
-        },
-      });
+      if (isInCart) {
+        navigate("/cart");
+      } else {
+        cartService.addItem(car);
+        setIsInCart(true);
+        
+        toast.success(`Voiture ajoutée au panier !`, {
+          description: `${car.brand} ${car.model} (${car.year}) a été ajouté à votre panier`,
+          action: {
+            label: "Voir le panier",
+            onClick: () => navigate("/cart")
+          },
+        });
+      }
     }
   };
 
@@ -132,7 +131,6 @@ const CarDetail = () => {
       <Navbar />
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          {/* Fil d'Ariane */}
           <div className="flex items-center mb-6 text-sm">
             <Link to="/" className="text-gray-500 hover:text-autoBlue">
               Accueil
@@ -147,7 +145,6 @@ const CarDetail = () => {
             </span>
           </div>
 
-          {/* Bouton de retour */}
           <div className="mb-6">
             <Button 
               variant="outline" 
@@ -162,7 +159,6 @@ const CarDetail = () => {
             </Button>
           </div>
 
-          {/* En-tête de la voiture */}
           <div className="flex flex-col md:flex-row justify-between items-start mb-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -192,7 +188,6 @@ const CarDetail = () => {
             </div>
           </div>
 
-          {/* Galerie d'images */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="md:col-span-2">
               <div className="rounded-lg overflow-hidden border border-gray-200">
@@ -221,7 +216,6 @@ const CarDetail = () => {
               </div>
             </div>
 
-            {/* Caractéristiques principales */}
             <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
               <h2 className="text-xl font-bold mb-4">Caractéristiques</h2>
               <div className="space-y-4">
@@ -274,8 +268,17 @@ const CarDetail = () => {
                   className={`w-full flex items-center justify-center ${isInCart ? 'bg-green-600 hover:bg-green-700' : 'bg-autoOrange hover:bg-autoOrange/90'}`}
                   onClick={handleReservation}
                 >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  {isInCart ? 'Déjà dans le panier' : 'Ajouter au panier'}
+                  {isInCart ? (
+                    <>
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      Voir dans le panier
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      Ajouter au panier
+                    </>
+                  )}
                 </Button>
                 <div className="flex space-x-2">
                   <Button variant="outline" className="flex-1 flex items-center justify-center" onClick={handleAddToFavorite}>
@@ -293,7 +296,6 @@ const CarDetail = () => {
                           url: window.location.href,
                         })
                       } else {
-                        // Fallback - copy to clipboard
                         navigator.clipboard.writeText(window.location.href);
                         toast.success("Lien copié !", {
                           description: "L'URL a été copiée dans le presse-papier"
@@ -309,7 +311,6 @@ const CarDetail = () => {
             </div>
           </div>
 
-          {/* Onglets d'information */}
           <Tabs defaultValue="description" className="mb-12">
             <TabsList className="w-full grid grid-cols-3">
               <TabsTrigger value="description">Description</TabsTrigger>
