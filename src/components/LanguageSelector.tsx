@@ -7,8 +7,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { Check, Globe } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Globe } from "lucide-react";
 
 export function LanguageSelector() {
   const { i18n } = useTranslation();
@@ -31,26 +30,25 @@ export function LanguageSelector() {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 
-          size="icon" 
-          className="text-gray-700 hover:text-autoBlue"
+          className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:text-autoBlue"
         >
-          <Globe className="h-5 w-5" />
+          <Globe className="h-4 w-4" />
+          <span className="font-medium">
+            {languages.find(lang => lang.code === currentLanguage)?.label || "Language"}
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            className={cn(
-              "flex items-center gap-2 cursor-pointer",
-              currentLanguage === lang.code && "font-medium"
-            )}
+            className="flex items-center justify-between cursor-pointer"
             onClick={() => handleLanguageChange(lang.code)}
           >
-            {currentLanguage === lang.code && <Check className="h-4 w-4" />}
-            <span className={currentLanguage === lang.code ? "ml-0" : "ml-6"}>
-              {lang.label}
-            </span>
+            <span>{lang.label}</span>
+            {currentLanguage === lang.code && (
+              <span className="h-2 w-2 rounded-full bg-autoBlue"></span>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
