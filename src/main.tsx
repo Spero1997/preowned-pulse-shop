@@ -10,7 +10,7 @@ import "./i18n.ts";
 // Render the app with a loading fallback while i18n initializes
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Suspense fallback="Loading...">
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Chargement de l'application...</div>}>
       <App />
     </Suspense>
   </React.StrictMode>
