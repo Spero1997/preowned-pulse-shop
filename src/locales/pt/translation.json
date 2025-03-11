@@ -17,13 +17,13 @@
   },
   "featuredCars": {
     "title": "Nossos carros em destaque",
-    "subtitle": "Descubra nossa seleção de veículos excepcionais entre nossa coleção de {count} carros",
+    "subtitle": "Descubra nossa seleção de veículos excepcionais entre nossa coleção de {{count}} carros",
     "refresh": "Atualizar",
     "viewAllCars": "Ver todos os carros",
     "noFeaturedCars": "Não há carros em destaque disponíveis no momento. Visite nossa loja para ver todos os nossos carros.",
     "loading": "Carregando carros...",
     "refreshing": "Atualizando...",
-    "loadingCars": "Carregando {count} carros..."
+    "loadingCars": "Carregando {{count}} carros..."
   },
   "services": {
     "title": "Nossos serviços",

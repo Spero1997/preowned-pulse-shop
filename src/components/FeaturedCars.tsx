@@ -4,7 +4,7 @@ import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
-import { ArrowRight, AlertCircle, Car as CarIcon, RefreshCw } from "lucide-react";
+import { ArrowRight, AlertCircle, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";

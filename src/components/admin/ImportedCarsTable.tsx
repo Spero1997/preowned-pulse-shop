@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "react-i18next";
 
 interface ImportedCarsTableProps {
   importedCars: Car[];
@@ -20,6 +21,8 @@ interface ImportedCarsTableProps {
 }
 
 export const ImportedCarsTable = ({ importedCars, onAddCar, onAddAll }: ImportedCarsTableProps) => {
+  const { t } = useTranslation();
+  
   if (importedCars.length === 0) {
     return null;
   }
