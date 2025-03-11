@@ -32,17 +32,23 @@ export function FeaturedCars() {
     // Vérifier à intervalles réguliers si de nouvelles voitures ont été ajoutées
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
+      // Comparer uniquement les IDs pour éviter les problèmes de comparaison d'objets complexes
+      const currentIds = allCars.map(car => car.id).join(',');
+      const updatedIds = updatedCars.map(car => car.id).join(',');
+      
+      if (currentIds !== updatedIds) {
+        console.log("Mise à jour des voitures détectée");
         setAllCars(updatedCars);
       }
-    }, 500); // Vérifier toutes les 500ms pour une réactivité accrue
+    }, 1000);
     
     return () => clearInterval(interval);
-  }, []); // Removed allCars dependency to prevent infinite loops
+  }, []);
   
   useEffect(() => {
     // Prioritize featured cars first
     const featured = allCars.filter(car => car.featured && car.isAvailable);
+    console.log(`Nombre de voitures vedettes: ${featured.length}`);
     
     // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {

@@ -38,6 +38,7 @@ export const CarListTable = ({
         <TableHeader>
           <TableRow>
             <TableHead className="w-12 text-center">Vedette</TableHead>
+            <TableHead className="w-20">Image</TableHead>
             <TableHead onClick={() => onSort("brand")} className="cursor-pointer">
               <SortableColumn 
                 title="Marque" 
@@ -72,7 +73,7 @@ export const CarListTable = ({
         <TableBody>
           {cars.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-4">
+              <TableCell colSpan={7} className="text-center py-4">
                 Aucune voiture trouvée
               </TableCell>
             </TableRow>
@@ -84,6 +85,17 @@ export const CarListTable = ({
                     car={car} 
                     onToggleFeatured={onToggleFeatured} 
                   />
+                </TableCell>
+                <TableCell>
+                  {car.images && car.images.length > 0 && (
+                    <div className="h-14 w-20 rounded overflow-hidden">
+                      <img 
+                        src={car.images[0]} 
+                        alt={`${car.brand} ${car.model}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  )}
                 </TableCell>
                 <TableCell>{car.brand}</TableCell>
                 <TableCell>{car.model}</TableCell>

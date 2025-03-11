@@ -12,20 +12,20 @@ interface CarCardProps {
 
 export function CarCard({ car }: CarCardProps) {
   return (
-    <div className="car-card group">
+    <div className="car-card group border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
       {car.featured && (
-        <Badge className="car-badge bg-autoBlue">Vedette</Badge>
+        <Badge className="absolute top-2 left-2 z-10 bg-autoBlue">Vedette</Badge>
       )}
       {car.discount && (
-        <Badge className="car-badge bg-autoOrange">-{car.discount}€</Badge>
+        <Badge className="absolute top-2 right-2 z-10 bg-autoOrange">-{car.discount}€</Badge>
       )}
       
       <Link to={`/car/${car.id}`} className="block">
-        <div className="relative overflow-hidden">
+        <div className="relative h-48 overflow-hidden">
           <img 
             src={car.images[0]} 
             alt={`${car.brand} ${car.model}`} 
-            className="car-image transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
         
