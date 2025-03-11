@@ -8,8 +8,11 @@ import { Testimonials } from "@/components/Testimonials";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -25,10 +28,10 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Pourquoi choisir Service Auto Adi ?
+                  {t("whyChooseUs.title")}
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Depuis plus de 15 ans, nous sommes spécialisés dans la vente de voitures d'occasion de qualité. Notre expertise et notre engagement envers la satisfaction client font de nous un partenaire de confiance pour votre prochain achat automobile.
+                  {t("whyChooseUs.description")}
                 </p>
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-start">
@@ -37,7 +40,7 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
-                    <span>Véhicules rigoureusement sélectionnés et inspectés</span>
+                    <span>{t("whyChooseUs.points.inspection")}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-autoOrange text-white p-1 rounded-full mr-3 mt-1">
@@ -45,7 +48,7 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
-                    <span>Service après-vente personnalisé</span>
+                    <span>{t("whyChooseUs.points.service")}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-autoOrange text-white p-1 rounded-full mr-3 mt-1">
@@ -53,7 +56,7 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
-                    <span>Prix transparents et compétitifs</span>
+                    <span>{t("whyChooseUs.points.prices")}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="bg-autoOrange text-white p-1 rounded-full mr-3 mt-1">
@@ -61,7 +64,7 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
-                    <span>Équipe professionnelle et passionnée</span>
+                    <span>{t("whyChooseUs.points.team")}</span>
                   </li>
                 </ul>
                 <Button 
@@ -69,7 +72,7 @@ const Index = () => {
                   asChild
                 >
                   <Link to="/about">
-                    En savoir plus sur nous
+                    {t("whyChooseUs.learnMore")}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -81,19 +84,19 @@ const Index = () => {
                   className="w-full h-auto rounded-lg shadow-lg"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg md:max-w-xs">
-                  <h3 className="font-bold text-lg mb-2">Visitez notre concession</h3>
+                  <h3 className="font-bold text-lg mb-2">{t("whyChooseUs.visitDealer")}</h3>
                   <div className="space-y-2 text-gray-600">
                     <p className="flex items-center">
                       <MapPin className="h-4 w-4 mr-2 text-autoOrange" />
-                      Borgo Ognissanti, 142r 50123 Firenze FI Italie
+                      {t("whyChooseUs.address")}
                     </p>
                     <p className="flex items-center">
                       <Phone className="h-4 w-4 mr-2 text-autoOrange" />
-                      +39 376 175 3341
+                      {t("whyChooseUs.phone")}
                     </p>
                     <p className="flex items-center">
                       <Mail className="h-4 w-4 mr-2 text-autoOrange" />
-                      info@serviceautoadi.it
+                      {t("whyChooseUs.email")}
                     </p>
                   </div>
                 </div>
