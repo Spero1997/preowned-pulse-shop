@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Send, WhatsApp } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -94,10 +94,17 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <Phone className="h-6 w-6 text-autoBlue mr-4 mt-1" />
+                  <WhatsApp className="h-6 w-6 text-green-500 mr-4 mt-1" />
                   <div>
-                    <h3 className="font-medium text-gray-900">Téléphone</h3>
-                    <a href="tel:+393761753341" className="text-gray-600 hover:text-autoBlue">{t("whyChooseUs.phone")}</a>
+                    <h3 className="font-medium text-gray-900">WhatsApp/Téléphone</h3>
+                    <a 
+                      href="https://wa.me/393761753341" 
+                      className="text-gray-600 hover:text-autoBlue"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t("whyChooseUs.phone")}
+                    </a>
                   </div>
                 </div>
                 
