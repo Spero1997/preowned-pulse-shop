@@ -7,13 +7,15 @@ import { CarFilters } from "@/components/CarFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Grid3X3, List, AlertCircle, Loader, Car as CarIcon, RefreshCw } from "lucide-react";
+import { Search, Grid3X3, List, AlertCircle, Loader, RefreshCw } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
 import { cars as initialCars, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const Shop = () => {
+  const { t, ready } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [cars, setCars] = useState<Car[]>(initialCars); // Initialisé avec les voitures par défaut
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
@@ -80,8 +82,10 @@ const Shop = () => {
     const updatedCars = getLocalCars();
     setCars(updatedCars);
     
-    toast.info("Actualisation en cours", {
-      description: `Chargement de ${updatedCars.length} voitures...`
+    toast.info(ready ? t("featuredCars.refreshing") : "Actualisation en cours", {
+      description: ready 
+        ? t("featuredCars.loadingCars", { count: updatedCars.length }) 
+        : `Chargement de ${updatedCars.length} voitures...`
     });
     
     // Émettre un événement personnalisé pour informer les autres composants
@@ -225,7 +229,7 @@ const Shop = () => {
         <main className="flex-grow py-8 flex items-center justify-center">
           <div className="text-center">
             <Loader className="h-8 w-8 animate-spin mx-auto mb-4" />
-            <p>Chargement des voitures...</p>
+            <p>{ready ? t("shop.loading") : "Chargement des voitures..."}</p>
           </div>
         </main>
         <Footer />
@@ -238,7 +242,9 @@ const Shop = () => {
       <Navbar />
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Nos voitures</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            {ready ? t("shop.title") : "Nos voitures"}
+          </h1>
           
           {/* Bouton de rafraîchissement manuel */}
           <Button 
@@ -248,13 +254,13 @@ const Shop = () => {
             className="mb-4 flex items-center gap-2"
           >
             <RefreshCw className="h-4 w-4" />
-            Rafraîchir ({cars.length} voitures)
+            {ready ? t("shop.refresh", { count: cars.length }) : `Rafraîchir (${cars.length} voitures)`}
           </Button>
           
           {/* Barre de recherche */}
           <div className="relative mb-6">
             <Input
-              placeholder="Rechercher par marque, modèle..."
+              placeholder={ready ? t("shop.searchPlaceholder") : "Rechercher par marque, modèle..."}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -271,7 +277,9 @@ const Shop = () => {
           {/* Tri et options d'affichage */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
             <p className="text-gray-600 mb-4 md:mb-0">
-              {filteredCars.length} {filteredCars.length > 1 ? 'voitures' : 'voiture'} trouvée{filteredCars.length > 1 ? 's' : ''}
+              {ready 
+                ? t("shop.carsFound", { count: filteredCars.length }) 
+                : `${filteredCars.length} ${filteredCars.length > 1 ? 'voitures' : 'voiture'} trouvée${filteredCars.length > 1 ? 's' : ''}`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Select
@@ -279,14 +287,24 @@ const Shop = () => {
                 onValueChange={setSortOption}
               >
                 <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Trier par" />
+                  <SelectValue placeholder={ready ? t("shop.sortBy") : "Trier par"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="default">Par défaut</SelectItem>
-                  <SelectItem value="price-asc">Prix croissant</SelectItem>
-                  <SelectItem value="price-desc">Prix décroissant</SelectItem>
-                  <SelectItem value="year-desc">Plus récent</SelectItem>
-                  <SelectItem value="mileage-asc">Kilométrage le plus bas</SelectItem>
+                  <SelectItem value="default">
+                    {ready ? t("shop.sortOptions.default") : "Par défaut"}
+                  </SelectItem>
+                  <SelectItem value="price-asc">
+                    {ready ? t("shop.sortOptions.priceAsc") : "Prix croissant"}
+                  </SelectItem>
+                  <SelectItem value="price-desc">
+                    {ready ? t("shop.sortOptions.priceDesc") : "Prix décroissant"}
+                  </SelectItem>
+                  <SelectItem value="year-desc">
+                    {ready ? t("shop.sortOptions.newest") : "Plus récent"}
+                  </SelectItem>
+                  <SelectItem value="mileage-asc">
+                    {ready ? t("shop.sortOptions.lowestMileage") : "Kilométrage le plus bas"}
+                  </SelectItem>
                 </SelectContent>
               </Select>
               
@@ -326,10 +344,14 @@ const Shop = () => {
               <div className="flex items-center justify-center mb-4">
                 <AlertCircle className="h-12 w-12 text-amber-500 mr-2" />
               </div>
-              <h3 className="text-xl font-medium mb-2">Aucune voiture trouvée</h3>
-              <p className="text-gray-600 mb-4">Veuillez modifier vos critères de recherche ou vos filtres.</p>
+              <h3 className="text-xl font-medium mb-2">
+                {ready ? t("shop.noResults") : "Aucune voiture trouvée"}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {ready ? t("shop.modifySearch") : "Veuillez modifier vos critères de recherche ou vos filtres."}
+              </p>
               <Button onClick={forceRefresh} variant="outline">
-                Réessayer
+                {ready ? t("shop.tryAgain") : "Réessayer"}
               </Button>
             </div>
           )}
@@ -346,7 +368,7 @@ const Shop = () => {
                       onClick={() => paginate(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
                     >
-                      Précédent
+                      {ready ? t("shop.previous") : "Précédent"}
                     </Button>
                   </li>
                   {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
@@ -399,7 +421,7 @@ const Shop = () => {
                       onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
                     >
-                      Suivant
+                      {ready ? t("shop.next") : "Suivant"}
                     </Button>
                   </li>
                 </ul>
