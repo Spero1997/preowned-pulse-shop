@@ -7,8 +7,10 @@ import { cars as initialCars } from "@/data/cars";
 import { ArrowRight, AlertCircle, Car as CarIcon, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export function FeaturedCars() {
+  const { t } = useTranslation();
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
   const [allCars, setAllCars] = useState<Car[]>(initialCars);
   const [loading, setLoading] = useState(true);
@@ -54,8 +56,8 @@ export function FeaturedCars() {
     const updatedCars = getLocalCars();
     setAllCars(updatedCars);
     
-    toast.info("Actualisation en cours", {
-      description: `Chargement de ${updatedCars.length} voitures...`
+    toast.info(t("featuredCars.refreshing"), {
+      description: t("featuredCars.loadingCars", { count: updatedCars.length })
     });
   };
   
@@ -148,7 +150,7 @@ export function FeaturedCars() {
     return (
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
-          <p>Chargement des voitures...</p>
+          <p>{t("featuredCars.loading")}</p>
         </div>
       </section>
     );
@@ -159,9 +161,9 @@ export function FeaturedCars() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Nos voitures vedettes</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{t("featuredCars.title")}</h2>
             <p className="text-gray-600">
-              Découvrez notre sélection de véhicules d'exception parmi notre collection de {allCars.length} voitures
+              {t("featuredCars.subtitle", { count: allCars.length })}
             </p>
           </div>
           
@@ -173,7 +175,7 @@ export function FeaturedCars() {
               className="flex items-center gap-2"
             >
               <RefreshCw className="h-4 w-4" />
-              Rafraîchir
+              {t("featuredCars.refresh")}
             </Button>
             
             <Button 
@@ -182,7 +184,7 @@ export function FeaturedCars() {
               asChild
             >
               <Link to="/shop" className="flex items-center">
-                Voir toutes les voitures
+                {t("featuredCars.viewAllCars")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -199,7 +201,7 @@ export function FeaturedCars() {
           <div className="text-center py-12">
             <AlertCircle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
             <p className="text-gray-600">
-              Aucune voiture vedette n'est disponible pour le moment. Consultez notre boutique pour voir toutes nos voitures.
+              {t("featuredCars.noFeaturedCars")}
             </p>
           </div>
         )}
