@@ -9,9 +9,10 @@ export function Hero() {
       <div 
         className="relative h-[500px] bg-cover bg-center"
         style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1470&auto=format&fit=crop')" 
+          backgroundImage: "url('/lovable-uploads/fad93702-0df9-4d48-9f52-7a05f73f8a4f.png')" 
         }}
       >
+        <div className="absolute inset-0 bg-black/40 z-10" />
         <div className="container mx-auto px-4 h-full flex items-center relative z-20">
           <div className="max-w-xl text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">

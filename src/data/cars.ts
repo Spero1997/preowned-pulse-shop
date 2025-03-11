@@ -1,7 +1,46 @@
-
 import { Car } from "../types/car";
 
 export const cars: Car[] = [
+  {
+    id: "bmw-serie5-2014",
+    brand: "BMW",
+    model: "Série 5",
+    type: "Berline",
+    year: 2014,
+    mileage: 67000,
+    price: 15000,
+    fuel: "Essence",
+    transmission: "Automatique",
+    power: 184,
+    description: "Chaque véhicule est sélectionné et inspecté par nos experts pour une qualité et une fiabilité complètes. Nous croyons en la norme que nous apportons - pas seulement une voiture, mais une expérience! Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours. VOUS AVEZ AUSSI LA POSSIBILITÉ DE PAYER EN MENSUALITÉS. Apport minimum 30% le reste en mensualités sans intérêt. PS : Une réduction de 15% est accordée sur les achats comptant à la commande.",
+    features: [
+      "GPS Navigation",
+      "Climatisation automatique",
+      "Jantes alliage",
+      "Sièges électriques",
+      "Régulateur de vitesse",
+      "Système iDrive",
+      "Bluetooth",
+      "Toit ouvrant",
+      "Volant multifonction",
+      "Sièges cuir/alcantara"
+    ],
+    images: [
+      "/lovable-uploads/58d107b9-6134-4d8f-90ce-12782308baba.png",
+      "/lovable-uploads/c139556a-ec12-4818-a131-d1b13bb46645.png",
+      "/lovable-uploads/fad93702-0df9-4d48-9f52-7a05f73f8a4f.png",
+      "/lovable-uploads/d8ee3cf4-81fb-4627-a075-e33f8645ed04.png",
+      "/lovable-uploads/9ed143f1-9a7a-485c-8120-a629444375f2.png",
+      "/lovable-uploads/68b9352c-876d-4e82-80bd-e97b54e29e86.png",
+      "/lovable-uploads/db362ba5-9dec-438d-931f-c6bba048faa2.png",
+      "/lovable-uploads/62658806-f150-4b74-9b63-2e59b1a0948f.png"
+    ],
+    color: "Blanc",
+    doors: 4,
+    isAvailable: true,
+    featured: true,
+    discount: 2250 // 15% de réduction pour paiement comptant (15000 * 0.15)
+  },
   {
     id: "1",
     brand: "Peugeot",
@@ -212,7 +251,7 @@ export const cars: Car[] = [
     features: ["Toit rétractable", "Intérieur cuir", "Système de navigation", "Jantes forgées", "Mode de conduite", "Sièges sport"],
     images: [
       "https://images.unsplash.com/photo-1592198084033-aade902d1aae?q=80&w=1470&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?q=80&w=1470&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1503736780353-7e6692767b70?q=80&w=1470&auto=format&fit=crop"
     ],
     color: "Rouge",
     doors: 2,
@@ -255,7 +294,7 @@ export const cars: Car[] = [
     description: "Audi A4 sophistiquée et technologique. Un habitacle raffiné et des finitions de haute qualité pour cette berline allemande.",
     features: ["Cuir", "GPS", "Bang & Olufsen", "Matrix LED", "Virtual Cockpit", "Assistant de conduite"],
     images: [
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1472&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502877338535-766e1452d1f2?q=80&w=1472&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1470&auto=format&fit=crop"
     ],
     color: "Blanc",
