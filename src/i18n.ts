@@ -1,3 +1,4 @@
+
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -388,7 +389,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "fr",
+    fallbackLng: "it", // Changer de "fr" à "it" comme langue par défaut
     supportedLngs: ["fr", "en", "it", "es", "pt"],
     debug: false,
     detection: {
