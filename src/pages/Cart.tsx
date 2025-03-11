@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -21,6 +20,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
@@ -293,13 +293,6 @@ const Cart = () => {
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="coupon" id="coupon" />
-                      <Label htmlFor="coupon" className="flex items-center cursor-pointer">
-                        <Wallet className="h-5 w-5 mr-2 text-green-600" />
-                        <span>Coupon (PCS/Transcash/Neosurf/Amazon)</span>
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
                       <RadioGroupItem value="bank-transfer" id="bank-transfer" />
                       <Label htmlFor="bank-transfer" className="flex items-center cursor-pointer">
                         <Euro className="h-5 w-5 mr-2 text-amber-600" />
@@ -312,7 +305,7 @@ const Cart = () => {
                 <div className="mb-6">
                   <h3 className="font-medium mb-3 flex items-center">
                     <Tag className="h-5 w-5 mr-2 text-autoBlue" />
-                    Code coupon
+                    Code coupon (PCS/Transcash/Neosurf/Amazon)
                   </h3>
                   {couponApplied ? (
                     <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-3">
@@ -333,13 +326,12 @@ const Cart = () => {
                     <div className="border border-gray-200 rounded-md p-4 bg-white">
                       <div className="space-y-3">
                         <div>
-                          <Label htmlFor="coupon-code">Code coupon (PCS/Transcash/Neosurf/Amazon)</Label>
-                          <Textarea 
+                          <Label htmlFor="coupon-code">Code coupon</Label>
+                          <Input
                             id="coupon-code"
                             placeholder="Entrez votre code coupon ici"
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value)}
-                            rows={2}
                             className={couponError ? "border-red-500" : ""}
                           />
                           {couponError && (
@@ -348,6 +340,9 @@ const Cart = () => {
                               {couponError}
                             </div>
                           )}
+                          <p className="text-xs text-gray-500 mt-1">
+                            Coupons acceptés: PCS, Transcash, Neosurf, Amazon
+                          </p>
                         </div>
                       </div>
                       <Button 
