@@ -537,4 +537,4 @@ const resources = {
       "contactUs.openingHours.mondayFriday": "Monday - Friday: 9:00 AM - 6:00 PM",
       "contactUs.openingHours.saturday": "Saturday: 9:00 AM - 1:00 PM",
       "contactUs.openingHours.sunday": "Sunday: Closed",
-      "noCarsFound": "
+      "noCarsFound": "No

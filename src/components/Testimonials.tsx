@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
 
 type TestimonialProps = {
   name: string;
@@ -59,6 +60,14 @@ const Testimonial = ({ name, location, text, rating, language }: TestimonialProp
 
 export function Testimonials() {
   const { t } = useTranslation();
+  const [autoplay, setAutoplay] = useState(true);
+  
+  // Pause autoplay when the user interacts with the carousel
+  const handleInteraction = () => {
+    setAutoplay(false);
+    // Restart autoplay after 5 seconds of inactivity
+    setTimeout(() => setAutoplay(true), 5000);
+  };
   
   const testimonials = [
     {
@@ -103,7 +112,7 @@ export function Testimonials() {
       rating: 5,
       language: "Italiano"
     },
-    // Nouveaux témoignages en portugais
+    // Témoignages en portugais
     {
       name: "João Silva",
       location: "Lisboa, Portugal",
@@ -118,7 +127,7 @@ export function Testimonials() {
       rating: 4,
       language: "Português"
     },
-    // Nouveaux témoignages en espagnol
+    // Témoignages en espagnol
     {
       name: "Carlos Rodríguez",
       location: "Madrid, España",
@@ -157,8 +166,14 @@ export function Testimonials() {
             opts={{
               align: "start",
               loop: true,
+              dragFree: true,
+              containScroll: "trimSnaps",
+              autoplay: autoplay,
+              delay: 3000, // 3 seconds between slides
             }}
             className="w-full"
+            onMouseDown={handleInteraction}
+            onTouchStart={handleInteraction}
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
