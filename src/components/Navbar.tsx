@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Car, ShoppingCart, User, Menu, X, Facebook, Settings, WhatsApp } from "lucide-react";
+import { Car, ShoppingCart, User, Menu, X, Facebook, Settings, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,17 +13,14 @@ export function Navbar() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // Charger le nombre initial d'éléments dans le panier
     setCartCount(cartService.getCount());
 
-    // Écouter les mises à jour du panier
     const handleCartUpdate = (event: CustomEvent) => {
       setCartCount(event.detail.count);
     };
 
     window.addEventListener('cart-updated', handleCartUpdate as EventListener);
 
-    // Nettoyer l'écouteur d'événements
     return () => {
       window.removeEventListener('cart-updated', handleCartUpdate as EventListener);
     };
@@ -47,7 +43,6 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Navigation principale - visible sur desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-gray-700 hover:text-autoBlue font-medium">
               {t("navbar.home")}
@@ -67,15 +62,13 @@ export function Navbar() {
             </Link>
           </nav>
 
-          {/* Numéro de téléphone avec WhatsApp - visible sur desktop */}
           <div className="hidden md:flex items-center mr-4">
             <a href="https://wa.me/393761753341" className="flex items-center text-autoBlue hover:text-autoBlue/80" target="_blank" rel="noopener noreferrer">
-              <WhatsApp className="h-5 w-5 mr-2 text-green-500" />
+              <MessageCircle className="h-5 w-5 mr-2 text-green-500" />
               <span className="font-medium">+39 376 175 3341</span>
             </a>
           </div>
 
-          {/* Icônes d'action - visibles sur desktop */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSelector />
             <a 
@@ -101,7 +94,6 @@ export function Navbar() {
             </Button>
           </div>
 
-          {/* Bouton menu mobile */}
           <div className="md:hidden flex items-center space-x-2">
             <Button variant="ghost" size="icon" className="relative" asChild>
               <Link to="/cart" className="flex items-center justify-center text-autoBlue">
@@ -120,7 +112,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Menu mobile */}
       <div className={cn(
         "fixed inset-x-0 top-16 z-50 bg-white border-b transition-all duration-300 transform md:hidden",
         isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
@@ -164,7 +155,7 @@ export function Navbar() {
           </Link>
           <div className="flex items-center space-x-4 px-4 py-2">
             <a href="https://wa.me/393761753341" className="flex items-center text-autoBlue" target="_blank" rel="noopener noreferrer">
-              <WhatsApp className="h-5 w-5 mr-2 text-green-500" />
+              <MessageCircle className="h-5 w-5 mr-2 text-green-500" />
               <span className="font-medium">+39 376 175 3341</span>
             </a>
           </div>

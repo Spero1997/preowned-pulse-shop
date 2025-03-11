@@ -1,10 +1,9 @@
-
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Send, WhatsApp } from "lucide-react";
+import { MapPin, Phone, Mail, Send, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,7 +21,6 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      // Prepare form data for email
       const formData = {
         name,
         email,
@@ -31,22 +29,18 @@ const Contact = () => {
         to: "infos@autoadi.com"
       };
       
-      // Using mailto link as a simple solution
       const mailtoLink = `mailto:infos@autoadi.com?subject=${encodeURIComponent(
         `Contact form: ${subject}`
       )}&body=${encodeURIComponent(
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       )}`;
       
-      // Open the email client
       window.open(mailtoLink, "_blank");
       
-      // Show success message
       toast.success(t("contact.messageSent") || "Message envoyé avec succès !", {
         description: t("contact.messageResponse") || "Nous vous répondrons dans les plus brefs délais."
       });
       
-      // Reset the form
       setName("");
       setEmail("");
       setMessage("");
@@ -94,7 +88,7 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <WhatsApp className="h-6 w-6 text-green-500 mr-4 mt-1" />
+                  <MessageCircle className="h-6 w-6 text-green-500 mr-4 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900">WhatsApp/Téléphone</h3>
                     <a 
