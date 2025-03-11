@@ -6,9 +6,15 @@ import { useEffect } from "react";
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
   
-  // Log the current language when the component mounts
+  // Log the current language when the component mounts or changes
   useEffect(() => {
     console.log("Current language in LanguageSwitcher:", i18n.language);
+    
+    // Force Italian language if it's not set
+    if (i18n.language !== 'it') {
+      i18n.changeLanguage('it');
+      console.log("Language corrected to Italian in LanguageSwitcher");
+    }
   }, [i18n.language]);
   
   return (

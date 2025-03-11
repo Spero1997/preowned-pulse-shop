@@ -406,10 +406,12 @@ i18n
     }
   });
 
-// Force Italian language on first load if no language is set
-if (!localStorage.getItem('i18nextLng')) {
+// Force Italian language on first load if no language is set or if French is currently set
+const currentLang = localStorage.getItem('i18nextLng');
+if (!currentLang || currentLang === 'fr') {
   i18n.changeLanguage('it');
   localStorage.setItem('i18nextLng', 'it');
+  console.log("Language forced to Italian");
 }
 
 export default i18n;
