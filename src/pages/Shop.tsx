@@ -7,7 +7,7 @@ import { CarFilters } from "@/components/CarFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Grid3X3, List, AlertCircle, Loader } from "lucide-react";
+import { Search, Grid3X3, List, AlertCircle, Loader, Car as CarIcon } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
 import { minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
@@ -22,6 +22,7 @@ const Shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const carsPerPage = 12;
   const [filters, setFilters] = useState<CarFiltersType>({
     brand: [],
@@ -41,7 +42,16 @@ const Shop = () => {
       if (localCarsString) {
         const parsedCars = JSON.parse(localCarsString);
         console.log("Shop - Voitures récupérées:", parsedCars.length);
-        return parsedCars;
+        if (Array.isArray(parsedCars) && parsedCars.length > 0) {
+          return parsedCars;
+        } else {
+          console.warn("Shop - Données récupérées invalides ou vides");
+          toast.error("Données invalides", {
+            description: "Format de données incorrect dans le stockage local"
+          });
+        }
+      } else {
+        console.log("Shop - Aucune donnée dans localStorage");
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
@@ -53,14 +63,36 @@ const Shop = () => {
   };
 
   const forceRefresh = () => {
+    console.log("Shop - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
+    
+    // Émettre un événement personnalisé pour informer les autres composants
+    const event = new CustomEvent('carsUpdated', { detail: { source: 'Shop' } });
+    window.dispatchEvent(event);
   };
 
+  // Effet principal pour charger les données
   useEffect(() => {
+    console.log("Shop - Initialisation du composant");
+    setIsLoading(true);
+    
     // Récupérer les voitures du localStorage au chargement initial
     const currentCars = getLocalCars();
-    console.log("Shop - Chargement initial:", currentCars.length, "voitures");
-    setCars(currentCars);
+    if (currentCars.length > 0) {
+      console.log("Shop - Chargement initial:", currentCars.length, "voitures");
+      setCars(currentCars);
+      setInitialLoadComplete(true);
+    } else {
+      console.warn("Shop - Aucune voiture trouvée dans le localStorage au chargement initial");
+      // Toast affiché uniquement si le chargement initial échoue
+      if (!initialLoadComplete) {
+        toast.warning("Chargement des données", {
+          description: "Tentative de récupération des voitures...",
+          duration: 3000
+        });
+      }
+    }
+    
     setIsLoading(false);
     
     // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
@@ -72,15 +104,26 @@ const Shop = () => {
       }
     };
     
-    // Ajouter l'écouteur d'événements
+    // Crée un événement personnalisé pour communiquer entre les composants
+    const handleCustomEvent = (e: CustomEvent) => {
+      if (e.detail?.source !== 'Shop') { // Évite les boucles infinies
+        console.log("Shop - Événement personnalisé de mise à jour détecté");
+        const updatedCars = getLocalCars();
+        setCars(updatedCars);
+      }
+    };
+    
+    // Ajouter les écouteurs d'événements
     window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('carsUpdated', handleCustomEvent as EventListener);
     
     // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      if (updatedCars.length !== cars.length) {
+      if (updatedCars.length > 0 && JSON.stringify(updatedCars) !== JSON.stringify(cars)) {
         console.log("Shop - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", cars.length, ")");
         setCars(updatedCars);
+        setInitialLoadComplete(true);
       }
     }, 1000); // Réduit à 1 seconde pour être plus réactif
     
@@ -90,11 +133,15 @@ const Shop = () => {
       if (freshCars.length > 0) {
         console.log("Shop - Vérification initiale:", freshCars.length, "voitures");
         setCars(freshCars);
+        setInitialLoadComplete(true);
+      } else {
+        console.warn("Shop - Aucune voiture trouvée lors de la vérification initiale");
       }
     }, 500);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
       clearTimeout(initialCheck);
     };
@@ -102,6 +149,7 @@ const Shop = () => {
 
   // Force une mise à jour lors du montage initial de la page
   useEffect(() => {
+    console.log("Shop - Déclenchement de la vérification directe");
     const directCheck = setTimeout(() => {
       forceRefresh();
     }, 100);
@@ -109,9 +157,11 @@ const Shop = () => {
     return () => clearTimeout(directCheck);
   }, []);
 
+  // Effet pour filtrer les voitures lorsque les filtres ou la liste de voitures change
   useEffect(() => {
     if (isLoading) return;
     
+    console.log("Shop - Application des filtres sur", cars.length, "voitures");
     let results = [...cars];
     
     // Filtrer par recherche
@@ -188,13 +238,14 @@ const Shop = () => {
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Nos voitures</h1>
           
-          {/* Bouton de rafraîchissement manuel (caché mais peut être utile pour déboguer) */}
+          {/* Bouton de rafraîchissement manuel */}
           <Button 
             variant="outline" 
             size="sm" 
             onClick={forceRefresh}
-            className="mb-4 opacity-0"
+            className="mb-4 flex items-center gap-2"
           >
+            <CarIcon className="h-4 w-4" />
             Rafraîchir
           </Button>
           
@@ -269,12 +320,15 @@ const Shop = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-12 bg-gray-50 rounded-lg border">
               <div className="flex items-center justify-center mb-4">
-                <AlertCircle className="h-8 w-8 text-amber-500 mr-2" />
+                <AlertCircle className="h-12 w-12 text-amber-500 mr-2" />
               </div>
               <h3 className="text-xl font-medium mb-2">Aucune voiture trouvée</h3>
-              <p className="text-gray-600">Veuillez modifier vos critères de recherche ou vos filtres.</p>
+              <p className="text-gray-600 mb-4">Veuillez modifier vos critères de recherche ou vos filtres.</p>
+              <Button onClick={forceRefresh} variant="outline">
+                Réessayer
+              </Button>
             </div>
           )}
           

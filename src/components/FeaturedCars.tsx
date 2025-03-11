@@ -4,7 +4,7 @@ import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
-import { ArrowRight, AlertCircle } from "lucide-react";
+import { ArrowRight, AlertCircle, Car as CarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -21,7 +21,13 @@ export function FeaturedCars() {
       if (localCarsString) {
         const parsedCars = JSON.parse(localCarsString);
         console.log("FeaturedCars - Voitures récupérées:", parsedCars.length);
-        return parsedCars;
+        if (Array.isArray(parsedCars) && parsedCars.length > 0) {
+          return parsedCars;
+        } else {
+          console.warn("FeaturedCars - Données récupérées invalides ou vides, utilisation des données par défaut");
+        }
+      } else {
+        console.log("FeaturedCars - Aucune donnée dans localStorage, utilisation des données par défaut");
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
@@ -33,13 +39,17 @@ export function FeaturedCars() {
   };
   
   const forceRefresh = () => {
+    console.log("FeaturedCars - Forçage du rafraîchissement des données");
     setRefreshTrigger(prev => prev + 1);
   };
   
+  // Effet initial pour charger les données
   useEffect(() => {
+    console.log("FeaturedCars - Initialisation du composant");
+    
     // Récupérer les voitures du localStorage au chargement initial et définir l'état
     const currentCars = getLocalCars();
-    console.log("Chargement initial:", currentCars.length, "voitures");
+    console.log("FeaturedCars - Chargement initial:", currentCars.length, "voitures");
     setAllCars(currentCars);
     setLoading(false);
     
@@ -52,14 +62,22 @@ export function FeaturedCars() {
       }
     };
     
-    // Ajouter l'écouteur d'événements
+    // Crée un événement personnalisé pour communiquer entre les composants
+    const handleCustomEvent = (e: CustomEvent) => {
+      console.log("FeaturedCars - Événement personnalisé de mise à jour détecté");
+      const updatedCars = getLocalCars();
+      setAllCars(updatedCars);
+    };
+    
+    // Ajouter les écouteurs d'événements
     window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('carsUpdated', handleCustomEvent as EventListener);
     
     // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      if (updatedCars.length !== allCars.length) {
-        console.log("Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
+      if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
+        console.log("FeaturedCars - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
         setAllCars(updatedCars);
       }
     }, 1000); // Réduit à 1 seconde pour être plus réactif
@@ -75,6 +93,7 @@ export function FeaturedCars() {
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
       clearTimeout(initialCheck);
     };
@@ -89,12 +108,16 @@ export function FeaturedCars() {
     return () => clearTimeout(directCheck);
   }, []);
   
+  // Filtrer les voitures vedettes quand la liste de voitures change
   useEffect(() => {
-    if (allCars.length === 0) return;
+    if (allCars.length === 0) {
+      console.log("FeaturedCars - Aucune voiture disponible");
+      return;
+    }
     
     // Prioritize featured cars first
     const featured = allCars.filter(car => car.featured && car.isAvailable);
-    console.log(`Nombre de voitures vedettes: ${featured.length}`);
+    console.log(`FeaturedCars - Nombre de voitures vedettes: ${featured.length}`);
     
     // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {
@@ -147,6 +170,7 @@ export function FeaturedCars() {
           </div>
         ) : (
           <div className="text-center py-12">
+            <AlertCircle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
             <p className="text-gray-600">
               Aucune voiture vedette n'est disponible pour le moment. Consultez notre boutique pour voir toutes nos voitures.
             </p>
