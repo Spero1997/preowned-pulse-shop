@@ -86,6 +86,12 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    if (!paymentProof) {
+      toast.error("Veuillez télécharger une preuve de paiement", {
+        description: "Une preuve de paiement est requise pour finaliser votre réservation"
+      });
+      return;
+    }
     setCheckoutDialogOpen(true);
   };
 
@@ -450,7 +456,7 @@ const Cart = () => {
                 <div className="mb-6">
                   <h3 className="font-medium mb-3 flex items-center">
                     <Image className="h-5 w-5 mr-2 text-green-600" />
-                    Preuve de paiement
+                    Preuve de paiement <span className="text-red-500 ml-1">*</span>
                   </h3>
                   
                   <div className="border border-gray-200 rounded-md p-4 bg-white">
@@ -506,8 +512,9 @@ const Cart = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Téléchargez une capture d'écran ou une photo de votre preuve de paiement pour faciliter la validation de votre commande.
+                  <p className="text-xs text-gray-500 mt-2 flex items-center">
+                    <AlertCircle className="h-3 w-3 mr-1 text-red-500" />
+                    Une preuve de paiement est obligatoire pour finaliser votre réservation
                   </p>
                 </div>
                 

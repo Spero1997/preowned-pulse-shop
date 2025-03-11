@@ -1,48 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function Hero() {
   return (
     <div className="relative">
-      {/* Information Banner */}
-      <div className="bg-white border-b py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex items-start gap-3 text-sm">
-            <Info className="h-5 w-5 text-autoBlue flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-base mb-2">Concessionnaire automobile, nous vendons des voitures d'occasion en Europe. Nous livrons partout.</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                <div>
-                  <h4 className="font-semibold mb-1">Modalités de paiement</h4>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Acompte : 20% à la commande</li>
-                    <li>Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)</li>
-                    <li>Offre spéciale : -10% pour paiement comptant à la commande</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-1">Nos services inclus :</h4>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Délai de rétractation : 14 jours (Satisfait ou remboursé)</li>
-                    <li>Facilité de paiement : Payable comptant ou en mensualités sans intérêt</li>
-                    <li>Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold mb-1">Garantie :</h4>
-                  <p>12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <div className="absolute inset-0 bg-gradient-to-r from-autoBlue/90 to-autoBlue/70 z-10" />
       <div 
         className="relative h-[500px] bg-cover bg-center"
