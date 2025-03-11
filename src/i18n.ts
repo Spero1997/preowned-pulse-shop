@@ -1,12 +1,9 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import Backend from "i18next-http-backend";
 
-// Import direct des fichiers de traduction
-import translationES from '../public/locales/es/translation.json';
-import translationPT from '../public/locales/pt/translation.json';
-
-// Définition des ressources de traduction
+// Translation resources
 const resources = {
   fr: {
     translation: {
@@ -382,30 +379,27 @@ const resources = {
   }
 };
 
-// Initialize i18next
 i18n
+  .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    fallbackLng: "it",
+    lng: "it",
     resources,
-    fallbackLng: "it", // Italian as default language
     supportedLngs: ["fr", "en", "it", "es", "pt"],
-    debug: true, // Enable debug to see what's happening with language detection
+    debug: true,
     detection: {
-      order: ["localStorage", "htmlTag", "navigator"], // Changed order to prioritize localStorage
+      order: ["localStorage", "htmlTag", "navigator"],
       lookupLocalStorage: "i18nextLng",
       caches: ["localStorage"],
-      htmlTag: document.documentElement // Use the html tag for detection
+      htmlTag: document.documentElement
     },
     interpolation: {
       escapeValue: false
-    },
-    react: {
-      useSuspense: false
     }
   });
 
-// Force Italian language regardless of browser settings
 i18n.changeLanguage('it');
 localStorage.setItem('i18nextLng', 'it');
 console.log("Language forced to Italian:", i18n.language);
