@@ -1,26 +1,8 @@
 
 import { useState } from "react";
 import { Car } from "@/types/car";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader,
-  TableRow
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { formatEuro } from "@/lib/utils";
-import { 
-  Pencil, 
-  Trash2, 
-  Search, 
-  Plus,
-  ArrowUpDown,
-  Star,
-  StarOff
-} from "lucide-react";
+import { CarListTable } from "./CarListTable";
+import { CarSearch } from "./CarSearch";
 import { toast } from "sonner";
 import { 
   Card, 
@@ -50,16 +32,7 @@ export const AdminCarList = ({ cars, onEdit, onDelete }: AdminCarListProps) => {
     }
   };
 
-  const handleDelete = (car: Car) => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer ${car.brand} ${car.model} ?`)) {
-      onDelete(car.id);
-      toast.success("Voiture supprimée", {
-        description: `${car.brand} ${car.model} a été supprimé`
-      });
-    }
-  };
-
-  const toggleFeatured = (car: Car) => {
+  const handleToggleFeatured = (car: Car) => {
     const updatedCar = { 
       ...car, 
       featured: !car.featured 
@@ -95,106 +68,21 @@ export const AdminCarList = ({ cars, onEdit, onDelete }: AdminCarListProps) => {
         <CardDescription>
           Gérez votre inventaire de véhicules
         </CardDescription>
-        <div className="flex gap-2 items-center mt-2">
-          <Search className="h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Rechercher..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
+        <CarSearch 
+          searchTerm={searchTerm} 
+          onSearchChange={setSearchTerm} 
+        />
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12 text-center">Vedette</TableHead>
-                <TableHead onClick={() => handleSort("brand")} className="cursor-pointer">
-                  <div className="flex items-center">
-                    Marque
-                    {sortBy === "brand" && (
-                      <ArrowUpDown className={`ml-1 h-4 w-4 ${sortDirection === "asc" ? "transform rotate-180" : ""}`} />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead onClick={() => handleSort("model")} className="cursor-pointer">
-                  <div className="flex items-center">
-                    Modèle
-                    {sortBy === "model" && (
-                      <ArrowUpDown className={`ml-1 h-4 w-4 ${sortDirection === "asc" ? "transform rotate-180" : ""}`} />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead onClick={() => handleSort("year")} className="cursor-pointer">
-                  <div className="flex items-center">
-                    Année
-                    {sortBy === "year" && (
-                      <ArrowUpDown className={`ml-1 h-4 w-4 ${sortDirection === "asc" ? "transform rotate-180" : ""}`} />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead onClick={() => handleSort("price")} className="cursor-pointer">
-                  <div className="flex items-center">
-                    Prix
-                    {sortBy === "price" && (
-                      <ArrowUpDown className={`ml-1 h-4 w-4 ${sortDirection === "asc" ? "transform rotate-180" : ""}`} />
-                    )}
-                  </div>
-                </TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sortedCars.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-4">
-                    Aucune voiture trouvée
-                  </TableCell>
-                </TableRow>
-              ) : (
-                sortedCars.map((car) => (
-                  <TableRow key={car.id}>
-                    <TableCell className="text-center">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={() => toggleFeatured(car)}
-                        className={car.featured ? "text-yellow-500" : "text-gray-500"}
-                      >
-                        {car.featured ? <Star /> : <StarOff />}
-                      </Button>
-                    </TableCell>
-                    <TableCell>{car.brand}</TableCell>
-                    <TableCell>{car.model}</TableCell>
-                    <TableCell>{car.year}</TableCell>
-                    <TableCell>{formatEuro(car.price)}</TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          onClick={() => onEdit(car)}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          onClick={() => handleDelete(car)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+        <CarListTable 
+          cars={sortedCars}
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onToggleFeatured={handleToggleFeatured}
+        />
       </CardContent>
     </Card>
   );
