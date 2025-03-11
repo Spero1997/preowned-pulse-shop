@@ -16,15 +16,20 @@ const Admin = () => {
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
   const handleAddCar = (car: Car) => {
-    // Générer un ID unique pour la nouvelle voiture
+    // Générer un ID unique pour la nouvelle voiture et la marquer comme featured
     const newCar = {
       ...car,
       id: `local-${Date.now()}`,
-      isAvailable: true
+      isAvailable: true,
+      featured: true // Marquer automatiquement comme vedette
     };
     
     setCars(prevCars => [...prevCars, newCar]);
     setSelectedCar(null);
+    
+    toast.success("Voiture ajoutée", {
+      description: `${car.brand} ${car.model} a été ajoutée au catalogue et apparaîtra sur la page d'accueil`
+    });
   };
 
   const handleUpdateCar = (updatedCar: Car) => {
@@ -58,14 +63,15 @@ const Admin = () => {
     const newCar = {
       ...car,
       id: `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      isAvailable: true
+      isAvailable: true,
+      featured: true // Marquer automatiquement comme vedette
     };
     
     setCars(prevCars => [...prevCars, newCar]);
     setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
     
     toast.success("Voiture ajoutée", {
-      description: `${car.brand} ${car.model} a été ajoutée au catalogue`
+      description: `${car.brand} ${car.model} a été ajoutée au catalogue et apparaîtra sur la page d'accueil`
     });
   };
 
@@ -81,14 +87,15 @@ const Admin = () => {
     const newCars = importedCars.map(car => ({
       ...car,
       id: `imported-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      isAvailable: true
+      isAvailable: true,
+      featured: true // Marquer automatiquement comme vedette
     }));
     
     setCars(prevCars => [...prevCars, ...newCars]);
     setImportedCars([]);
     
     toast.success("Importation terminée", {
-      description: `${newCars.length} voitures ont été ajoutées au catalogue`
+      description: `${newCars.length} voitures ont été ajoutées au catalogue et apparaîtront sur la page d'accueil`
     });
   };
 
