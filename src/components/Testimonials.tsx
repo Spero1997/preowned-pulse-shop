@@ -1,5 +1,6 @@
 
 import { User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type TestimonialProps = {
   name: string;
@@ -40,6 +41,8 @@ const Testimonial = ({ name, location, text, rating }: TestimonialProps) => {
 };
 
 export function Testimonials() {
+  const { t } = useTranslation();
+  
   const testimonials = [
     {
       name: "Marco Bianchi",
@@ -65,9 +68,9 @@ export function Testimonials() {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ce que disent nos clients</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{t("testimonials.title")}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Découvrez les témoignages de nos clients satisfaits qui ont trouvé leur voiture idéale chez Service Auto Adi.
+            {t("testimonials.subtitle")}
           </p>
         </div>
         
