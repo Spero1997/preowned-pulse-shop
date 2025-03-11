@@ -7,17 +7,19 @@ import { CarFilters } from "@/components/CarFilters";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Grid3X3, List } from "lucide-react";
+import { Search, Grid3X3, List, AlertCircle, Loader } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
-import { cars, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
+import { minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredCars, setFilteredCars] = useState<Car[]>(cars);
+  const [cars, setCars] = useState<Car[]>([]);
+  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [sortOption, setSortOption] = useState("default");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const carsPerPage = 12;
   const [filters, setFilters] = useState<CarFiltersType>({
     brand: [],
@@ -30,7 +32,54 @@ const Shop = () => {
     maxYear: maxYear,
   });
 
+  // Fonction pour obtenir les voitures stockées localement dans le localStorage
+  const getLocalCars = (): Car[] => {
+    try {
+      const localCarsString = localStorage.getItem('cars');
+      if (localCarsString) {
+        return JSON.parse(localCarsString);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des voitures locales:", error);
+    }
+    return [];
+  };
+
   useEffect(() => {
+    // Récupérer les voitures du localStorage au chargement initial
+    const currentCars = getLocalCars();
+    console.log("Shop - Chargement initial:", currentCars.length, "voitures");
+    setCars(currentCars);
+    setIsLoading(false);
+    
+    // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
+    const handleStorageChange = () => {
+      const updatedCars = getLocalCars();
+      console.log("Shop - Changement de localStorage détecté:", updatedCars.length, "voitures");
+      setCars(updatedCars);
+    };
+    
+    // Ajouter l'écouteur d'événements
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Vérifier à intervalles réguliers aussi, au cas où
+    const interval = setInterval(() => {
+      const updatedCars = getLocalCars();
+      if (updatedCars.length !== cars.length) {
+        console.log("Shop - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures");
+        setCars(updatedCars);
+      }
+    }, 2000);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (cars.length === 0 && !isLoading) return;
+    
     let results = [...cars];
     
     // Filtrer par recherche
@@ -72,7 +121,7 @@ const Shop = () => {
     
     setFilteredCars(results);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [searchTerm, filters, sortOption]);
+  }, [searchTerm, filters, sortOption, cars, isLoading]);
 
   // Calculate pagination
   const indexOfLastCar = currentPage * carsPerPage;
@@ -82,6 +131,22 @@ const Shop = () => {
 
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow py-8 flex items-center justify-center">
+          <div className="text-center">
+            <Loader className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p>Chargement des voitures...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -162,6 +227,9 @@ const Shop = () => {
             </div>
           ) : (
             <div className="text-center py-12">
+              <div className="flex items-center justify-center mb-4">
+                <AlertCircle className="h-8 w-8 text-amber-500 mr-2" />
+              </div>
               <h3 className="text-xl font-medium mb-2">Aucune voiture trouvée</h3>
               <p className="text-gray-600">Veuillez modifier vos critères de recherche ou vos filtres.</p>
             </div>

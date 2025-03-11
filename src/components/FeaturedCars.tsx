@@ -4,12 +4,13 @@ import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function FeaturedCars() {
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
   const [allCars, setAllCars] = useState<Car[]>(initialCars);
+  const [loading, setLoading] = useState(true);
   
   // Fonction pour obtenir les voitures stockées localement dans le localStorage
   const getLocalCars = (): Car[] => {
@@ -25,27 +26,40 @@ export function FeaturedCars() {
   };
   
   useEffect(() => {
-    // Récupérer les voitures du localStorage au chargement initial
+    // Récupérer les voitures du localStorage au chargement initial et définir l'état
     const currentCars = getLocalCars();
+    console.log("Chargement initial:", currentCars.length, "voitures");
     setAllCars(currentCars);
+    setLoading(false);
     
-    // Vérifier à intervalles réguliers si de nouvelles voitures ont été ajoutées
+    // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
+    const handleStorageChange = () => {
+      const updatedCars = getLocalCars();
+      console.log("Changement de localStorage détecté:", updatedCars.length, "voitures");
+      setAllCars(updatedCars);
+    };
+    
+    // Ajouter l'écouteur d'événements
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Vérifier à intervalles réguliers aussi, au cas où
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
-      // Comparer uniquement les IDs pour éviter les problèmes de comparaison d'objets complexes
-      const currentIds = allCars.map(car => car.id).join(',');
-      const updatedIds = updatedCars.map(car => car.id).join(',');
-      
-      if (currentIds !== updatedIds) {
-        console.log("Mise à jour des voitures détectée");
+      if (updatedCars.length !== allCars.length) {
+        console.log("Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures");
         setAllCars(updatedCars);
       }
-    }, 1000);
+    }, 2000);
     
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
   }, []);
   
   useEffect(() => {
+    if (allCars.length === 0) return;
+    
     // Prioritize featured cars first
     const featured = allCars.filter(car => car.featured && car.isAvailable);
     console.log(`Nombre de voitures vedettes: ${featured.length}`);
@@ -60,6 +74,16 @@ export function FeaturedCars() {
       setFeaturedCars(available.slice(0, 6));
     }
   }, [allCars]);
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <p>Chargement des voitures...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gray-50">
