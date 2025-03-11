@@ -73,7 +73,7 @@ const Contact = () => {
                   <Mail className="h-6 w-6 text-autoBlue mr-4 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900">Email</h3>
-                    <a href="mailto:info@serviceautoadi.it" className="text-gray-600 hover:text-autoBlue">info@serviceautoadi.it</a>
+                    <a href="mailto:infos@autoadi.com" className="text-gray-600 hover:text-autoBlue">infos@autoadi.com</a>
                   </div>
                 </div>
               </div>

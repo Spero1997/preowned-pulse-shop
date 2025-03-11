@@ -76,7 +76,7 @@ export function Footer() {
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="h-5 w-5 text-autoOrange" />
-                <a href="mailto:info@serviceautoadi.it" className="text-blue-100 hover:text-white transition-colors">
+                <a href="mailto:infos@autoadi.com" className="text-blue-100 hover:text-white transition-colors">
                   {t("whyChooseUs.email")}
                 </a>
               </li>

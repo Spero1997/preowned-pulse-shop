@@ -96,7 +96,7 @@ const Index = () => {
                     </p>
                     <p className="flex items-center">
                       <Mail className="h-4 w-4 mr-2 text-autoOrange" />
-                      {t("whyChooseUs.email")}
+                      <a href="mailto:infos@autoadi.com">{t("whyChooseUs.email")}</a>
                     </p>
                   </div>
                 </div>
