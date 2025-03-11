@@ -47,22 +47,7 @@
   },
   "testimonials": {
     "title": "O que nossos clientes dizem",
-    "subtitle": "Descubra os depoimentos de nossos clientes satisfeitos que encontraram seu carro ideal na Service Auto Adi.",
-    "testimonial1": {
-      "name": "Marco Bianchi",
-      "location": "Florença, Itália",
-      "text": "Comprei meu BMW na Service Auto Adi e estou extremamente satisfeito. O processo foi simples, transparente e a equipe foi muito profissional. O carro é exatamente como descrito!"
-    },
-    "testimonial2": {
-      "name": "Sophie Dupont",
-      "location": "Lyon, França",
-      "text": "Uma experiência excepcional! Fiz a viagem da França para comprar minha Mercedes e não me arrependo. Obrigado a toda a equipe pelo apoio."
-    },
-    "testimonial3": {
-      "name": "Alessandro Romano",
-      "location": "Roma, Itália",
-      "text": "Já é minha segunda compra na Service Auto Adi. Carros de qualidade, bem mantidos e com preços justos. Recomendo sem hesitação!"
-    }
+    "subtitle": "Descubra os depoimentos de nossos clientes satisfeitos que encontraram seu carro ideal na Service Auto Adi."
   },
   "footer": {
     "description": "Sua concessionária confiável para a compra de carros usados de qualidade na Itália. Oferecemos uma ampla seleção de veículos cuidadosamente selecionados.",
@@ -100,7 +85,7 @@
     "visitDealer": "Visite nossa concessionária",
     "address": "Borgo Ognissanti, 142r 50123 Firenze FI Itália",
     "phone": "+39 376 175 3341",
-    "email": "infos@autoadi.com"
+    "email": "info@serviceautoadi.it"
   },
   "shop": {
     "title": "Nossos carros",

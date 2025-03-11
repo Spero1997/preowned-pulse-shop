@@ -34,7 +34,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-blue-100 hover:text-white transition-colors">
-                  {t("navbar.home")}
+                  {t("footer.home")}
                 </Link>
               </li>
               <li>
@@ -49,7 +49,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/contact" className="text-blue-100 hover:text-white transition-colors">
-                  {t("navbar.contact")}
+                  {t("footer.contactUs")}
                 </Link>
               </li>
               <li>
