@@ -1,0 +1,91 @@
+
+{
+  "navbar": {
+    "home": "Inicio",
+    "cars": "Coches",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "admin": "Administración",
+    "phone": "Teléfono",
+    "cart": "Carrito"
+  },
+  "hero": {
+    "title": "Encuentra el coche de tus sueños",
+    "description": "Service Auto Adi te ofrece una amplia selección de coches de ocasión de calidad a precios competitivos. Descubre nuestro catálogo y encuentra el vehículo que te conviene.",
+    "exploreCars": "Explorar nuestros coches",
+    "contactUs": "Contactarnos"
+  },
+  "featuredCars": {
+    "title": "Nuestros coches destacados",
+    "subtitle": "Descubre nuestra selección de vehículos excepcionales entre nuestra colección de {count} coches",
+    "refresh": "Actualizar",
+    "viewAllCars": "Ver todos los coches",
+    "noFeaturedCars": "No hay coches destacados disponibles por el momento. Visita nuestra tienda para ver todos nuestros coches.",
+    "loading": "Cargando coches...",
+    "refreshing": "Actualizando...",
+    "loadingCars": "Cargando {count} coches..."
+  },
+  "services": {
+    "title": "Nuestros servicios",
+    "subtitle": "Service Auto Adi es tu socio de confianza para la compra de coches de ocasión. Descubre nuestros servicios personalizados para una experiencia de compra sin preocupaciones.",
+    "selection": {
+      "title": "Amplia selección",
+      "description": "Más de 100 vehículos de ocasión cuidadosamente seleccionados para satisfacer todas las necesidades y presupuestos."
+    },
+    "warranty": {
+      "title": "Garantía incluida",
+      "description": "Todos nuestros vehículos vienen con una garantía mecánica para asegurarte tranquilidad."
+    },
+    "technical": {
+      "title": "Servicio técnico",
+      "description": "Nuestro equipo de técnicos cualificados garantiza el mantenimiento y las reparaciones de tu vehículo."
+    },
+    "financing": {
+      "title": "Financiación fácil",
+      "description": "Soluciones de financiación personalizadas para facilitar la compra de tu coche de ocasión."
+    }
+  },
+  "testimonials": {
+    "title": "Lo que dicen nuestros clientes",
+    "subtitle": "Descubre los testimonios de nuestros clientes satisfechos que han encontrado su coche ideal en Service Auto Adi."
+  },
+  "footer": {
+    "description": "Tu concesionario de confianza para la compra de coches de ocasión de calidad en Italia. Ofrecemos una amplia selección de vehículos cuidadosamente seleccionados.",
+    "quickLinks": "Enlaces rápidos",
+    "home": "Inicio",
+    "cars": "Coches",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "terms": "Términos y condiciones",
+    "contact": "Contacto",
+    "openingHours": "Horario de apertura",
+    "monday": "Lunes",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "sunday": "Domingo",
+    "closed": "Cerrado",
+    "allRightsReserved": "Todos los derechos reservados"
+  },
+  "language": {
+    "fr": "Francés",
+    "en": "Inglés",
+    "it": "Italiano",
+    "es": "Español",
+    "pt": "Portugués"
+  },
+  "whyChooseUs": {
+    "title": "¿Por qué elegir Service Auto Adi?",
+    "description": "Con más de 15 años de experiencia, nos especializamos en la venta de coches de ocasión de calidad. Nuestra experiencia y compromiso con la satisfacción del cliente nos convierten en un socio de confianza para tu próxima compra de coche.",
+    "points": {
+      "inspection": "Vehículos rigurosamente seleccionados e inspeccionados",
+      "service": "Servicio post-venta personalizado",
+      "prices": "Precios transparentes y competitivos",
+      "team": "Equipo profesional y apasionado"
+    },
+    "learnMore": "Más información sobre nosotros",
+    "visitDealer": "Visita nuestro concesionario",
+    "address": "Borgo Ognissanti, 142r 50123 Firenze FI Italia",
+    "phone": "+39 376 175 3341",
+    "email": "info@serviceautoadi.it"
+  }
+}

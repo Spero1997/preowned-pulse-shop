@@ -56,9 +56,13 @@ export function FeaturedCars() {
     const updatedCars = getLocalCars();
     setAllCars(updatedCars);
     
-    // Utiliser une chaîne de texte directe au lieu de la clé de traduction pour le toast
-    toast.info("Actualisation...", {
-      description: `Chargement de ${updatedCars.length} voitures...`
+    const refreshMsg = ready ? t("featuredCars.refreshing") : "Actualisation...";
+    const loadingMsg = ready 
+      ? t("featuredCars.loadingCars", { count: updatedCars.length }) 
+      : `Chargement de ${updatedCars.length} voitures...`;
+    
+    toast.info(refreshMsg, {
+      description: loadingMsg
     });
   };
   

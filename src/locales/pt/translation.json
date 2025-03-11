@@ -1,0 +1,91 @@
+
+{
+  "navbar": {
+    "home": "Início",
+    "cars": "Carros",
+    "about": "Sobre nós",
+    "contact": "Contato",
+    "admin": "Administração",
+    "phone": "Telefone",
+    "cart": "Carrinho"
+  },
+  "hero": {
+    "title": "Encontre o carro dos seus sonhos",
+    "description": "A Service Auto Adi oferece uma ampla seleção de carros usados de qualidade a preços competitivos. Descubra nosso catálogo e encontre o veículo que combina com você.",
+    "exploreCars": "Explorar nossos carros",
+    "contactUs": "Entre em contato"
+  },
+  "featuredCars": {
+    "title": "Nossos carros em destaque",
+    "subtitle": "Descubra nossa seleção de veículos excepcionais entre nossa coleção de {count} carros",
+    "refresh": "Atualizar",
+    "viewAllCars": "Ver todos os carros",
+    "noFeaturedCars": "Não há carros em destaque disponíveis no momento. Visite nossa loja para ver todos os nossos carros.",
+    "loading": "Carregando carros...",
+    "refreshing": "Atualizando...",
+    "loadingCars": "Carregando {count} carros..."
+  },
+  "services": {
+    "title": "Nossos serviços",
+    "subtitle": "Service Auto Adi é seu parceiro de confiança para a compra de carros usados. Descubra nossos serviços personalizados para uma experiência de compra sem preocupações.",
+    "selection": {
+      "title": "Ampla seleção",
+      "description": "Mais de 100 veículos usados cuidadosamente selecionados para atender a todas as necessidades e orçamentos."
+    },
+    "warranty": {
+      "title": "Garantia incluída",
+      "description": "Todos os nossos veículos vêm com garantia mecânica para garantir sua tranquilidade."
+    },
+    "technical": {
+      "title": "Serviço técnico",
+      "description": "Nossa equipe de técnicos qualificados garante a manutenção e reparos do seu veículo."
+    },
+    "financing": {
+      "title": "Financiamento fácil",
+      "description": "Soluções de financiamento personalizadas para facilitar a compra do seu carro usado."
+    }
+  },
+  "testimonials": {
+    "title": "O que nossos clientes dizem",
+    "subtitle": "Descubra os depoimentos de nossos clientes satisfeitos que encontraram seu carro ideal na Service Auto Adi."
+  },
+  "footer": {
+    "description": "Sua concessionária confiável para a compra de carros usados de qualidade na Itália. Oferecemos uma ampla seleção de veículos cuidadosamente selecionados.",
+    "quickLinks": "Links rápidos",
+    "home": "Início",
+    "cars": "Carros",
+    "about": "Sobre nós",
+    "contact": "Contato",
+    "terms": "Termos e condições",
+    "contact": "Contato",
+    "openingHours": "Horário de funcionamento",
+    "monday": "Segunda-feira",
+    "friday": "Sexta-feira",
+    "saturday": "Sábado",
+    "sunday": "Domingo",
+    "closed": "Fechado",
+    "allRightsReserved": "Todos os direitos reservados"
+  },
+  "language": {
+    "fr": "Francês",
+    "en": "Inglês",
+    "it": "Italiano",
+    "es": "Espanhol",
+    "pt": "Português"
+  },
+  "whyChooseUs": {
+    "title": "Por que escolher Service Auto Adi?",
+    "description": "Com mais de 15 anos de experiência, somos especializados na venda de carros usados de qualidade. Nossa expertise e compromisso com a satisfação do cliente nos tornam um parceiro confiável para sua próxima compra de automóvel.",
+    "points": {
+      "inspection": "Veículos rigorosamente selecionados e inspecionados",
+      "service": "Serviço pós-venda personalizado",
+      "prices": "Preços transparentes e competitivos",
+      "team": "Equipe profissional e apaixonada"
+    },
+    "learnMore": "Saiba mais sobre nós",
+    "visitDealer": "Visite nossa concessionária",
+    "address": "Borgo Ognissanti, 142r 50123 Firenze FI Itália",
+    "phone": "+39 376 175 3341",
+    "email": "info@serviceautoadi.it"
+  }
+}
