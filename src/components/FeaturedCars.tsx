@@ -35,6 +35,10 @@ export function FeaturedCars() {
         description: "Impossible de récupérer les voitures du stockage local"
       });
     }
+    
+    // Important: Initialiser avec les voitures par défaut si rien n'est trouvé
+    // Cela garantit que des voitures sont toujours affichées
+    console.log("FeaturedCars - Utilisation des données initiales par défaut:", initialCars.length, "voitures");
     return initialCars;
   };
   

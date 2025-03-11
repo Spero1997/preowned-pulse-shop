@@ -9,13 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Grid3X3, List, AlertCircle, Loader, Car as CarIcon } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
-import { minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
+import { cars as initialCars, minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
 import { toast } from "sonner";
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<Car[]>(initialCars); // Initialisé avec les voitures par défaut
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [sortOption, setSortOption] = useState("default");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -51,7 +51,7 @@ const Shop = () => {
           });
         }
       } else {
-        console.log("Shop - Aucune donnée dans localStorage");
+        console.log("Shop - Aucune donnée dans localStorage, utilisation des données par défaut");
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
@@ -59,7 +59,10 @@ const Shop = () => {
         description: "Impossible de récupérer les voitures du stockage local"
       });
     }
-    return [];
+    
+    // Important: Toujours retourner les voitures par défaut si rien n'est trouvé dans localStorage
+    console.log("Shop - Utilisation des données initiales par défaut:", initialCars.length, "voitures");
+    return initialCars;
   };
 
   const forceRefresh = () => {
@@ -78,21 +81,9 @@ const Shop = () => {
     
     // Récupérer les voitures du localStorage au chargement initial
     const currentCars = getLocalCars();
-    if (currentCars.length > 0) {
-      console.log("Shop - Chargement initial:", currentCars.length, "voitures");
-      setCars(currentCars);
-      setInitialLoadComplete(true);
-    } else {
-      console.warn("Shop - Aucune voiture trouvée dans le localStorage au chargement initial");
-      // Toast affiché uniquement si le chargement initial échoue
-      if (!initialLoadComplete) {
-        toast.warning("Chargement des données", {
-          description: "Tentative de récupération des voitures...",
-          duration: 3000
-        });
-      }
-    }
-    
+    console.log("Shop - Chargement initial:", currentCars.length, "voitures");
+    setCars(currentCars);
+    setInitialLoadComplete(true);
     setIsLoading(false);
     
     // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
@@ -125,18 +116,14 @@ const Shop = () => {
         setCars(updatedCars);
         setInitialLoadComplete(true);
       }
-    }, 1000); // Réduit à 1 seconde pour être plus réactif
+    }, 1000);
     
     // Force rafraîchissement direct au montage
     const initialCheck = setTimeout(() => {
       const freshCars = getLocalCars();
-      if (freshCars.length > 0) {
-        console.log("Shop - Vérification initiale:", freshCars.length, "voitures");
-        setCars(freshCars);
-        setInitialLoadComplete(true);
-      } else {
-        console.warn("Shop - Aucune voiture trouvée lors de la vérification initiale");
-      }
+      console.log("Shop - Vérification initiale:", freshCars.length, "voitures");
+      setCars(freshCars);
+      setInitialLoadComplete(true);
     }, 500);
     
     return () => {
