@@ -10,7 +10,7 @@ import {
 import { Globe } from "lucide-react";
 
 export function LanguageSelector({ variant = "default" }: { variant?: "default" | "icon-only" }) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const currentLanguage = i18n.language;
 
   const languages = [
@@ -33,7 +33,7 @@ export function LanguageSelector({ variant = "default" }: { variant?: "default" 
             variant="ghost" 
             size="icon" 
             className="text-gray-700 hover:text-autoBlue rounded-full"
-            aria-label="Changer de langue"
+            aria-label={t("language.changeLanguage", "Changer de langue")}
           >
             <Globe className="h-5 w-5" />
           </Button>
