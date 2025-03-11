@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 // Clé pour le stockage local
 const CART_STORAGE_KEY = 'service-auto-adi-cart';
+const COUPON_STORAGE_KEY = 'service-auto-adi-coupon';
 
 // Interface pour notre service de panier
 interface CartService {
@@ -12,6 +13,14 @@ interface CartService {
   removeItem: (id: string) => void;
   clearCart: () => void;
   getCount: () => number;
+  saveCoupon: (code: string) => void;
+  getCoupon: () => string | null;
+  removeCoupon: () => void;
+}
+
+// Interface pour les coupons
+interface Coupon {
+  code: string;
 }
 
 // Récupérer les éléments du panier depuis le stockage local
@@ -31,6 +40,32 @@ const getCartFromStorage = (): Car[] => {
 // Sauvegarder les éléments du panier dans le stockage local
 const saveCartToStorage = (items: Car[]) => {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+};
+
+// Récupérer le coupon depuis le stockage local
+const getCouponFromStorage = (): string | null => {
+  const couponJson = localStorage.getItem(COUPON_STORAGE_KEY);
+  if (couponJson) {
+    try {
+      const coupon = JSON.parse(couponJson);
+      return coupon.code;
+    } catch (e) {
+      console.error('Erreur lors de la récupération du coupon:', e);
+      return null;
+    }
+  }
+  return null;
+};
+
+// Sauvegarder le coupon dans le stockage local
+const saveCouponToStorage = (code: string) => {
+  const coupon: Coupon = { code };
+  localStorage.setItem(COUPON_STORAGE_KEY, JSON.stringify(coupon));
+};
+
+// Supprimer le coupon du stockage local
+const removeCouponFromStorage = () => {
+  localStorage.removeItem(COUPON_STORAGE_KEY);
 };
 
 // Créer le service de panier
@@ -93,7 +128,26 @@ const createCartService = (): CartService => {
     },
 
     // Obtenir le nombre d'éléments dans le panier
-    getCount: () => cartItems.length
+    getCount: () => cartItems.length,
+
+    // Sauvegarder le coupon
+    saveCoupon: (code: string) => {
+      saveCouponToStorage(code);
+      const event = new CustomEvent('coupon-updated', { detail: { code } });
+      window.dispatchEvent(event);
+    },
+
+    // Récupérer le coupon
+    getCoupon: () => {
+      return getCouponFromStorage();
+    },
+
+    // Supprimer le coupon
+    removeCoupon: () => {
+      removeCouponFromStorage();
+      const event = new CustomEvent('coupon-updated', { detail: { code: null } });
+      window.dispatchEvent(event);
+    }
   };
 };
 

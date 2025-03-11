@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -18,17 +19,8 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
@@ -36,8 +28,8 @@ const Cart = () => {
   const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("bank-transfer");
   const [couponCode, setCouponCode] = useState("");
-  const [couponType, setCouponType] = useState("pcs");
   const [couponApplied, setCouponApplied] = useState(false);
+  const [appliedCouponCode, setAppliedCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
   const navigate = useNavigate();
 
@@ -45,10 +37,22 @@ const Cart = () => {
     setItems(cartService.getItems());
   };
 
+  const loadCoupon = () => {
+    const savedCoupon = cartService.getCoupon();
+    if (savedCoupon) {
+      setAppliedCouponCode(savedCoupon);
+      setCouponApplied(true);
+    } else {
+      setAppliedCouponCode("");
+      setCouponApplied(false);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       loadCartItems();
+      loadCoupon();
       setLoading(false);
     }, 500);
 
@@ -56,10 +60,16 @@ const Cart = () => {
       loadCartItems();
     };
 
+    const handleCouponUpdate = () => {
+      loadCoupon();
+    };
+
     window.addEventListener('cart-updated', handleCartUpdate);
+    window.addEventListener('coupon-updated', handleCouponUpdate);
 
     return () => {
       window.removeEventListener('cart-updated', handleCartUpdate);
+      window.removeEventListener('coupon-updated', handleCouponUpdate);
     };
   }, []);
 
@@ -83,6 +93,7 @@ const Cart = () => {
       description: `Nous vous contacterons prochainement pour finaliser votre achat. Méthode de paiement: ${getPaymentMethodLabel(paymentMethod)}`
     });
     clearCart();
+    cartService.removeCoupon();
     setTimeout(() => {
       navigate("/");
     }, 2000);
@@ -99,10 +110,7 @@ const Cart = () => {
   const getPaymentMethodLabel = (method: string) => {
     switch(method) {
       case "credit-card": return "Carte bancaire";
-      case "pcs": return "Coupons PCS";
-      case "transcash": return "Coupons Transcash";
-      case "neosurf": return "Coupons Neosurf";
-      case "amazon": return "Cartes cadeau Amazon";
+      case "coupon": return "Coupon (PCS/Transcash/Neosurf/Amazon)";
       case "bank-transfer": return "Virement bancaire";
       default: return "Virement bancaire";
     }
@@ -120,6 +128,8 @@ const Cart = () => {
       return;
     }
     
+    cartService.saveCoupon(couponCode);
+    setAppliedCouponCode(couponCode);
     setCouponApplied(true);
     setCouponError("");
     toast.success("Code coupon appliqué avec succès !");
@@ -127,7 +137,9 @@ const Cart = () => {
 
   const resetCoupon = () => {
     setCouponCode("");
+    cartService.removeCoupon();
     setCouponApplied(false);
+    setAppliedCouponCode("");
     setCouponError("");
   };
 
@@ -281,31 +293,10 @@ const Cart = () => {
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="pcs" id="pcs" />
-                      <Label htmlFor="pcs" className="flex items-center cursor-pointer">
+                      <RadioGroupItem value="coupon" id="coupon" />
+                      <Label htmlFor="coupon" className="flex items-center cursor-pointer">
                         <Wallet className="h-5 w-5 mr-2 text-green-600" />
-                        <span>Coupons PCS</span>
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="transcash" id="transcash" />
-                      <Label htmlFor="transcash" className="flex items-center cursor-pointer">
-                        <Wallet className="h-5 w-5 mr-2 text-orange-600" />
-                        <span>Coupons Transcash</span>
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="neosurf" id="neosurf" />
-                      <Label htmlFor="neosurf" className="flex items-center cursor-pointer">
-                        <Wallet className="h-5 w-5 mr-2 text-purple-600" />
-                        <span>Coupons Neosurf</span>
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
-                      <RadioGroupItem value="amazon" id="amazon" />
-                      <Label htmlFor="amazon" className="flex items-center cursor-pointer">
-                        <Gift className="h-5 w-5 mr-2 text-yellow-600" />
-                        <span>Cartes cadeau Amazon</span>
+                        <span>Coupon (PCS/Transcash/Neosurf/Amazon)</span>
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
@@ -329,8 +320,8 @@ const Cart = () => {
                         <div className="flex items-center">
                           <Check className="h-5 w-5 text-green-500 mr-2" />
                           <div>
-                            <span>Code <span className="font-mono">{couponCode}</span> appliqué</span>
-                            <p className="text-xs text-gray-500">Type: {couponType.toUpperCase()}</p>
+                            <span>Code <span className="font-mono">{appliedCouponCode}</span> appliqué</span>
+                            <p className="text-xs text-gray-500">Type: Coupon PCS/Transcash/Neosurf/Amazon</p>
                           </div>
                         </div>
                         <Button variant="ghost" size="sm" onClick={resetCoupon}>
@@ -342,26 +333,7 @@ const Cart = () => {
                     <div className="border border-gray-200 rounded-md p-4 bg-white">
                       <div className="space-y-3">
                         <div>
-                          <Label htmlFor="coupon-type">Type de coupon</Label>
-                          <Select 
-                            value={couponType} 
-                            onValueChange={setCouponType}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Sélectionnez le type de coupon" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value="pcs">PCS</SelectItem>
-                                <SelectItem value="transcash">Transcash</SelectItem>
-                                <SelectItem value="neosurf">Neosurf</SelectItem>
-                                <SelectItem value="amazon">Amazon</SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="coupon-code">Code coupon</Label>
+                          <Label htmlFor="coupon-code">Code coupon (PCS/Transcash/Neosurf/Amazon)</Label>
                           <Textarea 
                             id="coupon-code"
                             placeholder="Entrez votre code coupon ici"
@@ -394,29 +366,55 @@ const Cart = () => {
                     Informations de paiement
                   </div>
                   <div className="bg-gray-100 p-4 rounded-md space-y-2">
-                    <h3 className="font-semibold">Virement bancaire</h3>
-                    <div className="grid grid-cols-1 gap-2">
+                    {paymentMethod === "bank-transfer" && (
                       <div>
-                        <p className="font-medium">Bénéficiaire</p>
-                        <p>Lucia Dzujkova</p>
+                        <h3 className="font-semibold">Virement bancaire</h3>
+                        <div className="grid grid-cols-1 gap-2">
+                          <div>
+                            <p className="font-medium">Bénéficiaire</p>
+                            <p>Lucia Dzujkova</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">IBAN</p>
+                            <p className="font-mono text-xs">LT453500010018283529</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">SWIFT/BIC</p>
+                            <p className="font-mono text-xs">EVIULT2VXXX</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">Nom de banque</p>
+                            <p>Paysera LT, UAB</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">Adresse de la banque</p>
+                            <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
+                          </div>
+                        </div>
                       </div>
+                    )}
+
+                    {paymentMethod === "coupon" && (
                       <div>
-                        <p className="font-medium">IBAN</p>
-                        <p className="font-mono text-xs">LT453500010018283529</p>
+                        <h3 className="font-semibold">Paiement par coupon</h3>
+                        <p className="mt-2">Utilisez des coupons PCS, Transcash, Neosurf ou des cartes cadeau Amazon pour régler votre achat.</p>
+                        <p className="mt-2 text-red-600 font-semibold">Important : Coupons acceptés</p>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li>PCS</li>
+                          <li>Transcash</li>
+                          <li>Neosurf</li>
+                          <li>Cartes cadeau Amazon</li>
+                        </ul>
+                        <p className="mt-2 text-sm">Entrez votre code coupon dans la section "Code coupon" ci-dessus.</p>
                       </div>
+                    )}
+
+                    {paymentMethod === "credit-card" && (
                       <div>
-                        <p className="font-medium">SWIFT/BIC</p>
-                        <p className="font-mono text-xs">EVIULT2VXXX</p>
+                        <h3 className="font-semibold">Carte bancaire</h3>
+                        <p className="mt-2">Les informations pour le paiement par carte bancaire vous seront communiquées après la validation de votre commande.</p>
                       </div>
-                      <div>
-                        <p className="font-medium">Nom de banque</p>
-                        <p>Paysera LT, UAB</p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Adresse de la banque</p>
-                        <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
                 
@@ -496,10 +494,7 @@ const Cart = () => {
               <Card className="bg-gray-50">
                 <CardContent className="py-3 flex items-center">
                   {paymentMethod === "credit-card" && <CreditCard className="h-5 w-5 mr-2 text-blue-600" />}
-                  {paymentMethod === "pcs" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
-                  {paymentMethod === "transcash" && <Wallet className="h-5 w-5 mr-2 text-orange-600" />}
-                  {paymentMethod === "neosurf" && <Wallet className="h-5 w-5 mr-2 text-purple-600" />}
-                  {paymentMethod === "amazon" && <Gift className="h-5 w-5 mr-2 text-yellow-600" />}
+                  {paymentMethod === "coupon" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
                   {paymentMethod === "bank-transfer" && <Euro className="h-5 w-5 mr-2 text-amber-600" />}
                   <span>{getPaymentMethodLabel(paymentMethod)}</span>
                 </CardContent>
@@ -515,11 +510,11 @@ const Cart = () => {
                 </div>
               )}
               
-              {(paymentMethod === "pcs" || paymentMethod === "transcash" || paymentMethod === "neosurf" || paymentMethod === "amazon") && (
+              {paymentMethod === "coupon" && (
                 <div className="mt-2 bg-gray-100 p-3 rounded-md text-xs">
-                  <p className="font-medium mb-1">Instructions :</p>
-                  <p>Veuillez nous envoyer le code du coupon {getPaymentMethodLabel(paymentMethod)} par email après avoir confirmé votre commande.</p>
-                  <p className="mt-1">Email : info@serviceautoadi.it</p>
+                  <p className="font-medium mb-1">Instructions pour les coupons :</p>
+                  <p>Vous pouvez utiliser les coupons suivants : PCS, Transcash, Neosurf ou cartes cadeau Amazon.</p>
+                  <p className="mt-1">Veuillez suivre les instructions après confirmation de commande.</p>
                 </div>
               )}
               
@@ -529,8 +524,8 @@ const Cart = () => {
                     <Check className="h-3 w-3 mr-1 text-green-500" />
                     Code coupon appliqué :
                   </p>
-                  <p className="font-mono">{couponCode}</p>
-                  <p className="text-xs text-gray-500">Type: {couponType.toUpperCase()}</p>
+                  <p className="font-mono">{appliedCouponCode}</p>
+                  <p className="text-xs text-gray-500">Type: Coupon PCS/Transcash/Neosurf/Amazon</p>
                 </div>
               )}
             </div>
