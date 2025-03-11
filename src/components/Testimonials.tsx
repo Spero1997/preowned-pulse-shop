@@ -7,9 +7,17 @@ type TestimonialProps = {
   location: string;
   text: string;
   rating: number;
+  language?: string; // Nouvelle propriété pour indiquer la langue du témoignage
 }
 
-const Testimonial = ({ name, location, text, rating }: TestimonialProps) => {
+const Testimonial = ({ name, location, text, rating, language }: TestimonialProps) => {
+  // Choisir une classe conditionnelle pour indiquer la langue
+  const languageIndicator = language ? (
+    <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 bg-autoBlue/10 text-autoBlue`}>
+      {language}
+    </span>
+  ) : null;
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center mb-4">
@@ -17,7 +25,10 @@ const Testimonial = ({ name, location, text, rating }: TestimonialProps) => {
           <User className="h-6 w-6 text-autoBlue" />
         </div>
         <div>
-          <h4 className="font-bold">{name}</h4>
+          <div className="flex items-center">
+            <h4 className="font-bold">{name}</h4>
+            {languageIndicator}
+          </div>
           <p className="text-gray-500 text-sm">{location}</p>
         </div>
       </div>
@@ -45,40 +56,46 @@ export function Testimonials() {
   
   const testimonials = [
     {
-      name: t("testimonials.testimonial1.name", "Marco Bianchi"),
-      location: t("testimonials.testimonial1.location", "Florence, Italie"),
-      text: t("testimonials.testimonial1.text", "J'ai acheté ma BMW chez Service Auto Adi et je suis extrêmement satisfait. Le processus était simple, transparent et l'équipe était très professionnelle. La voiture est exactement comme décrite!"),
-      rating: 5
+      name: "Marco Bianchi",
+      location: "Firenze, Italia",
+      text: "Ho acquistato la mia BMW da Service Auto Adi e sono estremamente soddisfatto. Il processo è stato semplice, trasparente e il team era molto professionale. L'auto è esattamente come descritta!",
+      rating: 5,
+      language: "Italiano"
     },
     {
-      name: t("testimonials.testimonial2.name", "Sophie Dupont"),
-      location: t("testimonials.testimonial2.location", "Lyon, France"),
-      text: t("testimonials.testimonial2.text", "Une expérience exceptionnelle! J'ai fait le voyage depuis la France pour acheter ma Mercedes et je ne regrette rien. Merci à toute l'équipe pour leur accompagnement."),
-      rating: 5
+      name: "Sophie Dupont",
+      location: "Lyon, France",
+      text: "Une expérience exceptionnelle! J'ai fait le voyage depuis la France pour acheter ma Mercedes et je ne regrette rien. Merci à toute l'équipe pour leur accompagnement.",
+      rating: 5,
+      language: "Français"
     },
     {
-      name: t("testimonials.testimonial3.name", "Alessandro Romano"),
-      location: t("testimonials.testimonial3.location", "Rome, Italie"),
-      text: t("testimonials.testimonial3.text", "Déjà mon deuxième achat chez Service Auto Adi. Des voitures de qualité, bien entretenues et à des prix justes. Je recommande sans hésitation!"),
-      rating: 4
+      name: "Alessandro Romano",
+      location: "Roma, Italia",
+      text: "Già il mio secondo acquisto da Service Auto Adi. Auto di qualità, ben mantenute e a prezzi equi. Consiglio senza esitazione!",
+      rating: 4,
+      language: "Italiano"
     },
     {
-      name: t("testimonials.testimonial4.name", "Hans Müller"),
-      location: t("testimonials.testimonial4.location", "Munich, Allemagne"),
-      text: t("testimonials.testimonial4.text", "Service impeccable! J'ai trouvé exactement ce que je cherchais, une Audi A4 en parfait état. Le rapport qualité-prix est imbattable. Je reviendrai!"),
-      rating: 5
+      name: "Hans Müller",
+      location: "München, Deutschland",
+      text: "Ein ausgezeichneter Service! Ich habe genau das gefunden, was ich suchte - einen Audi A4 in perfektem Zustand. Das Preis-Leistungs-Verhältnis ist unschlagbar. Ich werde wiederkommen!",
+      rating: 5,
+      language: "Deutsch"
     },
     {
-      name: t("testimonials.testimonial5.name", "Maria Garcia"),
-      location: t("testimonials.testimonial5.location", "Barcelone, Espagne"),
-      text: t("testimonials.testimonial5.text", "Merci à Service Auto Adi pour leur professionnalisme. Ils m'ont aidée à trouver une voiture adaptée à mon budget et ont géré toutes les formalités administratives avec efficacité."),
-      rating: 4
+      name: "Maria Garcia",
+      location: "Barcelona, España",
+      text: "Gracias a Service Auto Adi por su profesionalidad. Me ayudaron a encontrar un coche adaptado a mi presupuesto y gestionaron todos los trámites administrativos con eficacia.",
+      rating: 4,
+      language: "Español"
     },
     {
-      name: t("testimonials.testimonial6.name", "Luca Rossi"),
-      location: t("testimonials.testimonial6.location", "Milan, Italie"),
-      text: t("testimonials.testimonial6.text", "Excellente concession! J'ai acheté une Fiat 500 pour ma fille et tout s'est déroulé parfaitement. Le service après-vente est également très réactif."),
-      rating: 5
+      name: "Luca Rossi",
+      location: "Milano, Italia",
+      text: "Concessionaria eccellente! Ho comprato una Fiat 500 per mia figlia e tutto è andato perfettamente. Anche il servizio post-vendita è molto reattivo.",
+      rating: 5,
+      language: "Italiano"
     }
   ];
 
@@ -100,6 +117,7 @@ export function Testimonials() {
               location={testimonial.location}
               text={testimonial.text}
               rating={testimonial.rating}
+              language={testimonial.language}
             />
           ))}
         </div>
