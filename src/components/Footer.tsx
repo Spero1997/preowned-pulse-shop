@@ -34,22 +34,22 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-blue-100 hover:text-white transition-colors">
-                  {t("footer.home")}
+                  {t("navbar.home")}
                 </Link>
               </li>
               <li>
                 <Link to="/shop" className="text-blue-100 hover:text-white transition-colors">
-                  {t("footer.cars")}
+                  {t("navbar.cars")}
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="text-blue-100 hover:text-white transition-colors">
-                  {t("footer.about")}
+                  {t("navbar.about")}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-blue-100 hover:text-white transition-colors">
-                  {t("footer.contact")}
+                  {t("navbar.contact")}
                 </Link>
               </li>
               <li>
@@ -62,7 +62,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-bold mb-4">{t("footer.contact")}</h3>
+            <h3 className="text-lg font-bold mb-4">{t("navbar.contact")}</h3>
             <ul className="space-y-2">
               <li className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5 text-autoOrange" />
