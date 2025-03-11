@@ -81,6 +81,10 @@ const Cart = () => {
     return items.reduce((total, item) => total + item.price, 0);
   };
 
+  const calculateDownPayment = () => {
+    return calculateTotal() * 0.2;
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -207,12 +211,12 @@ const Cart = () => {
                     <span className="font-medium">{formatEuro(calculateTotal())}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Frais de dossier</span>
-                    <span className="font-medium">{formatEuro(300)}</span>
+                    <span className="text-gray-600">Acompte de 20% à la commande</span>
+                    <span className="font-medium">{formatEuro(calculateDownPayment())}</span>
                   </div>
                   <div className="border-t pt-4 flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span className="text-autoBlue">{formatEuro(calculateTotal() + 300)}</span>
+                    <span className="text-autoBlue">{formatEuro(calculateTotal())}</span>
                   </div>
                 </div>
                 
@@ -260,7 +264,7 @@ const Cart = () => {
                   Finaliser ma réservation
                 </Button>
                 <p className="text-sm text-gray-500 text-center">
-                  Un acompte de 10% vous sera demandé pour confirmer votre réservation.
+                  Un acompte de 20% vous sera demandé pour confirmer votre réservation.
                 </p>
               </div>
             </div>
@@ -311,15 +315,15 @@ const Cart = () => {
                 <span>{formatEuro(calculateTotal())}</span>
               </div>
               <div className="flex justify-between text-sm mt-1">
-                <span>Frais de dossier:</span>
-                <span>{formatEuro(300)}</span>
+                <span>Acompte de 20% à la commande:</span>
+                <span>{formatEuro(calculateDownPayment())}</span>
               </div>
               <div className="flex justify-between font-bold mt-2 pt-2 border-t">
                 <span>Total:</span>
-                <span>{formatEuro(calculateTotal() + 300)}</span>
+                <span>{formatEuro(calculateTotal())}</span>
               </div>
               <div className="mt-3 text-sm text-gray-600">
-                <p>Acompte requis (10%): {formatEuro((calculateTotal() + 300) * 0.1)}</p>
+                <p>Acompte requis (20%): {formatEuro(calculateDownPayment())}</p>
               </div>
             </div>
           </div>
