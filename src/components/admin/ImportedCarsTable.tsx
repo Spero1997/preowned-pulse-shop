@@ -27,13 +27,13 @@ export const ImportedCarsTable = ({ importedCars, onAddCar, onAddAll }: Imported
     return null;
   }
   
-  // Compter les voitures par marque
+  // Comptage des voitures par marque
   const brandCounts: Record<string, number> = {};
   importedCars.forEach(car => {
     brandCounts[car.brand] = (brandCounts[car.brand] || 0) + 1;
   });
   
-  // Trier les marques par nombre de voitures (décroissant)
+  // Tri des marques par nombre de voitures (décroissant)
   const sortedBrands = Object.entries(brandCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10); // Top 10 marques
@@ -57,7 +57,7 @@ export const ImportedCarsTable = ({ importedCars, onAddCar, onAddAll }: Imported
           <div className="flex flex-wrap gap-2">
             {sortedBrands.map(([brand, count]) => (
               <Badge key={brand} variant="secondary">
-                {brand}: {count} voiture{count > 1 ? 's' : ''}
+                {brand}: {count} {count > 1 ? 'voitures' : 'voiture'}
               </Badge>
             ))}
           </div>

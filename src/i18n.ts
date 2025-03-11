@@ -4,8 +4,8 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 // Import direct des fichiers de traduction
-import translationES from './locales/es/translation.json';
-import translationPT from './locales/pt/translation.json';
+import translationES from '../public/locales/es/translation.json';
+import translationPT from '../public/locales/pt/translation.json';
 
 // Définition des ressources de traduction
 const resources = {
@@ -50,6 +50,37 @@ const resources = {
         "address": "Borgo Ognissanti, 142r 50123 Firenze FI Italie",
         "phone": "+39 376 175 3341",
         "email": "info@serviceautoadi.it"
+      },
+      "shop": {
+        "title": "Nos voitures",
+        "carsFound": "{{count}} voiture trouvée",
+        "carsFound_plural": "{{count}} voitures trouvées",
+        "searchPlaceholder": "Rechercher par marque, modèle...",
+        "sortBy": "Trier par",
+        "sortOptions": {
+          "default": "Par défaut",
+          "priceAsc": "Prix croissant",
+          "priceDesc": "Prix décroissant",
+          "newest": "Plus récent",
+          "lowestMileage": "Kilométrage le plus bas"
+        },
+        "noResults": "Aucune voiture trouvée",
+        "modifySearch": "Veuillez modifier vos critères de recherche ou vos filtres.",
+        "tryAgain": "Réessayer",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "loading": "Chargement des voitures...",
+        "refresh": "Rafraîchir ({{count}} voitures)"
+      },
+      "admin": {
+        "carCatalog": "Catalogue de voitures ({{count}})",
+        "manageInventory": "Gérez votre inventaire de véhicules",
+        "importedCars": "Voitures importées ({{count}})",
+        "importedCarsPreview": "Aperçu des voitures importées",
+        "addAllToCatalog": "Ajouter toutes au catalogue",
+        "topBrands": "Top 10 marques importées :",
+        "showing": "Affichage des {{count}} premières sur {{total}} voitures importées.",
+        "downloadToReplace": "Pour utiliser ces {{count}} voitures, téléchargez le fichier et remplacez src/data/cars.ts"
       }
     }
   },
@@ -94,6 +125,37 @@ const resources = {
         "address": "Borgo Ognissanti, 142r 50123 Firenze FI Italy",
         "phone": "+39 376 175 3341",
         "email": "info@serviceautoadi.it"
+      },
+      "shop": {
+        "title": "Our cars",
+        "carsFound": "{{count}} car found",
+        "carsFound_plural": "{{count}} cars found",
+        "searchPlaceholder": "Search by brand, model...",
+        "sortBy": "Sort by",
+        "sortOptions": {
+          "default": "Default",
+          "priceAsc": "Price ascending",
+          "priceDesc": "Price descending",
+          "newest": "Newest",
+          "lowestMileage": "Lowest mileage"
+        },
+        "noResults": "No cars found",
+        "modifySearch": "Please modify your search criteria or filters.",
+        "tryAgain": "Try again",
+        "previous": "Previous",
+        "next": "Next",
+        "loading": "Loading cars...",
+        "refresh": "Refresh ({{count}} cars)"
+      },
+      "admin": {
+        "carCatalog": "Car catalog ({{count}})",
+        "manageInventory": "Manage your vehicle inventory",
+        "importedCars": "Imported cars ({{count}})",
+        "importedCarsPreview": "Preview of imported cars",
+        "addAllToCatalog": "Add all to catalog",
+        "topBrands": "Top 10 imported brands:",
+        "showing": "Showing first {{count}} of {{total}} imported cars.",
+        "downloadToReplace": "To use all these {{count}} cars, download the file and replace src/data/cars.ts"
       }
     }
   },
@@ -138,6 +200,37 @@ const resources = {
         "address": "Borgo Ognissanti, 142r 50123 Firenze FI Italia",
         "phone": "+39 376 175 3341",
         "email": "info@serviceautoadi.it"
+      },
+      "shop": {
+        "title": "Le nostre auto",
+        "carsFound": "{{count}} auto trovata",
+        "carsFound_plural": "{{count}} auto trovate",
+        "searchPlaceholder": "Cerca per marca, modello...",
+        "sortBy": "Ordina per",
+        "sortOptions": {
+          "default": "Predefinito",
+          "priceAsc": "Prezzo crescente",
+          "priceDesc": "Prezzo decrescente",
+          "newest": "Più recente",
+          "lowestMileage": "Chilometraggio più basso"
+        },
+        "noResults": "Nessuna auto trovata",
+        "modifySearch": "Si prega di modificare i criteri di ricerca o i filtri.",
+        "tryAgain": "Riprova",
+        "previous": "Precedente",
+        "next": "Successivo",
+        "loading": "Caricamento auto...",
+        "refresh": "Aggiorna ({{count}} auto)"
+      },
+      "admin": {
+        "carCatalog": "Catalogo auto ({{count}})",
+        "manageInventory": "Gestisci il tuo inventario di veicoli",
+        "importedCars": "Auto importate ({{count}})",
+        "importedCarsPreview": "Anteprima delle auto importate",
+        "addAllToCatalog": "Aggiungi tutte al catalogo",
+        "topBrands": "Top 10 marche importate:",
+        "showing": "Visualizzazione delle prime {{count}} di {{total}} auto importate.",
+        "downloadToReplace": "Per utilizzare tutte queste {{count}} auto, scarica il file e sostituisci src/data/cars.ts"
       }
     }
   },

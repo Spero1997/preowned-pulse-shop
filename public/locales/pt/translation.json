@@ -17,13 +17,13 @@
   },
   "featuredCars": {
     "title": "Nossos carros em destaque",
-    "subtitle": "Descubra nossa seleção de veículos excepcionais entre nossa coleção de {count} carros",
+    "subtitle": "Descubra nossa seleção de veículos excepcionais entre nossa coleção de {{count}} carros",
     "refresh": "Atualizar",
     "viewAllCars": "Ver todos os carros",
     "noFeaturedCars": "Não há carros em destaque disponíveis no momento. Visite nossa loja para ver todos os nossos carros.",
     "loading": "Carregando carros...",
     "refreshing": "Atualizando...",
-    "loadingCars": "Carregando {count} carros..."
+    "loadingCars": "Carregando {{count}} carros..."
   },
   "services": {
     "title": "Nossos serviços",
@@ -87,5 +87,36 @@
     "address": "Borgo Ognissanti, 142r 50123 Firenze FI Itália",
     "phone": "+39 376 175 3341",
     "email": "info@serviceautoadi.it"
+  },
+  "shop": {
+    "title": "Nossos carros",
+    "carsFound": "{{count}} carro encontrado",
+    "carsFound_plural": "{{count}} carros encontrados",
+    "searchPlaceholder": "Pesquisar por marca, modelo...",
+    "sortBy": "Ordenar por",
+    "sortOptions": {
+      "default": "Padrão",
+      "priceAsc": "Preço crescente",
+      "priceDesc": "Preço decrescente",
+      "newest": "Mais recente",
+      "lowestMileage": "Menor quilometragem"
+    },
+    "noResults": "Nenhum carro encontrado",
+    "modifySearch": "Por favor, modifique seus critérios de pesquisa ou filtros.",
+    "tryAgain": "Tentar novamente",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "loading": "Carregando carros...",
+    "refresh": "Atualizar ({{count}} carros)"
+  },
+  "admin": {
+    "carCatalog": "Catálogo de carros ({{count}})",
+    "manageInventory": "Gerencie seu inventário de veículos",
+    "importedCars": "Carros importados ({{count}})",
+    "importedCarsPreview": "Visualização dos carros importados",
+    "addAllToCatalog": "Adicionar todos ao catálogo",
+    "topBrands": "Top 10 marcas importadas:",
+    "showing": "Mostrando as primeiras {{count}} de {{total}} carros importados.",
+    "downloadToReplace": "Para usar todos esses {{count}} carros, faça o download do arquivo e substitua src/data/cars.ts"
   }
 }
