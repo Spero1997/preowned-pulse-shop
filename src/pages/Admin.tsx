@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { ImportSection } from "@/components/admin/ImportSection";
 import { ImportedCarsTable } from "@/components/admin/ImportedCarsTable";
@@ -14,6 +14,19 @@ const Admin = () => {
   const [importedCars, setImportedCars] = useState<Car[]>([]);
   const [cars, setCars] = useState<Car[]>(initialCars);
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+
+  // Charger les voitures depuis le localStorage au démarrage
+  useEffect(() => {
+    const storedCars = localStorage.getItem('cars');
+    if (storedCars) {
+      setCars(JSON.parse(storedCars));
+    }
+  }, []);
+
+  // Sauvegarder les voitures dans le localStorage à chaque modification
+  useEffect(() => {
+    localStorage.setItem('cars', JSON.stringify(cars));
+  }, [cars]);
 
   const handleAddCar = (car: Car) => {
     // Générer un ID unique pour la nouvelle voiture et la marquer comme featured

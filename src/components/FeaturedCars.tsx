@@ -3,16 +3,46 @@ import { useState, useEffect } from "react";
 import { CarCard } from "./CarCard";
 import { Button } from "@/components/ui/button";
 import { Car } from "@/types/car";
-import { cars } from "@/data/cars";
+import { cars as initialCars } from "@/data/cars";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function FeaturedCars() {
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
+  const [allCars, setAllCars] = useState<Car[]>(initialCars);
+  
+  // Fonction pour obtenir les voitures stockées localement dans le localStorage
+  const getLocalCars = (): Car[] => {
+    try {
+      const localCarsString = localStorage.getItem('cars');
+      if (localCarsString) {
+        return JSON.parse(localCarsString);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des voitures locales:", error);
+    }
+    return initialCars;
+  };
+  
+  useEffect(() => {
+    // Récupérer les voitures du localStorage ou utiliser les initiales
+    const currentCars = getLocalCars();
+    setAllCars(currentCars);
+    
+    // Vérifier à intervalles réguliers si de nouvelles voitures ont été ajoutées
+    const interval = setInterval(() => {
+      const updatedCars = getLocalCars();
+      if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
+        setAllCars(updatedCars);
+      }
+    }, 2000); // Vérifier toutes les 2 secondes
+    
+    return () => clearInterval(interval);
+  }, []);
   
   useEffect(() => {
     // Prioritize featured cars first
-    const featured = cars.filter(car => car.featured && car.isAvailable);
+    const featured = allCars.filter(car => car.featured && car.isAvailable);
     
     // If we have featured cars, show them, otherwise take the first 6 cars
     if (featured.length > 0) {
@@ -20,10 +50,10 @@ export function FeaturedCars() {
       setFeaturedCars(featured.slice(0, 6));
     } else {
       // If no featured cars, take the first 6 available from the entire collection
-      const available = cars.filter(car => car.isAvailable);
+      const available = allCars.filter(car => car.isAvailable);
       setFeaturedCars(available.slice(0, 6));
     }
-  }, []);
+  }, [allCars]);
 
   return (
     <section className="py-16 bg-gray-50">
@@ -32,7 +62,7 @@ export function FeaturedCars() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Nos voitures vedettes</h2>
             <p className="text-gray-600">
-              Découvrez notre sélection de véhicules d'exception parmi notre collection de {cars.length} voitures
+              Découvrez notre sélection de véhicules d'exception parmi notre collection de {allCars.length} voitures
             </p>
           </div>
           <Button 
