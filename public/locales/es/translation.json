@@ -107,7 +107,9 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "loading": "Cargando coches...",
-    "refresh": "Actualizar ({{count}} coches)"
+    "refresh": "Actualizar",
+    "refreshing": "Actualizando...",
+    "loadingCars": "Cargando {{count}} coches..."
   },
   "admin": {
     "carCatalog": "Catálogo de coches ({{count}})",

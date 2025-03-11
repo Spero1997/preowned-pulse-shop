@@ -37,9 +37,6 @@ export function FeaturedCars() {
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
-      toast.error("Erreur de données", {
-        description: "Impossible de récupérer les voitures du stockage local"
-      });
     }
     
     // Important: Initialiser avec les voitures par défaut si rien n'est trouvé
@@ -56,13 +53,10 @@ export function FeaturedCars() {
     const updatedCars = getLocalCars();
     setAllCars(updatedCars);
     
-    const refreshMsg = ready ? t("featuredCars.refreshing") : "Actualisation...";
-    const loadingMsg = ready 
-      ? t("featuredCars.loadingCars", { count: updatedCars.length }) 
-      : `Chargement de ${updatedCars.length} voitures...`;
-    
-    toast.info(refreshMsg, {
-      description: loadingMsg
+    toast.info(ready ? t("featuredCars.refreshing") : "Actualisation...", {
+      description: ready 
+        ? t("featuredCars.loadingCars", { count: updatedCars.length }) 
+        : `Chargement de ${updatedCars.length} voitures...`
     });
   };
   
@@ -103,31 +97,14 @@ export function FeaturedCars() {
         console.log("FeaturedCars - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
         setAllCars(updatedCars);
       }
-    }, 1000); // Réduit à 1 seconde pour être plus réactif
-    
-    // Force rafraîchissement direct au montage
-    const initialCheck = setTimeout(() => {
-      const freshCars = getLocalCars();
-      console.log("FeaturedCars - Vérification initiale:", freshCars.length, "voitures");
-      setAllCars(freshCars);
-    }, 500);
+    }, 5000); // Passage à 5 secondes pour réduire les vérifications
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
-      clearTimeout(initialCheck);
     };
   }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
-
-  // Force une mise à jour lors du montage initial de la page
-  useEffect(() => {
-    const directCheck = setTimeout(() => {
-      forceRefresh();
-    }, 100);
-    
-    return () => clearTimeout(directCheck);
-  }, []);
   
   // Filtrer les voitures vedettes quand la liste de voitures change
   useEffect(() => {

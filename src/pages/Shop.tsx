@@ -48,25 +48,16 @@ const Shop = () => {
           // Vérifie si le nombre de voitures a changé
           if (cars.length !== parsedCars.length) {
             console.log("Shop - Nombre de voitures a changé de", cars.length, "à", parsedCars.length);
-            toast.success(`Inventaire mis à jour`, {
-              description: `${parsedCars.length} voitures disponibles dans le catalogue.`
-            });
           }
           return parsedCars;
         } else {
           console.warn("Shop - Données récupérées invalides ou vides, utilisation des données par défaut");
-          toast.error("Données invalides", {
-            description: "Format de données incorrect dans le stockage local"
-          });
         }
       } else {
         console.log("Shop - Aucune donnée dans localStorage, utilisation des données par défaut");
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
-      toast.error("Erreur de données", {
-        description: "Impossible de récupérer les voitures du stockage local"
-      });
     }
     
     // Important: Toujours retourner les voitures par défaut si rien n'est trouvé dans localStorage
@@ -82,9 +73,9 @@ const Shop = () => {
     const updatedCars = getLocalCars();
     setCars(updatedCars);
     
-    toast.info(ready ? t("featuredCars.refreshing") : "Actualisation en cours", {
+    toast.info(ready ? t("shop.refreshing") : "Actualisation en cours", {
       description: ready 
-        ? t("featuredCars.loadingCars", { count: updatedCars.length }) 
+        ? t("shop.loadingCars", { count: updatedCars.length }) 
         : `Chargement de ${updatedCars.length} voitures...`
     });
     
@@ -135,33 +126,14 @@ const Shop = () => {
         setCars(updatedCars);
         setInitialLoadComplete(true);
       }
-    }, 1000);
-    
-    // Force rafraîchissement direct au montage
-    const initialCheck = setTimeout(() => {
-      const freshCars = getLocalCars();
-      console.log("Shop - Vérification initiale:", freshCars.length, "voitures");
-      setCars(freshCars);
-      setInitialLoadComplete(true);
-    }, 500);
+    }, 5000); // Passage à 5 secondes pour réduire les vérifications
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
-      clearTimeout(initialCheck);
     };
   }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
-
-  // Force une mise à jour lors du montage initial de la page
-  useEffect(() => {
-    console.log("Shop - Déclenchement de la vérification directe");
-    const directCheck = setTimeout(() => {
-      forceRefresh();
-    }, 100);
-    
-    return () => clearTimeout(directCheck);
-  }, []);
 
   // Effet pour filtrer les voitures lorsque les filtres ou la liste de voitures change
   useEffect(() => {
@@ -254,7 +226,7 @@ const Shop = () => {
             className="mb-4 flex items-center gap-2"
           >
             <RefreshCw className="h-4 w-4" />
-            {ready ? t("shop.refresh", { count: cars.length }) : `Rafraîchir (${cars.length} voitures)`}
+            {ready ? t("shop.refresh") : "Rafraîchir"}
           </Button>
           
           {/* Barre de recherche */}
