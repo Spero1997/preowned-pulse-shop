@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -8,12 +9,6 @@ import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
 import { cartService } from "@/lib/cartService";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import {
   Dialog,
   DialogContent,
@@ -279,41 +274,38 @@ const Cart = () => {
                   </div>
                 </div>
                 
-                <Accordion type="single" collapsible className="mb-6">
-                  <AccordionItem value="payment-info">
-                    <AccordionTrigger className="flex items-center text-sm">
-                      <Info className="h-4 w-4 mr-2" />
-                      Informations de paiement
-                    </AccordionTrigger>
-                    <AccordionContent className="text-sm">
-                      <div className="bg-gray-100 p-4 rounded-md space-y-2">
-                        <h3 className="font-semibold">Virement bancaire</h3>
-                        <div className="grid grid-cols-1 gap-2">
-                          <div>
-                            <p className="font-medium">Bénéficiaire</p>
-                            <p>Lucia Dzujkova</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">IBAN</p>
-                            <p className="font-mono text-xs">LT453500010018283529</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">SWIFT/BIC</p>
-                            <p className="font-mono text-xs">EVIULT2VXXX</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">Nom de banque</p>
-                            <p>Paysera LT, UAB</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">Adresse de la banque</p>
-                            <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                          </div>
-                        </div>
+                {/* Payment Information - Now directly visible instead of in accordion */}
+                <div className="mb-6">
+                  <div className="flex items-center mb-2 text-sm font-medium">
+                    <Info className="h-4 w-4 mr-2" />
+                    Informations de paiement
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-md space-y-2">
+                    <h3 className="font-semibold">Virement bancaire</h3>
+                    <div className="grid grid-cols-1 gap-2">
+                      <div>
+                        <p className="font-medium">Bénéficiaire</p>
+                        <p>Lucia Dzujkova</p>
                       </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                      <div>
+                        <p className="font-medium">IBAN</p>
+                        <p className="font-mono text-xs">LT453500010018283529</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">SWIFT/BIC</p>
+                        <p className="font-mono text-xs">EVIULT2VXXX</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Nom de banque</p>
+                        <p>Paysera LT, UAB</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Adresse de la banque</p>
+                        <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
                 <Button 
                   className="w-full bg-autoOrange hover:bg-autoOrange/90 mb-4 flex items-center justify-center"
