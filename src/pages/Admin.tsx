@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { ImportSection } from "@/components/admin/ImportSection";
@@ -9,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Car } from "@/types/car";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { getCarsFromLocalStorage, updateCarsInLocalStorage } from "@/utils/dataSync";
+import { getCarsFromLocalStorage, updateCarsInLocalStorage, addCarToLocalStorage } from "@/utils/dataSync";
 
 const Admin = () => {
   const [importedCars, setImportedCars] = useState<Car[]>([]);
@@ -22,13 +21,21 @@ const Admin = () => {
     const loadCars = () => {
       const storedCars = getCarsFromLocalStorage();
       setCars(storedCars);
+      console.log("Admin: Voitures chargées du localStorage", storedCars.length);
     };
     
     loadCars();
     
     // Écouter les événements de mise à jour des voitures
-    const handleCarsUpdated = () => {
-      loadCars();
+    const handleCarsUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const source = customEvent.detail?.source || 'unknown';
+      
+      // Ne réagir qu'aux événements qui ne proviennent pas d'Admin lui-même
+      if (source !== 'Admin') {
+        console.log(`Admin: Événement carsUpdated reçu de ${source}`);
+        loadCars();
+      }
     };
     
     window.addEventListener('carsUpdated', handleCarsUpdated);
@@ -48,12 +55,12 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     };
     
-    // Mettre à jour l'état local et le localStorage
+    // Mettre à jour l'état local
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
     
-    // Mettre à jour explicitement le localStorage et déclencher l'événement
-    updateCarsInLocalStorage(updatedCars);
+    // Utiliser la nouvelle fonction pour ajouter une voiture
+    addCarToLocalStorage(newCar);
     
     setSelectedCar(null);
     
@@ -118,12 +125,12 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     };
     
-    // Mettre à jour l'état local et le localStorage
+    // Mettre à jour l'état local
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
     
-    // Mettre à jour explicitement le localStorage et déclencher l'événement
-    updateCarsInLocalStorage(updatedCars);
+    // Utiliser la nouvelle fonction pour ajouter une voiture
+    addCarToLocalStorage(newCar);
     
     setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
     
@@ -153,7 +160,7 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     }));
     
-    // Mettre à jour l'état local et le localStorage
+    // Mettre à jour l'état local
     const updatedCars = [...cars, ...newCars];
     setCars(updatedCars);
     
