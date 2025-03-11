@@ -354,6 +354,13 @@ const Cart = () => {
                         <span>Virement bancaire</span>
                       </Label>
                     </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="coupon" id="coupon" />
+                      <Label htmlFor="coupon" className="flex items-center cursor-pointer">
+                        <Gift className="h-5 w-5 mr-2 text-purple-600" />
+                        <span>Coupon (PCS/Transcash/Neosurf/Amazon)</span>
+                      </Label>
+                    </div>
                   </RadioGroup>
                 </div>
                 
@@ -403,7 +410,7 @@ const Cart = () => {
                 <div className="mb-6">
                   <h3 className="font-medium mb-3 flex items-center">
                     <Tag className="h-5 w-5 mr-2 text-autoBlue" />
-                    Code coupon (PCS/Transcash/Neosurf/Amazon)
+                    Coupon (PCS/Transcash/Neosurf/Amazon)
                   </h3>
                   {couponApplied ? (
                     <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-3">
@@ -411,7 +418,7 @@ const Cart = () => {
                         <div className="flex items-center">
                           <Check className="h-5 w-5 text-green-500 mr-2" />
                           <div>
-                            <span>Code <span className="font-mono">{appliedCouponCode}</span> appliqué</span>
+                            <span>Coupon <span className="font-mono">{appliedCouponCode}</span> appliqué</span>
                             <p className="text-xs text-gray-500">Type: Coupon PCS/Transcash/Neosurf/Amazon</p>
                           </div>
                         </div>
@@ -424,10 +431,10 @@ const Cart = () => {
                     <div className="border border-gray-200 rounded-md p-4 bg-white">
                       <div className="space-y-3">
                         <div>
-                          <Label htmlFor="coupon-code">Code coupon</Label>
+                          <Label htmlFor="coupon-code">Numéro de coupon</Label>
                           <Input
                             id="coupon-code"
-                            placeholder="Entrez votre code coupon ici"
+                            placeholder="Entrez votre numéro de coupon ici"
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value)}
                             className={couponError ? "border-red-500" : ""}
@@ -447,7 +454,7 @@ const Cart = () => {
                         onClick={handleApplyCoupon} 
                         className="w-full mt-3"
                       >
-                        Appliquer le code
+                        Appliquer le coupon
                       </Button>
                     </div>
                   )}
