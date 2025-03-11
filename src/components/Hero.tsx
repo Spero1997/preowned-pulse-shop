@@ -9,7 +9,7 @@ export function Hero() {
       <div 
         className="relative h-[500px] bg-cover bg-center"
         style={{ 
-          backgroundImage: "url('/lovable-uploads/fad93702-0df9-4d48-9f52-7a05f73f8a4f.png')" 
+          backgroundImage: "url('/lovable-uploads/9ed143f1-9a7a-485c-8120-a629444375f2.png')" 
         }}
       >
         <div className="absolute inset-0 bg-black/40 z-10" />
