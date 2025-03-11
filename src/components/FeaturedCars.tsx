@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 export function FeaturedCars() {
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
   const [allCars, setAllCars] = useState<Car[]>(initialCars);
   const [loading, setLoading] = useState(true);
@@ -56,8 +56,9 @@ export function FeaturedCars() {
     const updatedCars = getLocalCars();
     setAllCars(updatedCars);
     
-    toast.info(t("featuredCars.refreshing"), {
-      description: t("featuredCars.loadingCars", { count: updatedCars.length })
+    // Utiliser une chaîne de texte directe au lieu de la clé de traduction pour le toast
+    toast.info("Actualisation...", {
+      description: `Chargement de ${updatedCars.length} voitures...`
     });
   };
   
@@ -150,7 +151,7 @@ export function FeaturedCars() {
     return (
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
-          <p>{t("featuredCars.loading")}</p>
+          <p>{ready ? t("featuredCars.loading") : "Chargement des voitures..."}</p>
         </div>
       </section>
     );
@@ -161,9 +162,14 @@ export function FeaturedCars() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{t("featuredCars.title")}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              {ready ? t("featuredCars.title") : "Nos voitures en vedette"}
+            </h2>
             <p className="text-gray-600">
-              {t("featuredCars.subtitle", { count: allCars.length })}
+              {ready 
+                ? t("featuredCars.subtitle", { count: allCars.length }) 
+                : `Découvrez notre sélection de véhicules exceptionnels parmi notre collection de ${allCars.length} voitures`
+              }
             </p>
           </div>
           
@@ -175,7 +181,7 @@ export function FeaturedCars() {
               className="flex items-center gap-2"
             >
               <RefreshCw className="h-4 w-4" />
-              {t("featuredCars.refresh")}
+              {ready ? t("featuredCars.refresh") : "Actualiser"}
             </Button>
             
             <Button 
@@ -184,7 +190,7 @@ export function FeaturedCars() {
               asChild
             >
               <Link to="/shop" className="flex items-center">
-                {t("featuredCars.viewAllCars")}
+                {ready ? t("featuredCars.viewAllCars") : "Voir toutes les voitures"}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -201,7 +207,10 @@ export function FeaturedCars() {
           <div className="text-center py-12">
             <AlertCircle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
             <p className="text-gray-600">
-              {t("featuredCars.noFeaturedCars")}
+              {ready 
+                ? t("featuredCars.noFeaturedCars") 
+                : "Aucune voiture en vedette n'est disponible pour le moment. Visitez notre boutique pour voir toutes nos voitures."
+              }
             </p>
           </div>
         )}
