@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
+// Initialize i18next
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -11,7 +12,7 @@ i18n
   .init({
     fallbackLng: "fr",
     supportedLngs: ["fr", "en", "it", "es", "pt"],
-    debug: false,
+    debug: true, // Set to true temporarily to help diagnose issues
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"]
