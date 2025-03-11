@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -30,29 +29,23 @@ const Cart = () => {
   const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Charger les éléments du panier
   const loadCartItems = () => {
     setItems(cartService.getItems());
   };
 
   useEffect(() => {
-    // Charger les éléments du panier
     setLoading(true);
-    
-    // Simuler un délai de chargement
     setTimeout(() => {
       loadCartItems();
       setLoading(false);
     }, 500);
 
-    // Écouter les mises à jour du panier
     const handleCartUpdate = () => {
       loadCartItems();
     };
 
     window.addEventListener('cart-updated', handleCartUpdate);
 
-    // Nettoyer l'écouteur d'événements
     return () => {
       window.removeEventListener('cart-updated', handleCartUpdate);
     };
@@ -69,23 +62,15 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    // Ouvrir le dialog de confirmation
     setCheckoutDialogOpen(true);
   };
 
   const confirmCheckout = () => {
-    // Fermer le dialog
     setCheckoutDialogOpen(false);
-    
-    // Simuler une commande réussie
     toast.success("Commande effectuée avec succès !", {
       description: "Nous vous contacterons prochainement pour finaliser votre achat."
     });
-    
-    // Vider le panier après la commande
     clearCart();
-    
-    // Rediriger vers la page d'accueil
     setTimeout(() => {
       navigate("/");
     }, 2000);
@@ -124,7 +109,10 @@ const Cart = () => {
             </Button>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Votre panier</h1>
+          <div className="flex items-center mb-8">
+            <ShoppingCart className="h-8 w-8 text-autoBlue mr-3" />
+            <h1 className="text-3xl font-bold text-gray-900">Votre panier</h1>
+          </div>
 
           {loading ? (
             <div className="flex justify-center my-12">
@@ -267,6 +255,7 @@ const Cart = () => {
                   className="w-full bg-autoOrange hover:bg-autoOrange/90 mb-4"
                   onClick={handleCheckout}
                 >
+                  <ShoppingCart className="h-5 w-5 mr-2" />
                   Finaliser ma réservation
                 </Button>
                 <p className="text-sm text-gray-500 text-center">
@@ -279,11 +268,11 @@ const Cart = () => {
       </main>
       <Footer />
 
-      {/* Dialog de confirmation de commande avec récapitulatif du panier */}
       <Dialog open={checkoutDialogOpen} onOpenChange={setCheckoutDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5 text-autoBlue" />
               <Check className="h-5 w-5 text-green-500" />
               Confirmation de commande
             </DialogTitle>
@@ -346,6 +335,7 @@ const Cart = () => {
               onClick={confirmCheckout}
               className="bg-autoOrange hover:bg-autoOrange/90 flex-1"
             >
+              <ShoppingCart className="h-4 w-4 mr-2" />
               Confirmer
             </Button>
           </DialogFooter>
