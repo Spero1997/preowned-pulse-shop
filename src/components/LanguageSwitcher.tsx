@@ -10,12 +10,12 @@ export function LanguageSwitcher() {
   useEffect(() => {
     console.log("Current language in LanguageSwitcher:", i18n.language);
     
-    // Force Italian language if it's not set
+    // Make sure Italian is the active language
     if (i18n.language !== 'it') {
+      console.log("Correcting language to Italian in LanguageSwitcher");
       i18n.changeLanguage('it');
-      console.log("Language corrected to Italian in LanguageSwitcher");
     }
-  }, [i18n.language]);
+  }, []);
   
   return (
     <div className="fixed bottom-4 right-4 z-50">

@@ -11,14 +11,18 @@ import i18n from "./i18n.ts";
 // Language initialization wrapper to ensure the language is properly set
 const LanguageInitializer = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
-    // Force Italian language on initial mount
+    // Hard force to Italian on component mount
+    document.documentElement.lang = "it";
     i18n.changeLanguage('it');
-    console.log("Language forcefully set to Italian:", i18n.language);
+    console.log("Language forcefully set to Italian in main.tsx:", i18n.language);
     
-    // Set a small timeout to make sure the language is applied
+    // Double check after a small delay to ensure language is properly applied
     setTimeout(() => {
-      console.log("Language after timeout:", i18n.language);
-    }, 500);
+      if (i18n.language !== 'it') {
+        i18n.changeLanguage('it');
+        console.log("Language corrected to Italian after timeout");
+      }
+    }, 300);
   }, []);
 
   return <>{children}</>;
