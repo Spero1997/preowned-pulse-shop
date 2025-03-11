@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro, Gift, AlertCircle, Tag } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro, Gift, AlertCircle, Tag, Upload, Image, X } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
@@ -30,6 +30,9 @@ const Cart = () => {
   const [couponApplied, setCouponApplied] = useState(false);
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
+  const [paymentProof, setPaymentProof] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   const loadCartItems = () => {
@@ -93,6 +96,7 @@ const Cart = () => {
     });
     clearCart();
     cartService.removeCoupon();
+    setPaymentProof(null);
     setTimeout(() => {
       navigate("/");
     }, 2000);
@@ -140,6 +144,52 @@ const Cart = () => {
     setCouponApplied(false);
     setAppliedCouponCode("");
     setCouponError("");
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) {
+      setUploadError("Aucun fichier sélectionné");
+      return;
+    }
+
+    // Check file type
+    if (!file.type.match('image.*')) {
+      setUploadError("Veuillez sélectionner une image (JPG, PNG, etc.)");
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("La taille du fichier ne doit pas dépasser 5 Mo");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target && typeof e.target.result === 'string') {
+        setPaymentProof(e.target.result);
+        setUploadError("");
+        toast.success("Preuve de paiement téléchargée avec succès");
+      }
+    };
+    reader.onerror = () => {
+      setUploadError("Erreur lors du chargement du fichier");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removePaymentProof = () => {
+    setPaymentProof(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   return (
@@ -341,20 +391,6 @@ const Cart = () => {
                         <p className="mt-2">Les informations pour le paiement par carte bancaire vous seront communiquées après la validation de votre commande.</p>
                       </div>
                     )}
-                    {paymentMethod === "coupon" && (
-                      <div>
-                        <h3 className="font-semibold">Paiement par coupon</h3>
-                        <p className="mt-2">Utilisez des coupons PCS, Transcash, Neosurf ou des cartes cadeau Amazon pour régler votre achat.</p>
-                        <p className="mt-2 text-red-600 font-semibold">Important : Coupons acceptés</p>
-                        <ul className="list-disc pl-5 mt-2 space-y-1">
-                          <li>PCS</li>
-                          <li>Transcash</li>
-                          <li>Neosurf</li>
-                          <li>Cartes cadeau Amazon</li>
-                        </ul>
-                        <p className="mt-2 text-sm">Entrez votre code coupon dans la section "Code coupon" ci-dessus.</p>
-                      </div>
-                    )}
                   </div>
                 </div>
                 
@@ -409,6 +445,70 @@ const Cart = () => {
                       </Button>
                     </div>
                   )}
+                </div>
+                
+                <div className="mb-6">
+                  <h3 className="font-medium mb-3 flex items-center">
+                    <Image className="h-5 w-5 mr-2 text-green-600" />
+                    Preuve de paiement
+                  </h3>
+                  
+                  <div className="border border-gray-200 rounded-md p-4 bg-white">
+                    {paymentProof ? (
+                      <div className="space-y-3">
+                        <div className="relative">
+                          <img 
+                            src={paymentProof} 
+                            alt="Preuve de paiement" 
+                            className="w-full h-auto rounded-md border border-gray-300"
+                          />
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="absolute top-2 right-2 h-8 w-8 p-0"
+                            onClick={removePaymentProof}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-sm text-green-600 flex items-center">
+                          <Check className="h-4 w-4 mr-1" />
+                          Image téléchargée avec succès
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          ref={fileInputRef}
+                        />
+                        <div 
+                          className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:bg-gray-50"
+                          onClick={triggerFileInput}
+                        >
+                          <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                          <p className="text-sm text-gray-500 mb-1">
+                            Cliquez pour télécharger une preuve de paiement
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Formats acceptés: JPG, PNG, GIF (max 5 Mo)
+                          </p>
+                        </div>
+                        {uploadError && (
+                          <div className="text-red-500 text-sm mt-1 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {uploadError}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Téléchargez une capture d'écran ou une photo de votre preuve de paiement pour faciliter la validation de votre commande.
+                  </p>
                 </div>
                 
                 <Button 
@@ -487,7 +587,6 @@ const Cart = () => {
               <Card className="bg-gray-50">
                 <CardContent className="py-3 flex items-center">
                   {paymentMethod === "credit-card" && <CreditCard className="h-5 w-5 mr-2 text-blue-600" />}
-                  {paymentMethod === "coupon" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
                   {paymentMethod === "bank-transfer" && <Euro className="h-5 w-5 mr-2 text-amber-600" />}
                   <span>{getPaymentMethodLabel(paymentMethod)}</span>
                 </CardContent>
@@ -503,14 +602,6 @@ const Cart = () => {
                 </div>
               )}
               
-              {paymentMethod === "coupon" && (
-                <div className="mt-2 bg-gray-100 p-3 rounded-md text-xs">
-                  <p className="font-medium mb-1">Instructions pour les coupons :</p>
-                  <p>Vous pouvez utiliser les coupons suivants : PCS, Transcash, Neosurf ou cartes cadeau Amazon.</p>
-                  <p className="mt-1">Veuillez suivre les instructions après confirmation de commande.</p>
-                </div>
-              )}
-              
               {couponApplied && (
                 <div className="mt-2 bg-green-50 p-3 rounded-md text-xs">
                   <p className="font-medium mb-1 flex items-center">
@@ -519,6 +610,17 @@ const Cart = () => {
                   </p>
                   <p className="font-mono">{appliedCouponCode}</p>
                   <p className="text-xs text-gray-500">Type: Coupon PCS/Transcash/Neosurf/Amazon</p>
+                </div>
+              )}
+
+              {paymentProof && (
+                <div className="mt-2">
+                  <p className="text-xs font-medium mb-1">Preuve de paiement :</p>
+                  <img 
+                    src={paymentProof} 
+                    alt="Preuve de paiement" 
+                    className="w-full h-auto mt-1 rounded-md border border-gray-300"
+                  />
                 </div>
               )}
             </div>
