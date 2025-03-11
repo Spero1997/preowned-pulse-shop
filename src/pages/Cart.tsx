@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -252,7 +253,7 @@ const Cart = () => {
                 </Accordion>
                 
                 <Button 
-                  className="w-full bg-autoOrange hover:bg-autoOrange/90 mb-4"
+                  className="w-full bg-autoOrange hover:bg-autoOrange/90 mb-4 flex items-center justify-center"
                   onClick={handleCheckout}
                 >
                   <ShoppingCart className="h-5 w-5 mr-2" />
@@ -333,7 +334,7 @@ const Cart = () => {
             </Button>
             <Button 
               onClick={confirmCheckout}
-              className="bg-autoOrange hover:bg-autoOrange/90 flex-1"
+              className="bg-autoOrange hover:bg-autoOrange/90 flex-1 flex items-center justify-center"
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
               Confirmer
