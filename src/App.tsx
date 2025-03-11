@@ -1,41 +1,42 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
-import Shop from "./pages/Shop";
-import CarDetail from "./pages/CarDetail";
-import Cart from "./pages/Cart";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import Admin from "./pages/Admin";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
-const queryClient = new QueryClient();
+import Home from "@/pages/Index";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Shop from "@/pages/Shop";
+import CarDetail from "@/pages/CarDetail";
+import Cart from "@/pages/Cart";
+import Admin from "@/pages/Admin";
+import NotFound from "@/pages/NotFound";
+import { syncCarsWithLocalStorage } from "@/utils/dataSync";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+function App() {
+  useEffect(() => {
+    // Synchroniser les voitures avec le localStorage au chargement de l'application
+    const totalCars = syncCarsWithLocalStorage();
+    console.log(`App: ${totalCars} voitures chargées et synchronisées avec le localStorage`);
+  }, []);
+
+  return (
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/*" element={<Shop />} />
-          <Route path="/car/:id" element={<CarDetail />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/car/:id" element={<CarDetail />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/admin" element={<Admin />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </Suspense>
+      <Toaster />
+    </Router>
+  );
+}
 
 export default App;
