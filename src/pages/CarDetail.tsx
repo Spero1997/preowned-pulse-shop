@@ -32,6 +32,7 @@ const CarDetail = () => {
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState<string>("");
+  const [isInCart, setIsInCart] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,15 +43,34 @@ const CarDetail = () => {
       if (foundCar) {
         setCar(foundCar);
         setActiveImage(foundCar.images[0]);
+        
+        // Vérifier si la voiture est déjà dans le panier
+        const cartItems = cartService.getItems();
+        setIsInCart(cartItems.some(item => item.id === foundCar.id));
       }
       setLoading(false);
     }, 500);
-  }, [id]);
+    
+    // Écouter les mises à jour du panier
+    const handleCartUpdate = () => {
+      if (car) {
+        const cartItems = cartService.getItems();
+        setIsInCart(cartItems.some(item => item.id === car.id));
+      }
+    };
+
+    window.addEventListener('cart-updated', handleCartUpdate);
+    
+    return () => {
+      window.removeEventListener('cart-updated', handleCartUpdate);
+    };
+  }, [id, car]);
 
   const handleReservation = () => {
     if (car) {
       // Ajouter la voiture au panier en utilisant notre service
       cartService.addItem(car);
+      setIsInCart(true);
       
       // Afficher un bouton pour voir le panier
       toast.success(`Voiture ajoutée au panier !`, {
@@ -251,20 +271,20 @@ const CarDetail = () => {
 
               <div className="mt-6 space-y-3">
                 <Button 
-                  className="w-full bg-autoOrange hover:bg-autoOrange/90"
+                  className={`w-full flex items-center justify-center ${isInCart ? 'bg-green-600 hover:bg-green-700' : 'bg-autoOrange hover:bg-autoOrange/90'}`}
                   onClick={handleReservation}
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
-                  Ajouter au panier
+                  {isInCart ? 'Déjà dans le panier' : 'Ajouter au panier'}
                 </Button>
                 <div className="flex space-x-2">
-                  <Button variant="outline" className="flex-1" onClick={handleAddToFavorite}>
+                  <Button variant="outline" className="flex-1 flex items-center justify-center" onClick={handleAddToFavorite}>
                     <Heart className="h-4 w-4 mr-2" />
                     Favoris
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="flex-1" 
+                    className="flex-1 flex items-center justify-center" 
                     onClick={() => {
                       if (navigator.share) {
                         navigator.share({
