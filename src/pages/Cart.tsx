@@ -4,7 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingCart, Info } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingCart, Info, Check } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
@@ -15,10 +15,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   // Charger les éléments du panier
@@ -60,6 +69,14 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
+    // Ouvrir le dialog de confirmation
+    setCheckoutDialogOpen(true);
+  };
+
+  const confirmCheckout = () => {
+    // Fermer le dialog
+    setCheckoutDialogOpen(false);
+    
     // Simuler une commande réussie
     toast.success("Commande effectuée avec succès !", {
       description: "Nous vous contacterons prochainement pour finaliser votre achat."
@@ -261,6 +278,79 @@ const Cart = () => {
         </div>
       </main>
       <Footer />
+
+      {/* Dialog de confirmation de commande avec récapitulatif du panier */}
+      <Dialog open={checkoutDialogOpen} onOpenChange={setCheckoutDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Check className="h-5 w-5 text-green-500" />
+              Confirmation de commande
+            </DialogTitle>
+            <DialogDescription>
+              Veuillez vérifier les détails de votre commande avant de confirmer.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="max-h-[300px] overflow-y-auto py-4">
+            <h3 className="font-medium mb-2">Articles dans votre panier:</h3>
+            {items.map((car) => (
+              <div key={car.id} className="flex items-center py-2 border-b">
+                <img 
+                  src={car.images[0]} 
+                  alt={car.model} 
+                  className="w-16 h-12 object-cover rounded mr-3"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium truncate">
+                    {car.brand} {car.model}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {car.year} | {car.mileage.toLocaleString()} km
+                  </p>
+                </div>
+                <p className="font-medium text-autoBlue">
+                  {formatEuro(car.price)}
+                </p>
+              </div>
+            ))}
+            
+            <div className="mt-4 pt-2 border-t">
+              <div className="flex justify-between text-sm">
+                <span>Sous-total:</span>
+                <span>{formatEuro(calculateTotal())}</span>
+              </div>
+              <div className="flex justify-between text-sm mt-1">
+                <span>Frais de dossier:</span>
+                <span>{formatEuro(300)}</span>
+              </div>
+              <div className="flex justify-between font-bold mt-2 pt-2 border-t">
+                <span>Total:</span>
+                <span>{formatEuro(calculateTotal() + 300)}</span>
+              </div>
+              <div className="mt-3 text-sm text-gray-600">
+                <p>Acompte requis (10%): {formatEuro((calculateTotal() + 300) * 0.1)}</p>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="flex sm:justify-between gap-4 flex-row">
+            <Button 
+              variant="outline" 
+              onClick={() => setCheckoutDialogOpen(false)}
+              className="flex-1"
+            >
+              Modifier
+            </Button>
+            <Button 
+              onClick={confirmCheckout}
+              className="bg-autoOrange hover:bg-autoOrange/90 flex-1"
+            >
+              Confirmer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
