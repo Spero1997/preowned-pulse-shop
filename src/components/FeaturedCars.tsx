@@ -25,7 +25,7 @@ export function FeaturedCars() {
   };
   
   useEffect(() => {
-    // Récupérer les voitures du localStorage ou utiliser les initiales
+    // Récupérer les voitures du localStorage au chargement initial
     const currentCars = getLocalCars();
     setAllCars(currentCars);
     
@@ -35,10 +35,10 @@ export function FeaturedCars() {
       if (JSON.stringify(updatedCars) !== JSON.stringify(allCars)) {
         setAllCars(updatedCars);
       }
-    }, 1000); // Vérifier toutes les secondes pour une réactivité accrue
+    }, 500); // Vérifier toutes les 500ms pour une réactivité accrue
     
     return () => clearInterval(interval);
-  }, [allCars]); // Ajout de la dépendance allCars pour réagir aux changements
+  }, []); // Removed allCars dependency to prevent infinite loops
   
   useEffect(() => {
     // Prioritize featured cars first

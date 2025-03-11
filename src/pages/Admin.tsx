@@ -42,6 +42,8 @@ const Admin = () => {
     // Mettre à jour l'état local et le localStorage
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
+    
+    // Forcer la mise à jour explicite du localStorage
     localStorage.setItem('cars', JSON.stringify(updatedCars));
     
     setSelectedCar(null);
@@ -50,10 +52,10 @@ const Admin = () => {
       description: `${car.brand} ${car.model} a été ajoutée au catalogue et apparaîtra sur la page d'accueil`
     });
     
-    // Rediriger vers la page d'accueil après l'ajout
+    // Rediriger vers la page d'accueil après un court délai
     setTimeout(() => {
       navigate('/');
-    }, 1500); // Attendre 1.5 secondes pour que le toast soit visible
+    }, 1000);
   };
 
   const handleUpdateCar = (updatedCar: Car) => {
@@ -75,6 +77,10 @@ const Admin = () => {
     if (selectedCar?.id === carId) {
       setSelectedCar(null);
     }
+    
+    toast.success("Voiture supprimée", {
+      description: `La voiture a été supprimée du catalogue`
+    });
   };
 
   const handleEditCar = (car: Car) => {
@@ -98,8 +104,11 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     };
     
+    // Mettre à jour l'état local et le localStorage
     const updatedCars = [...cars, newCar];
     setCars(updatedCars);
+    
+    // Forcer la mise à jour explicite du localStorage
     localStorage.setItem('cars', JSON.stringify(updatedCars));
     
     setImportedCars(prevCars => prevCars.filter(c => c.id !== car.id));
@@ -107,6 +116,11 @@ const Admin = () => {
     toast.success("Voiture ajoutée", {
       description: `${car.brand} ${car.model} a été ajoutée au catalogue et apparaîtra sur la page d'accueil`
     });
+    
+    // Rediriger vers la page d'accueil après un court délai
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
   };
 
   // Fonction pour ajouter toutes les voitures importées au catalogue
@@ -125,8 +139,11 @@ const Admin = () => {
       featured: true // Marquer automatiquement comme vedette
     }));
     
+    // Mettre à jour l'état local et le localStorage
     const updatedCars = [...cars, ...newCars];
     setCars(updatedCars);
+    
+    // Forcer la mise à jour explicite du localStorage
     localStorage.setItem('cars', JSON.stringify(updatedCars));
     
     setImportedCars([]);
@@ -135,10 +152,10 @@ const Admin = () => {
       description: `${newCars.length} voitures ont été ajoutées au catalogue et apparaîtront sur la page d'accueil`
     });
     
-    // Rediriger vers la page d'accueil après l'ajout de toutes les voitures
+    // Rediriger vers la page d'accueil après un court délai
     setTimeout(() => {
       navigate('/');
-    }, 1500); // Attendre 1.5 secondes pour que le toast soit visible
+    }, 1000);
   };
 
   return (
