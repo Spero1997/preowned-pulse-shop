@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
@@ -303,6 +302,63 @@ const Cart = () => {
                 </div>
                 
                 <div className="mb-6">
+                  <div className="flex items-center mb-2 text-sm font-medium">
+                    <Info className="h-4 w-4 mr-2" />
+                    Informations de paiement
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-md space-y-2">
+                    {paymentMethod === "bank-transfer" && (
+                      <div>
+                        <h3 className="font-semibold">Virement bancaire</h3>
+                        <div className="grid grid-cols-1 gap-2 mt-2">
+                          <div>
+                            <p className="font-medium">Bénéficiaire</p>
+                            <p>Lucia Dzujkova</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">IBAN</p>
+                            <p className="font-mono text-xs">LT453500010018283529</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">SWIFT/BIC</p>
+                            <p className="font-mono text-xs">EVIULT2VXXX</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">Nom de banque</p>
+                            <p>Paysera LT, UAB</p>
+                          </div>
+                          <div>
+                            <p className="font-medium">Adresse de la banque</p>
+                            <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {paymentMethod === "credit-card" && (
+                      <div>
+                        <h3 className="font-semibold">Carte bancaire</h3>
+                        <p className="mt-2">Les informations pour le paiement par carte bancaire vous seront communiquées après la validation de votre commande.</p>
+                      </div>
+                    )}
+                    {paymentMethod === "coupon" && (
+                      <div>
+                        <h3 className="font-semibold">Paiement par coupon</h3>
+                        <p className="mt-2">Utilisez des coupons PCS, Transcash, Neosurf ou des cartes cadeau Amazon pour régler votre achat.</p>
+                        <p className="mt-2 text-red-600 font-semibold">Important : Coupons acceptés</p>
+                        <ul className="list-disc pl-5 mt-2 space-y-1">
+                          <li>PCS</li>
+                          <li>Transcash</li>
+                          <li>Neosurf</li>
+                          <li>Cartes cadeau Amazon</li>
+                        </ul>
+                        <p className="mt-2 text-sm">Entrez votre code coupon dans la section "Code coupon" ci-dessus.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="mb-6">
                   <h3 className="font-medium mb-3 flex items-center">
                     <Tag className="h-5 w-5 mr-2 text-autoBlue" />
                     Code coupon (PCS/Transcash/Neosurf/Amazon)
@@ -353,64 +409,6 @@ const Cart = () => {
                       </Button>
                     </div>
                   )}
-                </div>
-                
-                <div className="mb-6">
-                  <div className="flex items-center mb-2 text-sm font-medium">
-                    <Info className="h-4 w-4 mr-2" />
-                    Informations de paiement
-                  </div>
-                  <div className="bg-gray-100 p-4 rounded-md space-y-2">
-                    {paymentMethod === "bank-transfer" && (
-                      <div>
-                        <h3 className="font-semibold">Virement bancaire</h3>
-                        <div className="grid grid-cols-1 gap-2">
-                          <div>
-                            <p className="font-medium">Bénéficiaire</p>
-                            <p>Lucia Dzujkova</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">IBAN</p>
-                            <p className="font-mono text-xs">LT453500010018283529</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">SWIFT/BIC</p>
-                            <p className="font-mono text-xs">EVIULT2VXXX</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">Nom de banque</p>
-                            <p>Paysera LT, UAB</p>
-                          </div>
-                          <div>
-                            <p className="font-medium">Adresse de la banque</p>
-                            <p className="text-xs">Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {paymentMethod === "coupon" && (
-                      <div>
-                        <h3 className="font-semibold">Paiement par coupon</h3>
-                        <p className="mt-2">Utilisez des coupons PCS, Transcash, Neosurf ou des cartes cadeau Amazon pour régler votre achat.</p>
-                        <p className="mt-2 text-red-600 font-semibold">Important : Coupons acceptés</p>
-                        <ul className="list-disc pl-5 mt-2 space-y-1">
-                          <li>PCS</li>
-                          <li>Transcash</li>
-                          <li>Neosurf</li>
-                          <li>Cartes cadeau Amazon</li>
-                        </ul>
-                        <p className="mt-2 text-sm">Entrez votre code coupon dans la section "Code coupon" ci-dessus.</p>
-                      </div>
-                    )}
-
-                    {paymentMethod === "credit-card" && (
-                      <div>
-                        <h3 className="font-semibold">Carte bancaire</h3>
-                        <p className="mt-2">Les informations pour le paiement par carte bancaire vous seront communiquées après la validation de votre commande.</p>
-                      </div>
-                    )}
-                  </div>
                 </div>
                 
                 <Button 
