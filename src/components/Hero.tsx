@@ -12,13 +12,13 @@ export function Hero() {
       <div 
         className="relative h-[500px] bg-cover bg-center"
         style={{ 
-          backgroundImage: "url('/lovable-uploads/9ed143f1-9a7a-485c-8120-a629444375f2.png')" 
+          backgroundImage: "url('/lovable-uploads/c139556a-ec12-4818-a131-d1b13bb46645.png')" 
         }}
       >
         {/* Overlay noir avec opacité */}
-        <div className="absolute inset-0 bg-black/40 z-10" />
+        <div className="absolute inset-0 bg-black/30 z-10" />
         {/* Overlay bleu avec opacité */}
-        <div className="absolute inset-0 bg-autoBlue/30 z-10" />
+        <div className="absolute inset-0 bg-autoBlue/20 z-10" />
         <div className="container mx-auto px-4 h-full flex items-center relative z-20">
           <div className="max-w-xl text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
