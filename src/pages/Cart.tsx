@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingCart, Info, Check } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingCart, Info, Check, CreditCard, Wallet, Euro } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatEuro } from "@/lib/utils";
 import { toast } from "sonner";
@@ -23,11 +22,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Cart = () => {
   const [items, setItems] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkoutDialogOpen, setCheckoutDialogOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("bank-transfer");
+  const [couponCode, setCouponCode] = useState("");
   const navigate = useNavigate();
 
   const loadCartItems = () => {
@@ -69,7 +74,7 @@ const Cart = () => {
   const confirmCheckout = () => {
     setCheckoutDialogOpen(false);
     toast.success("Commande effectuée avec succès !", {
-      description: "Nous vous contacterons prochainement pour finaliser votre achat."
+      description: `Nous vous contacterons prochainement pour finaliser votre achat. Méthode de paiement: ${getPaymentMethodLabel(paymentMethod)}`
     });
     clearCart();
     setTimeout(() => {
@@ -83,6 +88,15 @@ const Cart = () => {
 
   const calculateDownPayment = () => {
     return calculateTotal() * 0.2;
+  };
+
+  const getPaymentMethodLabel = (method: string) => {
+    switch(method) {
+      case "credit-card": return "Carte bancaire";
+      case "pcs-voucher": return "Coupons PCS";
+      case "bank-transfer": return "Virement bancaire";
+      default: return "Virement bancaire";
+    }
   };
 
   return (
@@ -220,6 +234,51 @@ const Cart = () => {
                   </div>
                 </div>
                 
+                <div className="mb-6">
+                  <h3 className="font-medium mb-3">Méthode de paiement</h3>
+                  <RadioGroup 
+                    value={paymentMethod} 
+                    onValueChange={setPaymentMethod}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="credit-card" id="credit-card" />
+                      <Label htmlFor="credit-card" className="flex items-center cursor-pointer">
+                        <CreditCard className="h-5 w-5 mr-2 text-blue-600" />
+                        <span>Carte bancaire</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="pcs-voucher" id="pcs-voucher" />
+                      <Label htmlFor="pcs-voucher" className="flex items-center cursor-pointer">
+                        <Wallet className="h-5 w-5 mr-2 text-green-600" />
+                        <span>Coupons PCS</span>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 border rounded-md p-3 hover:bg-gray-100 cursor-pointer">
+                      <RadioGroupItem value="bank-transfer" id="bank-transfer" />
+                      <Label htmlFor="bank-transfer" className="flex items-center cursor-pointer">
+                        <Euro className="h-5 w-5 mr-2 text-amber-600" />
+                        <span>Virement bancaire</span>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                
+                <div className="mb-6">
+                  <div className="flex items-center space-x-2">
+                    <Input 
+                      type="text" 
+                      placeholder="Code promo" 
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                    />
+                    <Button variant="outline" size="sm">
+                      Appliquer
+                    </Button>
+                  </div>
+                </div>
+                
                 <Accordion type="single" collapsible className="mb-6">
                   <AccordionItem value="payment-info">
                     <AccordionTrigger className="flex items-center text-sm">
@@ -325,6 +384,28 @@ const Cart = () => {
               <div className="mt-3 text-sm text-gray-600">
                 <p>Acompte requis (20%): {formatEuro(calculateDownPayment())}</p>
               </div>
+            </div>
+            
+            <div className="mt-4 pt-2 border-t">
+              <h3 className="font-medium mb-2">Méthode de paiement:</h3>
+              <Card className="bg-gray-50">
+                <CardContent className="py-3 flex items-center">
+                  {paymentMethod === "credit-card" && <CreditCard className="h-5 w-5 mr-2 text-blue-600" />}
+                  {paymentMethod === "pcs-voucher" && <Wallet className="h-5 w-5 mr-2 text-green-600" />}
+                  {paymentMethod === "bank-transfer" && <Euro className="h-5 w-5 mr-2 text-amber-600" />}
+                  <span>{getPaymentMethodLabel(paymentMethod)}</span>
+                </CardContent>
+              </Card>
+              
+              {paymentMethod === "bank-transfer" && (
+                <div className="mt-2 bg-gray-100 p-3 rounded-md text-xs">
+                  <p className="font-medium mb-1">Détails du virement :</p>
+                  <p>Bénéficiaire : Lucia Dzujkova</p>
+                  <p>IBAN : LT453500010018283529</p>
+                  <p>SWIFT/BIC : EVIULT2VXXX</p>
+                  <p>Banque : Paysera LT, UAB</p>
+                </div>
+              )}
             </div>
           </div>
           
