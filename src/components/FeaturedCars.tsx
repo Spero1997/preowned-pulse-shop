@@ -6,23 +6,34 @@ import { Car } from "@/types/car";
 import { cars as initialCars } from "@/data/cars";
 import { ArrowRight, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export function FeaturedCars() {
   const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
   const [allCars, setAllCars] = useState<Car[]>(initialCars);
   const [loading, setLoading] = useState(true);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   
   // Fonction pour obtenir les voitures stockées localement dans le localStorage
   const getLocalCars = (): Car[] => {
     try {
       const localCarsString = localStorage.getItem('cars');
       if (localCarsString) {
-        return JSON.parse(localCarsString);
+        const parsedCars = JSON.parse(localCarsString);
+        console.log("FeaturedCars - Voitures récupérées:", parsedCars.length);
+        return parsedCars;
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
+      toast.error("Erreur de données", {
+        description: "Impossible de récupérer les voitures du stockage local"
+      });
     }
     return initialCars;
+  };
+  
+  const forceRefresh = () => {
+    setRefreshTrigger(prev => prev + 1);
   };
   
   useEffect(() => {
@@ -33,28 +44,49 @@ export function FeaturedCars() {
     setLoading(false);
     
     // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
-    const handleStorageChange = () => {
-      const updatedCars = getLocalCars();
-      console.log("Changement de localStorage détecté:", updatedCars.length, "voitures");
-      setAllCars(updatedCars);
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'cars') {
+        console.log("FeaturedCars - Changement de localStorage détecté");
+        const updatedCars = getLocalCars();
+        setAllCars(updatedCars);
+      }
     };
     
     // Ajouter l'écouteur d'événements
     window.addEventListener('storage', handleStorageChange);
     
-    // Vérifier à intervalles réguliers aussi, au cas où
+    // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
       if (updatedCars.length !== allCars.length) {
-        console.log("Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures");
+        console.log("Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", allCars.length, ")");
         setAllCars(updatedCars);
       }
-    }, 2000);
+    }, 1000); // Réduit à 1 seconde pour être plus réactif
+    
+    // Force rafraîchissement direct au montage
+    const initialCheck = setTimeout(() => {
+      const freshCars = getLocalCars();
+      if (freshCars.length > 0) {
+        console.log("FeaturedCars - Vérification initiale:", freshCars.length, "voitures");
+        setAllCars(freshCars);
+      }
+    }, 500);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
+      clearTimeout(initialCheck);
     };
+  }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
+
+  // Force une mise à jour lors du montage initial de la page
+  useEffect(() => {
+    const directCheck = setTimeout(() => {
+      forceRefresh();
+    }, 100);
+    
+    return () => clearTimeout(directCheck);
   }, []);
   
   useEffect(() => {

@@ -11,6 +11,7 @@ import { Search, Grid3X3, List, AlertCircle, Loader } from "lucide-react";
 import { Car, CarFilters as CarFiltersType } from "@/types/car";
 import { minPrice, maxPrice, minYear, maxYear } from "@/data/cars";
 import { applyFilters } from "@/lib/utils";
+import { toast } from "sonner";
 
 const Shop = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +21,7 @@ const Shop = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const carsPerPage = 12;
   const [filters, setFilters] = useState<CarFiltersType>({
     brand: [],
@@ -37,12 +39,21 @@ const Shop = () => {
     try {
       const localCarsString = localStorage.getItem('cars');
       if (localCarsString) {
-        return JSON.parse(localCarsString);
+        const parsedCars = JSON.parse(localCarsString);
+        console.log("Shop - Voitures récupérées:", parsedCars.length);
+        return parsedCars;
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des voitures locales:", error);
+      toast.error("Erreur de données", {
+        description: "Impossible de récupérer les voitures du stockage local"
+      });
     }
     return [];
+  };
+
+  const forceRefresh = () => {
+    setRefreshTrigger(prev => prev + 1);
   };
 
   useEffect(() => {
@@ -53,32 +64,53 @@ const Shop = () => {
     setIsLoading(false);
     
     // Mettre en place un écouteur d'événements pour détecter les changements de localStorage
-    const handleStorageChange = () => {
-      const updatedCars = getLocalCars();
-      console.log("Shop - Changement de localStorage détecté:", updatedCars.length, "voitures");
-      setCars(updatedCars);
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'cars') {
+        console.log("Shop - Changement de localStorage détecté");
+        const updatedCars = getLocalCars();
+        setCars(updatedCars);
+      }
     };
     
     // Ajouter l'écouteur d'événements
     window.addEventListener('storage', handleStorageChange);
     
-    // Vérifier à intervalles réguliers aussi, au cas où
+    // Vérifier à intervalles réguliers
     const interval = setInterval(() => {
       const updatedCars = getLocalCars();
       if (updatedCars.length !== cars.length) {
-        console.log("Shop - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures");
+        console.log("Shop - Mise à jour des voitures détectée par intervalle:", updatedCars.length, "voitures (avant:", cars.length, ")");
         setCars(updatedCars);
       }
-    }, 2000);
+    }, 1000); // Réduit à 1 seconde pour être plus réactif
+    
+    // Force rafraîchissement direct au montage
+    const initialCheck = setTimeout(() => {
+      const freshCars = getLocalCars();
+      if (freshCars.length > 0) {
+        console.log("Shop - Vérification initiale:", freshCars.length, "voitures");
+        setCars(freshCars);
+      }
+    }, 500);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
+      clearTimeout(initialCheck);
     };
+  }, [refreshTrigger]); // Ajout de refreshTrigger pour forcer le rechargement
+
+  // Force une mise à jour lors du montage initial de la page
+  useEffect(() => {
+    const directCheck = setTimeout(() => {
+      forceRefresh();
+    }, 100);
+    
+    return () => clearTimeout(directCheck);
   }, []);
 
   useEffect(() => {
-    if (cars.length === 0 && !isLoading) return;
+    if (isLoading) return;
     
     let results = [...cars];
     
@@ -93,10 +125,10 @@ const Shop = () => {
     
     // Appliquer les filtres
     results = applyFilters(results, filters, {
-      brand: (car, brands) => brands.includes(car.brand),
-      type: (car, types) => types.includes(car.type),
-      fuel: (car, fuels) => fuels.includes(car.fuel),
-      transmission: (car, transmissions) => transmissions.includes(car.transmission),
+      brand: (car, brands) => brands.length === 0 || brands.includes(car.brand),
+      type: (car, types) => types.length === 0 || types.includes(car.type),
+      fuel: (car, fuels) => fuels.length === 0 || fuels.includes(car.fuel),
+      transmission: (car, transmissions) => transmissions.length === 0 || transmissions.includes(car.transmission),
       minPrice: (car, minPrice) => car.price >= minPrice,
       maxPrice: (car, maxPrice) => car.price <= maxPrice,
       minYear: (car, minYear) => car.year >= minYear,
@@ -119,6 +151,7 @@ const Shop = () => {
         break;
     }
     
+    console.log("Shop - Filtrage appliqué:", results.length, "voitures après filtrage");
     setFilteredCars(results);
     setCurrentPage(1); // Reset to first page when filters change
   }, [searchTerm, filters, sortOption, cars, isLoading]);
@@ -154,6 +187,16 @@ const Shop = () => {
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Nos voitures</h1>
+          
+          {/* Bouton de rafraîchissement manuel (caché mais peut être utile pour déboguer) */}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={forceRefresh}
+            className="mb-4 opacity-0"
+          >
+            Rafraîchir
+          </Button>
           
           {/* Barre de recherche */}
           <div className="relative mb-6">
