@@ -15,6 +15,9 @@ export function LanguageSwitcher() {
       console.log("No language detected, setting to French");
       i18n.changeLanguage('fr');
     }
+    
+    // Update document language attribute when language changes
+    document.documentElement.lang = i18n.language;
   }, [i18n.language]);
   
   return (

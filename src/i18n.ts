@@ -36,7 +36,7 @@ i18n
       escapeValue: false,
     },
     detection: {
-      order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+      order: ['navigator', 'querystring', 'cookie', 'localStorage', 'htmlTag'],
       lookupQuerystring: 'lng',
       lookupCookie: 'i18next',
       lookupLocalStorage: 'i18nextLng',
@@ -50,7 +50,7 @@ i18n
     }
   });
 
-// Set document language attribute
+// Ensure document language attribute is set
 document.documentElement.lang = i18n.language || 'fr';
 
 export default i18n;
