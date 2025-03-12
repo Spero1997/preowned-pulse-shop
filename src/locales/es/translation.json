@@ -70,7 +70,8 @@
     "en": "Inglés",
     "it": "Italiano",
     "es": "Español",
-    "pt": "Portugués"
+    "pt": "Portugués",
+    "changeLanguage": "Cambiar idioma"
   },
   "whyChooseUs": {
     "title": "¿Por qué elegir Service Auto Adi?",
@@ -86,5 +87,107 @@
     "address": "Borgo Ognissanti, 142r 50123 Firenze FI Italia",
     "phone": "+39 376 175 3341",
     "email": "info@serviceautoadi.it"
+  },
+  "shop": {
+    "title": "Nuestros coches",
+    "carsFound": "{count} coche encontrado",
+    "carsFound_plural": "{count} coches encontrados",
+    "searchPlaceholder": "Buscar por marca, modelo...",
+    "sortBy": "Ordenar por",
+    "sortOptions": {
+      "default": "Predeterminado",
+      "priceAsc": "Precio ascendente",
+      "priceDesc": "Precio descendente",
+      "newest": "Más reciente",
+      "lowestMileage": "Menor kilometraje"
+    },
+    "noResults": "No se encontraron coches",
+    "modifySearch": "Por favor, modifique sus criterios de búsqueda o filtros.",
+    "tryAgain": "Intentar de nuevo",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "loading": "Cargando coches...",
+    "refresh": "Actualizar",
+    "refreshing": "Actualizando...",
+    "loadingCars": "Cargando {count} coches..."
+  },
+  "admin": {
+    "carCatalog": "Catálogo de coches ({count})",
+    "manageInventory": "Gestionar inventario de vehículos",
+    "importedCars": "Coches importados ({count})",
+    "importedCarsPreview": "Vista previa de coches importados",
+    "addAllToCatalog": "Añadir todos al catálogo",
+    "topBrands": "Top 10 marcas importadas:",
+    "showing": "Mostrando los primeros {count} de {total} coches importados.",
+    "downloadToReplace": "Para usar todos estos {count} coches, descargue el archivo y reemplace src/data/cars.ts"
+  },
+  "notFound": {
+    "title": "¡Ups! Página no encontrada",
+    "description": "La página que está buscando no existe o ha sido movida.",
+    "home": "Inicio",
+    "shop": "Nuestros coches"
+  },
+  "carDetails": {
+    "price": "Precio",
+    "year": "Año",
+    "mileage": "Kilometraje",
+    "fuelType": "Tipo de combustible",
+    "transmission": "Transmisión",
+    "bodyType": "Tipo de carrocería",
+    "color": "Color",
+    "options": "Opciones",
+    "description": "Descripción",
+    "contactUs": "Contáctenos para más información",
+    "addToCart": "Añadir al carrito",
+    "viewDetails": "Ver detalles",
+    "similarCars": "Coches similares",
+    "specifications": "Especificaciones",
+    "features": "Características"
+  },
+  "contact": {
+    "title": "Contacta con nosotros",
+    "subtitle": "Estamos aquí para responder a todas tus preguntas y ayudarte a encontrar el coche perfecto.",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "message": "Mensaje",
+      "send": "Enviar",
+      "required": "Requerido"
+    },
+    "address": "Dirección",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "openingHours": "Horario de apertura",
+    "mondayFriday": "Lunes - Viernes: 8:30 - 19:00",
+    "saturday": "Sábado: 9:00 - 17:00",
+    "sunday": "Domingo: Cerrado"
+  },
+  "about": {
+    "title": "Sobre Service Auto Adi",
+    "subtitle": "Descubre nuestra historia, nuestra misión y nuestro compromiso con la calidad y la satisfacción del cliente.",
+    "missionTitle": "Nuestra Misión",
+    "missionDescription": "Nuestra misión es proporcionar a nuestros clientes una experiencia excepcional en la compra de coches, ofreciendo una selección de vehículos de ocasión de calidad, un servicio personalizado y asesoramiento experto.",
+    "valuesTitle": "Nuestros Valores",
+    "value1": "Integridad y transparencia",
+    "value2": "Calidad y fiabilidad",
+    "value3": "Satisfacción del cliente",
+    "value4": "Innovación y mejora continua"
+  },
+  "cart": {
+    "title": "Tu carrito",
+    "emptyCar": "Tu carrito está vacío",
+    "startShopping": "Empezar a comprar",
+    "continueToCheckout": "Continuar al pago",
+    "continueShopping": "Continuar comprando",
+    "total": "Total",
+    "removeAll": "Eliminar todo",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto",
+    "shipping": "Envío",
+    "checkout": "Pagar",
+    "itemsInCart": "Artículos en el carrito",
+    "itemsInCart_plural": "Artículos en el carrito",
+    "remove": "Eliminar"
   }
 }

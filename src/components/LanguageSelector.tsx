@@ -22,7 +22,9 @@ export function LanguageSelector({ variant = "default" }: { variant?: "default" 
   ];
 
   const handleLanguageChange = (lng: string) => {
+    console.log("Changing language to:", lng);
     i18n.changeLanguage(lng);
+    document.documentElement.lang = lng;
   };
 
   return (
@@ -44,7 +46,7 @@ export function LanguageSelector({ variant = "default" }: { variant?: "default" 
           >
             <Globe className="h-4 w-4" />
             <span className="font-medium">
-              {languages.find(lang => lang.code === currentLanguage)?.label || "Language"}
+              {languages.find(lang => lang.code === currentLanguage)?.label || languages[0].label}
             </span>
           </Button>
         )}
@@ -56,7 +58,7 @@ export function LanguageSelector({ variant = "default" }: { variant?: "default" 
             className="flex items-center justify-between cursor-pointer"
             onClick={() => handleLanguageChange(lang.code)}
           >
-            <span>{lang.label}</span>
+            <span>{t(`language.${lang.code}`, lang.label)}</span>
             {currentLanguage === lang.code && (
               <span className="h-2 w-2 rounded-full bg-autoBlue"></span>
             )}
