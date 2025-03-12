@@ -13,7 +13,9 @@ export function LanguageSwitcher() {
     // If no language is detected, default to French
     if (!i18n.language || i18n.language === 'cimode') {
       console.log("No language detected, setting to French");
-      i18n.changeLanguage('fr');
+      i18n.changeLanguage('fr').catch(error => {
+        console.error("Error changing language:", error);
+      });
     }
     
     // Update document language attribute when language changes

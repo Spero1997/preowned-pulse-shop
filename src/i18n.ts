@@ -43,7 +43,7 @@ i18n
       caches: ['localStorage', 'cookie'],
     },
     react: {
-      useSuspense: false,
+      useSuspense: true,
     },
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
