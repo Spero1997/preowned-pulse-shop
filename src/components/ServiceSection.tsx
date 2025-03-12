@@ -1,5 +1,5 @@
 
-import { Car, Wrench, Shield, Clock, CreditCard } from "lucide-react";
+import { Car, Wrench, Shield, CreditCard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ServiceCardProps {

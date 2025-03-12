@@ -126,5 +126,68 @@
     "description": "A página que você está procurando não existe ou foi movida.",
     "home": "Início",
     "shop": "Nossos carros"
+  },
+  "carDetails": {
+    "price": "Preço",
+    "year": "Ano",
+    "mileage": "Quilometragem",
+    "fuelType": "Tipo de combustível",
+    "transmission": "Transmissão",
+    "bodyType": "Tipo de carroceria",
+    "color": "Cor",
+    "options": "Opções",
+    "description": "Descrição",
+    "contactUs": "Entre em contato para mais informações",
+    "addToCart": "Adicionar ao carrinho",
+    "viewDetails": "Ver detalhes",
+    "similarCars": "Carros similares",
+    "specifications": "Especificações",
+    "features": "Características"
+  },
+  "contact": {
+    "title": "Entre em contato conosco",
+    "subtitle": "Estamos aqui para responder a todas as suas perguntas e ajudá-lo a encontrar o carro perfeito.",
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "message": "Mensagem",
+      "send": "Enviar",
+      "required": "Obrigatório"
+    },
+    "address": "Endereço",
+    "phone": "Telefone",
+    "email": "E-mail",
+    "openingHours": "Horário de funcionamento",
+    "mondayFriday": "Segunda - Sexta: 8:30 - 19:00",
+    "saturday": "Sábado: 9:00 - 17:00",
+    "sunday": "Domingo: Fechado"
+  },
+  "about": {
+    "title": "Sobre a Service Auto Adi",
+    "subtitle": "Descubra nossa história, nossa missão e nosso compromisso com a qualidade e a satisfação do cliente.",
+    "missionTitle": "Nossa Missão",
+    "missionDescription": "Nossa missão é proporcionar aos nossos clientes uma experiência excepcional na compra de carros, oferecendo uma seleção de veículos usados de qualidade, serviço personalizado e consultoria especializada.",
+    "valuesTitle": "Nossos Valores",
+    "value1": "Integridade e transparência",
+    "value2": "Qualidade e confiabilidade",
+    "value3": "Satisfação do cliente",
+    "value4": "Inovação e melhoria contínua"
+  },
+  "cart": {
+    "title": "Seu carrinho",
+    "emptyCar": "Seu carrinho está vazio",
+    "startShopping": "Começar a comprar",
+    "continueToCheckout": "Continuar para pagamento",
+    "continueShopping": "Continuar comprando",
+    "total": "Total",
+    "removeAll": "Remover tudo",
+    "subtotal": "Subtotal",
+    "tax": "Imposto",
+    "shipping": "Envio",
+    "checkout": "Finalizar compra",
+    "itemsInCart": "Item no carrinho",
+    "itemsInCart_plural": "Itens no carrinho",
+    "remove": "Remover"
   }
 }
