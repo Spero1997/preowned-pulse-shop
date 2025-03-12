@@ -1,3 +1,4 @@
+
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -348,7 +349,7 @@ const resources = {
       "options.personalAssistant": "Assistant personnel",
       "options.remoteDiagnostics": "Diagnostic à distance",
       "options.overTheAirUpdates": "Mises à jour à distance",
-      "options.subscriptionServices": "Subscription Services",
+      "options.subscriptionServices": "Services d'abonnement",
       "options.extendedWarranty": "Garantie prolongée",
       "options.serviceContracts": "Contrats de service",
       "options.maintenancePackages": "Packs d'entretien",
@@ -452,7 +453,8 @@ const resources = {
       "options.smartLiving": "Vie intelligente",
       "options.smartCommunity": "Communauté intelligente",
       "options.smartPlanet": "Planète intelligente",
-      "options.smartFuture": "Avenir intelligent"
+      "options.smartFuture": "Avenir intelligent",
+      "language.changeLanguage": "Changer de langue"
     }
   },
   en: {
@@ -537,4 +539,42 @@ const resources = {
       "contactUs.openingHours.mondayFriday": "Monday - Friday: 9:00 AM - 6:00 PM",
       "contactUs.openingHours.saturday": "Saturday: 9:00 AM - 1:00 PM",
       "contactUs.openingHours.sunday": "Sunday: Closed",
-      "noCarsFound": "No
+      "noCarsFound": "No cars found matching your search criteria.",
+      "language.changeLanguage": "Change language"
+    }
+  },
+  it: {
+    translation: {
+      "language.changeLanguage": "Cambia lingua"
+    }
+  }
+};
+
+// Configure i18next
+i18n
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'fr',
+    debug: true,
+    interpolation: {
+      escapeValue: false,
+    },
+    detection: {
+      order: ['querystring', 'cookie', 'localStorage', 'navigator'],
+      lookupQuerystring: 'lng',
+      lookupCookie: 'i18next',
+      lookupLocalStorage: 'i18nextLng',
+      caches: ['localStorage', 'cookie'],
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+
+// Set document language attribute
+document.documentElement.lang = i18n.language || 'fr';
+
+export default i18n;
