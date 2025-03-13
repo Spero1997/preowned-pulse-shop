@@ -30,7 +30,13 @@ export const syncCarsWithLocalStorage = () => {
   }
   
   // Émettre un événement personnalisé pour notifier les composants
-  const event = new CustomEvent('carsUpdated', { detail: { source: 'dataSync', count: getCarsFromLocalStorage().length } });
+  const event = new CustomEvent('carsUpdated', { 
+    detail: { 
+      source: 'dataSync', 
+      count: getCarsFromLocalStorage().length,
+      timestamp: Date.now()
+    } 
+  });
   window.dispatchEvent(event);
   
   // Retourner les voitures actuelles

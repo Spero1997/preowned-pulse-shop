@@ -70,7 +70,7 @@ export function FeaturedCars() {
       }
     };
     
-    const handleCustomEvent = (e: CustomEvent) => {
+    const handleCustomEvent = (e: Event) => {
       console.log("FeaturedCars - Événement personnalisé de mise à jour détecté");
       const updatedCars = getLocalCars();
       setAllCars(updatedCars);
@@ -92,7 +92,7 @@ export function FeaturedCars() {
       window.removeEventListener('carsUpdated', handleCustomEvent as EventListener);
       clearInterval(interval);
     };
-  }, [refreshTrigger]);
+  }, [refreshTrigger, allCars.length]);
   
   useEffect(() => {
     if (allCars.length === 0) {

@@ -64,7 +64,7 @@ function App() {
 
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Chargement...</div>}>
         <Routes>
           <Route path="/" element={<Home key={`home-${carsCount}-${lastUpdate}`} />} />
           <Route path="/about" element={<About />} />
