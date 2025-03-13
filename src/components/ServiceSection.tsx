@@ -1,5 +1,5 @@
 
-import { Car, Wrench, Shield, CreditCard, Truck, Settings, Gauge } from "lucide-react";
+import { Car, Wrench, Shield, CreditCard, Truck, Tool, Gauge } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface ServiceCardProps {
@@ -60,7 +60,7 @@ export function ServiceSection() {
           <h3 className="text-2xl font-bold text-center mb-8">Services Garage Automobile</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <ServiceCard 
-              icon={<Settings className="h-6 w-6" />}
+              icon={<Tool className="h-6 w-6" />}
               title="Réparation mécanique"
               description="Diagnostic et réparation de tous types de pannes mécaniques par nos techniciens expérimentés."
             />

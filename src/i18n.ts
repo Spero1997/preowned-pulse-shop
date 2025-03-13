@@ -18,6 +18,12 @@ const resources = {
         "cars": "Voitures",
         "about": "À propos",
         "contact": "Contact"
+      },
+      "contact": {
+        "messageSent": "Message envoyé avec succès !",
+        "messageResponse": "Nous vous répondrons dans les plus brefs délais.",
+        "errorSending": "Erreur lors de l'envoi du message",
+        "tryAgain": "Veuillez réessayer plus tard."
       }
     }
   },
@@ -27,6 +33,12 @@ const resources = {
       "services": {
         "title": "Our Services",
         "subtitle": "Service Auto Adi is your trusted partner for buying used cars. Discover our personalized services for a worry-free buying experience."
+      },
+      "contact": {
+        "messageSent": "Message sent successfully!",
+        "messageResponse": "We will respond as soon as possible.",
+        "errorSending": "Error sending message",
+        "tryAgain": "Please try again later."
       }
     }
   },
