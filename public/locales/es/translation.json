@@ -161,7 +161,11 @@
     "openingHours": "Horario de apertura",
     "mondayFriday": "Lunes - Viernes: 8:30 - 19:00",
     "saturday": "Sábado: 9:00 - 17:00",
-    "sunday": "Domingo: Cerrado"
+    "sunday": "Domingo: Cerrado",
+    "messageSent": "Mensaje enviado con éxito",
+    "messageResponse": "Te responderemos lo antes posible",
+    "errorSending": "Error al enviar el mensaje",
+    "tryAgain": "Por favor, inténtalo de nuevo más tarde"
   },
   "about": {
     "title": "Sobre Service Auto Adi",

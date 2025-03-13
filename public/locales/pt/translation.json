@@ -125,5 +125,11 @@
     "description": "A página que você está procurando não existe ou foi movida.",
     "home": "Início",
     "shop": "Nossos carros"
+  },
+  "contact": {
+    "messageSent": "Mensagem enviada com sucesso!",
+    "messageResponse": "Responderemos o mais breve possível.",
+    "errorSending": "Erro ao enviar a mensagem",
+    "tryAgain": "Por favor, tente novamente mais tarde."
   }
 }
