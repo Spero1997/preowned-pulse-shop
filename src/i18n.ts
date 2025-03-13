@@ -7,13 +7,37 @@ import Backend from "i18next-http-backend";
 // Translation resources fallback (pour le cas où le backend ne répond pas)
 const resources = {
   fr: {
-    translation: {}
+    translation: {
+      // Traductions en français de secours
+      "services": {
+        "title": "Nos services",
+        "subtitle": "Service Auto Adi est votre partenaire de confiance pour l'achat de voitures d'occasion. Découvrez nos services personnalisés pour une expérience d'achat sans souci."
+      },
+      "navbar": {
+        "home": "Accueil",
+        "cars": "Voitures",
+        "about": "À propos",
+        "contact": "Contact"
+      }
+    }
   },
   en: {
-    translation: {}
+    translation: {
+      // English fallback translations
+      "services": {
+        "title": "Our Services",
+        "subtitle": "Service Auto Adi is your trusted partner for buying used cars. Discover our personalized services for a worry-free buying experience."
+      }
+    }
   },
   it: {
-    translation: {}
+    translation: {
+      // Traduzioni italiane di backup
+      "services": {
+        "title": "I nostri servizi",
+        "subtitle": "Service Auto Adi è il tuo partner affidabile per l'acquisto di auto usate. Scopri i nostri servizi personalizzati per un'esperienza di acquisto senza preoccupazioni."
+      }
+    }
   },
   es: {
     translation: {}
@@ -31,7 +55,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'fr',
-    debug: false,
+    debug: true, // Activé pour mieux voir les erreurs dans la console
     interpolation: {
       escapeValue: false,
     },
@@ -43,7 +67,7 @@ i18n
       caches: ['localStorage', 'cookie'],
     },
     react: {
-      useSuspense: false, // Important: Set to false to avoid Suspense issues
+      useSuspense: false, // Important pour éviter les problèmes avec Suspense
     },
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
@@ -52,5 +76,15 @@ i18n
 
 // Ensure document language attribute is set
 document.documentElement.lang = i18n.language || 'fr';
+
+// Ajouter des journaux pour le débogage
+console.log("i18n initialized with language:", i18n.language);
+console.log("Available languages:", Object.keys(resources));
+
+// Log any language change events
+i18n.on('languageChanged', (lng) => {
+  console.log("Language changed to:", lng);
+  document.documentElement.lang = lng;
+});
 
 export default i18n;
